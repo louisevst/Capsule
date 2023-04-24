@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface ProductVariant {
+interface IProductVariant {
   product_id: mongoose.Types.ObjectId;
   color: string;
   fit: string;
@@ -9,7 +9,7 @@ interface ProductVariant {
   createdAt: Date;
 }
 
-const productVariantSchema = new mongoose.Schema<ProductVariant>({
+const productVariantSchema = new mongoose.Schema<IProductVariant>({
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
@@ -37,7 +37,7 @@ const productVariantSchema = new mongoose.Schema<ProductVariant>({
   },
 });
 
-const Product_Variant = mongoose.model<ProductVariant>(
+const Product_Variant = mongoose.model<IProductVariant>(
   "Product_variant",
   productVariantSchema
 );

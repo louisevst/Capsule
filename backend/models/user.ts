@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface User {
+interface IUser {
   email: string;
   password: string;
   first_name: string;
@@ -11,7 +11,7 @@ interface User {
   createdAt: Date;
 }
 
-const userSchema = new mongoose.Schema<User>({
+const userSchema = new mongoose.Schema<IUser>({
   email: { type: String, required: true },
   password: { type: String, required: true },
   first_name: { type: String, required: true },
@@ -22,6 +22,6 @@ const userSchema = new mongoose.Schema<User>({
   createdAt: { type: Date, default: Date.now },
 });
 
-const User = mongoose.model<User>("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;

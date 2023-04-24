@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface Bag {
+interface IBag {
   _id: mongoose.Types.ObjectId;
   user_id: mongoose.Types.ObjectId;
   product_variant_id: mongoose.Types.ObjectId;
@@ -8,7 +8,7 @@ interface Bag {
   date_added: Date;
 }
 
-const bagSchema = new mongoose.Schema<Bag>({
+const bagSchema = new mongoose.Schema<IBag>({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -23,6 +23,6 @@ const bagSchema = new mongoose.Schema<Bag>({
   date_added: { type: Date, default: Date.now },
 });
 
-const Bag = mongoose.model<Bag>("Bag", bagSchema);
+const Bag = mongoose.model<IBag>("Bag", bagSchema);
 
 export default Bag;

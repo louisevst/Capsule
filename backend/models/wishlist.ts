@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-interface Wishlist {
+interface IWishlist {
   user_id: mongoose.Types.ObjectId;
   product_id: mongoose.Types.ObjectId;
 }
 
-const wishlistSchema = new mongoose.Schema<Wishlist>({
+const wishlistSchema = new mongoose.Schema<IWishlist>({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -18,6 +18,6 @@ const wishlistSchema = new mongoose.Schema<Wishlist>({
   },
 });
 
-const Wishlist = mongoose.model<Wishlist>("Wishlist", wishlistSchema);
+const Wishlist = mongoose.model<IWishlist>("Wishlist", wishlistSchema);
 
 export default Wishlist;

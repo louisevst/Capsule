@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface Order_items {
+interface IOrder_items {
   _id: mongoose.Types.ObjectId;
   order_id: mongoose.Types.ObjectId;
   product_variant_id: mongoose.Types.ObjectId;
@@ -8,7 +8,7 @@ interface Order_items {
   price: Number;
 }
 
-const order_itemsSchema = new mongoose.Schema<Order_items>({
+const order_itemsSchema = new mongoose.Schema<IOrder_items>({
   order_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Order",
@@ -29,7 +29,7 @@ const order_itemsSchema = new mongoose.Schema<Order_items>({
   },
 });
 
-const Order_items = mongoose.model<Order_items>(
+const Order_items = mongoose.model<IOrder_items>(
   "Order_items",
   order_itemsSchema
 );

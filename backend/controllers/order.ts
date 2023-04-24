@@ -14,10 +14,10 @@ export async function createOrder(req: Request, res: Response) {
     );
 
     // Create a new order document in the database
-    const order: Order = await Order.create({ user_id, total_price });
+    const order = await Order.create({ user_id, total_price });
 
     // Create order item documents in the database
-    const order_item: Order_item[] = await Promise.all(
+    const order_item: (typeof Order_item)[] = await Promise.all(
       items.map(async (item: any) => {
         const { product_variant_id, quantity, price } = item;
         return await Order_item.create({
@@ -39,7 +39,7 @@ export async function createOrder(req: Request, res: Response) {
 // Controller function for retrieving all orders
 export async function getOrders(req: Request, res: Response) {
   try {
-    const orders: Order[] = await Order.find({}).populate("user_id");
+    const orders = await Order.find({}).populate("user_id");
     res.json(orders);
   } catch (error) {
     console.error(error);
@@ -51,11 +51,9 @@ export async function getOrders(req: Request, res: Response) {
 export async function getOrder(req: Request, res: Response) {
   try {
     const orderId = req.params.id;
-    const order: Order | null = await Order.findById(orderId).populate(
-      "user_id"
-    );
+    const order = await Order.findById(orderId).populate("user_id");
 
-    const order_item: Order_item[] = await Order_item.find({
+    const order_item = await Order_item.find({
       order_id: orderId,
     }).populate("product_variant_id");
     res.json({ order, order_item });
