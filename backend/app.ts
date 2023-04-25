@@ -6,6 +6,7 @@ import userRoutes from "./routes/user";
 import bagRoutes from "./routes/bag";
 import wishlistRoutes from "./routes/wishlist";
 import orderRoutes from "./routes/order";
+import messageRoutes from "./routes/message";
 
 dotenv.config();
 
@@ -55,5 +56,6 @@ app.use("/api/auth", userRoutes);
 app.use("/api/bag", bagRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/message", messageRoutes);
 
 export default app;
