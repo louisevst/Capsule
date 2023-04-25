@@ -38,7 +38,7 @@ const productVariantSchema = new mongoose.Schema<IProductVariant>({
 });
 
 const Product_Variant = mongoose.model<IProductVariant>(
-  "Product_variant",
+  "Product_Variant",
   productVariantSchema
 );
 

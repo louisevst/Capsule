@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
-interface IOrder {
+export interface IOrder {
   _id: mongoose.Types.ObjectId;
   user_id: mongoose.Types.ObjectId;
   date_ordered: Date;
-  total_price: Number;
+  total_price: number;
+  order_items: mongoose.Types.ObjectId[];
 }
 
 const orderSchema = new mongoose.Schema<IOrder>({
@@ -15,6 +16,12 @@ const orderSchema = new mongoose.Schema<IOrder>({
   },
   total_price: { type: Number, required: true },
   date_ordered: { type: Date, default: Date.now },
+  order_items: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order_items",
+    },
+  ],
 });
 
 const Order = mongoose.model<IOrder>("Order", orderSchema);

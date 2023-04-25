@@ -12,7 +12,7 @@ const order_itemsSchema = new mongoose_1.default.Schema({
     },
     product_variant_id: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "Product_variant",
+        ref: "Product_Variant",
         required: true,
     },
     quantity: {

@@ -15,11 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOrder = exports.getOrders = exports.createOrder = void 0;
 const order_1 = __importDefault(require("../models/order"));
 const order_item_1 = __importDefault(require("../models/order_item"));
+const orderConfirmation_1 = require("../middlewares/orderConfirmation");
+const orderNotification_1 = require("../middlewares/orderNotification");
 // Controller function for creating a new order
 function createOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(order_1.default);
         try {
-            const { user_id, items } = req.body;
+            const { user_id, items, email } = req.body;
             // Calculate the total price of the order
             const total_price = items.reduce((acc, item) => acc + item.quantity * item.price, 0);
             // Create a new order document in the database
@@ -34,6 +37,9 @@ function createOrder(req, res) {
                     price,
                 });
             })));
+            const orderid = order._id.toString();
+            yield (0, orderConfirmation_1.sendOrderConfirmationEmail)(email, orderid);
+            yield (0, orderNotification_1.sendOrderNotificationEmail)(orderid);
             res.status(201).json({ order, order_item });
         }
         catch (error) {

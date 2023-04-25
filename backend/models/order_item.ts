@@ -4,8 +4,8 @@ interface IOrder_items {
   _id: mongoose.Types.ObjectId;
   order_id: mongoose.Types.ObjectId;
   product_variant_id: mongoose.Types.ObjectId;
-  quantity: Number;
-  price: Number;
+  quantity: number;
+  price: number;
 }
 
 const order_itemsSchema = new mongoose.Schema<IOrder_items>({
@@ -16,7 +16,7 @@ const order_itemsSchema = new mongoose.Schema<IOrder_items>({
   },
   product_variant_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Product_variant",
+    ref: "Product_Variant",
     required: true,
   },
   quantity: {

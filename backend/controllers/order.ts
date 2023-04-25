@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
 import Order from "../models/order";
 import Order_item from "../models/order_item";
+import Product_Variant from "../models/poduct_variant";
+import { sendOrderConfirmationEmail } from "../middlewares/orderConfirmation";
+import { sendOrderNotificationEmail } from "../middlewares/orderNotification";
 
 // Controller function for creating a new order
 export async function createOrder(req: Request, res: Response) {
+  console.log(Order);
   try {
-    const { user_id, items } = req.body;
+    const { user_id, items, email } = req.body;
 
     // Calculate the total price of the order
     const total_price = items.reduce(
@@ -28,6 +32,9 @@ export async function createOrder(req: Request, res: Response) {
         });
       })
     );
+    const orderid = order._id.toString();
+    await sendOrderConfirmationEmail(email, orderid);
+    await sendOrderNotificationEmail(orderid);
 
     res.status(201).json({ order, order_item });
   } catch (error) {

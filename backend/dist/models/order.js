@@ -12,6 +12,12 @@ const orderSchema = new mongoose_1.default.Schema({
     },
     total_price: { type: Number, required: true },
     date_ordered: { type: Date, default: Date.now },
+    order_items: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "Order_items",
+        },
+    ],
 });
 const Order = mongoose_1.default.model("Order", orderSchema);
 exports.default = Order;
