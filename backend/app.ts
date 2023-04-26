@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import mongoose, { MongooseOptions } from "mongoose";
 import dotenv from "dotenv";
+dotenv.config();
 import productRoutes from "./routes/product";
 import userRoutes from "./routes/user";
 import bagRoutes from "./routes/bag";
@@ -8,7 +9,18 @@ import wishlistRoutes from "./routes/wishlist";
 import orderRoutes from "./routes/order";
 import messageRoutes from "./routes/message";
 import session from "express-session";
-dotenv.config();
+// const cloudinary = require("cloudinary").v2;
+
+// cloudinary.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   api_secret: process.env.API_SECRET,
+// });
+// const imageUrl = cloudinary.url("collection/Spring Vibes/jumpsuit.jpg", {
+//   width: 500,
+//   height: 500,
+//   crop: "fill",
+// });
 
 const password = process.env.MONGODB_PASSWORD;
 const app: Express = express();
@@ -23,8 +35,8 @@ mongoose
     `mongodb+srv://louisevassart:${password}@cluster.xltoske.mongodb.net/?retryWrites=true&w=majority`,
     options
   )
-  .then(() => console.log("Connexion à MongoDB réussie !"))
-  .catch(() => console.log("Connexion à MongoDB échouée !"));
+  .then(() => console.log("Connection to MongoDB successfull ✨"))
+  .catch(() => console.log("Connection to MongoDB failed 😢"));
 
 app.use(express.json());
 

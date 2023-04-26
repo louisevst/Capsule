@@ -28,11 +28,7 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getUserById = async (req: Request, res: Response) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
     return res.status(401).json({ msg: "Unauthorized" });
@@ -180,14 +176,28 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-  try {
-    // Check if user is logged in
-    if (!req.session.user) {
-      return res.status(401).json({ msg: "Unauthorized" });
-    }
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ msg: "Unauthorized" });
+  }
 
-    // Retrieve user ID from session variable
-    const userId = req.session.user.id;
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.SECRET_KEY || "default_secret"
+    );
+    if (typeof decoded === "string") {
+      throw new Error("Invalid token");
+    }
+    const userId = decoded.user.id;
+    console.log(userId);
+    // Find user by ID
+    const user = await User.findById(userId);
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
 
     const {
       email,
@@ -203,13 +213,6 @@ export const updateUser = async (req: Request, res: Response) => {
     let hashedPassword = password;
     if (password) {
       hashedPassword = await bcrypt.hash(password, 10);
-    }
-
-    const user = await User.findById(req.params.id);
-
-    // Check if user exists and matches the logged-in user
-    if (!user || user.id !== userId) {
-      return res.status(404).send("User not found");
     }
 
     // Encrypt payment card information
@@ -239,19 +242,26 @@ export const updateUser = async (req: Request, res: Response) => {
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ msg: "Unauthorized" });
+  }
+
   try {
-    // Check if user is logged in
-    if (!req.session.user) {
-      return res.status(401).json({ msg: "Unauthorized" });
+    const decoded = jwt.verify(
+      token,
+      process.env.SECRET_KEY || "default_secret"
+    );
+    if (typeof decoded === "string") {
+      throw new Error("Invalid token");
     }
+    const userId = decoded.user.id;
+    console.log(userId);
+    // Find user by ID
+    const user = await User.findById(userId);
 
-    // Retrieve user ID from session variable
-    const userId = req.session.user.id;
-
-    const user = await User.findById(req.params.id);
-
-    // Check if user exists and matches the logged-in user
-    if (!user || user.id !== userId) {
+    // Check if user exists
+    if (!user) {
       return res.status(404).send("User not found");
     }
 

@@ -34,7 +34,7 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getUsers = getUsers;
-const getUserById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
     if (!token) {
@@ -149,23 +149,29 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.login = login;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const token = (_b = req.headers.authorization) === null || _b === void 0 ? void 0 : _b.split(" ")[1];
+    if (!token) {
+        return res.status(401).json({ msg: "Unauthorized" });
+    }
     try {
-        // Check if user is logged in
-        if (!req.session.user) {
-            return res.status(401).json({ msg: "Unauthorized" });
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY || "default_secret");
+        if (typeof decoded === "string") {
+            throw new Error("Invalid token");
         }
-        // Retrieve user ID from session variable
-        const userId = req.session.user.id;
+        const userId = decoded.user.id;
+        console.log(userId);
+        // Find user by ID
+        const user = yield user_1.default.findById(userId);
+        // Check if user exists
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
         const { email, password, first_name, last_name, address, payment_type, payment_card, } = req.body;
         // If the password is being updated, hash it before updating it in the database
         let hashedPassword = password;
         if (password) {
             hashedPassword = yield bcrypt_1.default.hash(password, 10);
-        }
-        const user = yield user_1.default.findById(req.params.id);
-        // Check if user exists and matches the logged-in user
-        if (!user || user.id !== userId) {
-            return res.status(404).send("User not found");
         }
         // Encrypt payment card information
         const cipher = crypto_1.default.createCipheriv(algorithm, key, iv);
@@ -189,16 +195,22 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateUser = updateUser;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    const token = (_c = req.headers.authorization) === null || _c === void 0 ? void 0 : _c.split(" ")[1];
+    if (!token) {
+        return res.status(401).json({ msg: "Unauthorized" });
+    }
     try {
-        // Check if user is logged in
-        if (!req.session.user) {
-            return res.status(401).json({ msg: "Unauthorized" });
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY || "default_secret");
+        if (typeof decoded === "string") {
+            throw new Error("Invalid token");
         }
-        // Retrieve user ID from session variable
-        const userId = req.session.user.id;
-        const user = yield user_1.default.findById(req.params.id);
-        // Check if user exists and matches the logged-in user
-        if (!user || user.id !== userId) {
+        const userId = decoded.user.id;
+        console.log(userId);
+        // Find user by ID
+        const user = yield user_1.default.findById(userId);
+        // Check if user exists
+        if (!user) {
             return res.status(404).send("User not found");
         }
         yield user_1.default.findByIdAndDelete(req.params.id);
