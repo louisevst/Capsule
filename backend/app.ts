@@ -7,7 +7,7 @@ import bagRoutes from "./routes/bag";
 import wishlistRoutes from "./routes/wishlist";
 import orderRoutes from "./routes/order";
 import messageRoutes from "./routes/message";
-
+import session from "express-session";
 dotenv.config();
 
 const password = process.env.MONGODB_PASSWORD;
@@ -27,6 +27,19 @@ mongoose
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
 app.use(express.json());
+
+app.use(
+  session({
+    secret: process.env.SECRET_KEY || "default_secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: true,
+      httpOnly: false, // Whether the session ID cookie should be inaccessible to client-side scripts
+      maxAge: 30 * 24 * 60 * 60 * 1000, // The maximum age (in milliseconds) of the session ID cookie
+    },
+  })
+);
 
 app.use((req, res, next) => {
   console.log("Requête reçue !");

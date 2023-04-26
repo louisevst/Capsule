@@ -12,6 +12,7 @@ const bag_1 = __importDefault(require("./routes/bag"));
 const wishlist_1 = __importDefault(require("./routes/wishlist"));
 const order_1 = __importDefault(require("./routes/order"));
 const message_1 = __importDefault(require("./routes/message"));
+const express_session_1 = __importDefault(require("express-session"));
 dotenv_1.default.config();
 const password = process.env.MONGODB_PASSWORD;
 const app = (0, express_1.default)();
@@ -24,6 +25,16 @@ mongoose_1.default
     .then(() => console.log("Connexion à MongoDB réussie !"))
     .catch(() => console.log("Connexion à MongoDB échouée !"));
 app.use(express_1.default.json());
+app.use((0, express_session_1.default)({
+    secret: process.env.SECRET_KEY || "default_secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: true,
+        httpOnly: false,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // The maximum age (in milliseconds) of the session ID cookie
+    },
+}));
 app.use((req, res, next) => {
     console.log("Requête reçue !");
     next();

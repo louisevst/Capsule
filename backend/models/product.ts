@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-interface IProduct {
+export interface IProduct {
+  _id: mongoose.Types.ObjectId;
   type: String;
   description: String;
   theme: String;

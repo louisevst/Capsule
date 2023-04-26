@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IOrder_items {
+export interface IOrder_items {
   _id: mongoose.Types.ObjectId;
   order_id: mongoose.Types.ObjectId;
   product_variant_id: mongoose.Types.ObjectId;

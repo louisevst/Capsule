@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IBag {
+export interface IBag {
   _id: mongoose.Types.ObjectId;
   user_id: mongoose.Types.ObjectId;
   product_variant_id: mongoose.Types.ObjectId;

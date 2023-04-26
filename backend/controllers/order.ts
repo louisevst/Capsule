@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import Order from "../models/order";
-import Order_item from "../models/order_item";
+import Order_item, { IOrder_items } from "../models/order_item"; // Update this line
 import Product_Variant from "../models/poduct_variant";
 import { sendOrderConfirmationEmail } from "../middlewares/orderConfirmation";
 import { sendOrderNotificationEmail } from "../middlewares/orderNotification";
+import Product from "../models/product";
 
 // Controller function for creating a new order
 export async function createOrder(req: Request, res: Response) {
-  console.log(Order);
   try {
     const { user_id, items, email } = req.body;
 
@@ -21,10 +21,12 @@ export async function createOrder(req: Request, res: Response) {
     const order = await Order.create({ user_id, total_price });
 
     // Create order item documents in the database
-    const order_item: (typeof Order_item)[] = await Promise.all(
+    const order_item: IOrder_items[] = await Promise.all(
+      // Update this line
       items.map(async (item: any) => {
         const { product_variant_id, quantity, price } = item;
         return await Order_item.create({
+          // Update this line
           order_id: order._id,
           product_variant_id,
           quantity,
@@ -33,8 +35,31 @@ export async function createOrder(req: Request, res: Response) {
       })
     );
     const orderid = order._id.toString();
-    await sendOrderConfirmationEmail(email, orderid);
-    await sendOrderNotificationEmail(orderid);
+
+    // Fetch the related product variants
+    const productVariantIds = order_item.map((item) => item.product_variant_id);
+    const productVariants = await Product_Variant.find({
+      _id: { $in: productVariantIds },
+    }).exec();
+
+    // Fetch the related products
+    const productIds = productVariants.map((variant) => variant.product_id);
+    const products = await Product.find({ _id: { $in: productIds } }).exec();
+
+    // Send the order notification email
+    await sendOrderNotificationEmail(
+      order,
+      order_item,
+      products,
+      productVariants
+    );
+    await sendOrderConfirmationEmail(
+      email,
+      order,
+      order_item,
+      products,
+      productVariants
+    );
 
     res.status(201).json({ order, order_item });
   } catch (error) {
@@ -61,6 +86,7 @@ export async function getOrder(req: Request, res: Response) {
     const order = await Order.findById(orderId).populate("user_id");
 
     const order_item = await Order_item.find({
+      // Update this line
       order_id: orderId,
     }).populate("product_variant_id");
     res.json({ order, order_item });

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-interface IMessage {
+export interface IMessage {
+  _id: mongoose.Types.ObjectId;
   name: string;
   email: string;
   subject: string;

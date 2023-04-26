@@ -14,13 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOrder = exports.getOrders = exports.createOrder = void 0;
 const order_1 = __importDefault(require("../models/order"));
-const order_item_1 = __importDefault(require("../models/order_item"));
+const order_item_1 = __importDefault(require("../models/order_item")); // Update this line
+const poduct_variant_1 = __importDefault(require("../models/poduct_variant"));
 const orderConfirmation_1 = require("../middlewares/orderConfirmation");
 const orderNotification_1 = require("../middlewares/orderNotification");
+const product_1 = __importDefault(require("../models/product"));
 // Controller function for creating a new order
 function createOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(order_1.default);
         try {
             const { user_id, items, email } = req.body;
             // Calculate the total price of the order
@@ -28,9 +29,12 @@ function createOrder(req, res) {
             // Create a new order document in the database
             const order = yield order_1.default.create({ user_id, total_price });
             // Create order item documents in the database
-            const order_item = yield Promise.all(items.map((item) => __awaiter(this, void 0, void 0, function* () {
+            const order_item = yield Promise.all(
+            // Update this line
+            items.map((item) => __awaiter(this, void 0, void 0, function* () {
                 const { product_variant_id, quantity, price } = item;
                 return yield order_item_1.default.create({
+                    // Update this line
                     order_id: order._id,
                     product_variant_id,
                     quantity,
@@ -38,8 +42,17 @@ function createOrder(req, res) {
                 });
             })));
             const orderid = order._id.toString();
-            yield (0, orderConfirmation_1.sendOrderConfirmationEmail)(email, orderid);
-            yield (0, orderNotification_1.sendOrderNotificationEmail)(orderid);
+            // Fetch the related product variants
+            const productVariantIds = order_item.map((item) => item.product_variant_id);
+            const productVariants = yield poduct_variant_1.default.find({
+                _id: { $in: productVariantIds },
+            }).exec();
+            // Fetch the related products
+            const productIds = productVariants.map((variant) => variant.product_id);
+            const products = yield product_1.default.find({ _id: { $in: productIds } }).exec();
+            // Send the order notification email
+            yield (0, orderNotification_1.sendOrderNotificationEmail)(order, order_item, products, productVariants);
+            yield (0, orderConfirmation_1.sendOrderConfirmationEmail)(email, order, order_item, products, productVariants);
             res.status(201).json({ order, order_item });
         }
         catch (error) {
@@ -70,6 +83,7 @@ function getOrder(req, res) {
             const orderId = req.params.id;
             const order = yield order_1.default.findById(orderId).populate("user_id");
             const order_item = yield order_item_1.default.find({
+                // Update this line
                 order_id: orderId,
             }).populate("product_variant_id");
             res.json({ order, order_item });

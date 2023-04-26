@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-interface IWishlist {
+export interface IWishlist {
+  _id: mongoose.Types.ObjectId;
   user_id: mongoose.Types.ObjectId;
   product_id: mongoose.Types.ObjectId;
 }

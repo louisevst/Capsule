@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IProductVariant {
+export interface IProductVariant {
   product_id: mongoose.Types.ObjectId;
   color: string;
   fit: string;
