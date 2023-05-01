@@ -34,7 +34,7 @@ const options = {
 mongoose_1.default
     .connect(`mongodb+srv://louisevassart:${password}@cluster.xltoske.mongodb.net/?retryWrites=true&w=majority`, options)
     .then(() => console.log("Connection to MongoDB successfull ✨"))
-    .catch(() => console.log("Connection to MongoDB failed 😢"));
+    .catch(() => console.log("Connection to MongoDB failed 🛑"));
 app.use(express_1.default.json());
 app.use((0, express_session_1.default)({
     secret: process.env.SECRET_KEY || "default_secret",
@@ -47,7 +47,7 @@ app.use((0, express_session_1.default)({
     },
 }));
 app.use((req, res, next) => {
-    console.log("Requête reçue !");
+    console.log("Request received 💫");
     next();
 });
 app.use((req, res, next) => {

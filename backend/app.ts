@@ -36,7 +36,7 @@ mongoose
     options
   )
   .then(() => console.log("Connection to MongoDB successfull ✨"))
-  .catch(() => console.log("Connection to MongoDB failed 😢"));
+  .catch(() => console.log("Connection to MongoDB failed 🛑"));
 
 app.use(express.json());
 
@@ -54,7 +54,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  console.log("Requête reçue !");
+  console.log("Request received 💫");
   next();
 });
 

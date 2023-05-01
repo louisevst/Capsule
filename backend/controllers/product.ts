@@ -22,6 +22,7 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   const product = new Product({
+    name: req.body.name,
     type: req.body.type,
     description: req.body.description,
     theme: req.body.theme,
