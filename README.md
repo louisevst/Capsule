@@ -13,7 +13,10 @@ For the end of the BeCode training, I decided to make a solo project. I created 
   - Express
 
 - Front-end
-  - React
+
+  - Vue
+  - Tailwind CSS
+  - Vite
 
 ## Developp
 
