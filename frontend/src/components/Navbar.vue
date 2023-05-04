@@ -8,9 +8,14 @@ import user from "../assets/user.svg";
     class="flex w-full items-center text-notBlack bg-gradient-to-b from-blue pt-8"
   >
     <button>collection</button>
-    <div><span class="font-logo text-sub lg:text-headline">CAPSULE</span></div>
-    <img :src="bag" class="h-6 w-6" />
-    <img :src="hearth" class="h-6 w-6" />
-    <img :src="user" class="h-6 w-6" />
+    <div>
+      <span class="font-logo text-sub lg:text-headline">CAPSULE</span
+      ><router-link to="/" />
+    </div>
+    <div><img :src="bag" class="h-6 w-6" /><router-link to="/bag" /></div>
+    <div>
+      <img :src="hearth" class="h-6 w-6" /><router-link to="/wishlist" />
+    </div>
+    <div><img :src="user" class="h-6 w-6" /><router-link to="/profile" /></div>
   </nav>
 </template>
