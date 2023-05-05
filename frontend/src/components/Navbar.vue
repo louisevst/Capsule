@@ -87,7 +87,7 @@
         </button>
         <ul
           :class="showCollection ? 'absolute' : 'hidden'"
-          class="text-notBlack h-screen w-1/3 top-0 left-0 bg-notWhite/50 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
+          class="text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/50 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
         >
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
             All
