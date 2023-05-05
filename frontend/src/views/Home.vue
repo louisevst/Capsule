@@ -1,9 +1,22 @@
 <template>
-  <div>
-    <Navbar />
-    <h1>Welcome to the Home Page!</h1>
-    <CTA text="Discover our collection" :onClick="handleClick"></CTA>
-  </div>
+  <picture>
+    <source
+      media="(min-width: 1000px)"
+      srcset="
+        https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938791/Images/pexels-monstera-7691089_fidxol.jpg
+      "
+    />
+    <img
+      src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938791/Images/pexels-monstera-7691041_z7d156.jpg"
+      alt="imagealttext"
+      class="h-screen w-full object-cover"
+    />
+  </picture>
+  <CTA
+    text="Discover our collection"
+    :onClick="handleClick"
+    class="absolute bottom-0"
+  />
 </template>
 
 <script lang="ts">

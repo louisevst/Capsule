@@ -3,6 +3,7 @@ import { PropType } from "vue";
 import Arrow from "../assets/goto.svg";
 
 defineProps({
+  class: { type: String, required: false },
   text: {
     type: String,
     required: true,
@@ -34,7 +35,7 @@ const arrow = Arrow;
 </script>
 
 <template>
-  <div class="relative m-2 group">
+  <div class="relative m-2 group" :class="class">
     <div
       class="absolute text-xs-sub font-lato lg:text-sub text-transparent px-6 py-2 flex items-center"
       :class="bgColor"
