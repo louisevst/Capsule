@@ -9,6 +9,7 @@ import wishlistRoutes from "./routes/wishlist";
 import orderRoutes from "./routes/order";
 import messageRoutes from "./routes/message";
 import session from "express-session";
+import cors from "cors";
 // const cloudinary = require("cloudinary").v2;
 
 // cloudinary.config({
@@ -75,6 +76,7 @@ app.use((req, res, next) => {
   res.status(201);
   next();
 });
+app.use(cors());
 
 app.use("/api/product", productRoutes);
 app.use("/api/auth", userRoutes);

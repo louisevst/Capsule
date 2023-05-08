@@ -1,5 +1,5 @@
 <template>
-  <div class="font-text text-body text-notBlack">
+  <div class="font-text text-body text-notBlack w-full">
     <label
       :for="name"
       class="block font-semibold lg:font-light lg:text-bodyh"
@@ -12,8 +12,8 @@
       :value="value"
       :placeholder="placeholder"
       :required="required"
-      class="border-b border-notBlack pr-14 lg:pr-48 w-full focus-visible:border-terracota focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-2"
-      @input="(event: Event) => $emit('input', (event.target as HTMLInputElement).value)"
+      class="border-t-transparent border-x-transparent border-b text-body border-notBlack w-full focus-visible:border-transparent focus-visible:border-b-terracota focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-2"
+      @input="$emit('input', ($event.target as HTMLInputElement).value)"
       @blur="(event: Event) => $emit('blur', event)"
     />
     <span v-if="error" class="text-sm text-red-500">{{ error }}</span>

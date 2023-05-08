@@ -38,6 +38,7 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getProductById = getProductById;
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const product = new product_1.default({
+        name: req.body.name,
         type: req.body.type,
         description: req.body.description,
         theme: req.body.theme,

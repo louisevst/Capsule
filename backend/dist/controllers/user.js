@@ -83,10 +83,6 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         // Hash password
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
-        // Encrypt payment card information
-        const cipher = crypto_1.default.createCipheriv(algorithm, key, iv);
-        let encryptedPaymentCard = cipher.update(payment_card, "utf8", "hex");
-        encryptedPaymentCard += cipher.final("hex");
         // Create new user
         const newUser = new user_1.default({
             email,
@@ -94,9 +90,16 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             first_name,
             last_name,
             address,
-            payment_type,
-            payment_card: encryptedPaymentCard,
         });
+        // Add optional payment information if present
+        if (payment_type && payment_card) {
+            // Encrypt payment card information
+            const cipher = crypto_1.default.createCipheriv(algorithm, key, iv);
+            let encryptedPaymentCard = cipher.update(payment_card, "utf8", "hex");
+            encryptedPaymentCard += cipher.final("hex");
+            newUser.payment_type = payment_type;
+            newUser.payment_card = encryptedPaymentCard;
+        }
         // Save user to database
         yield newUser.save();
         // Set session variable

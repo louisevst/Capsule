@@ -97,11 +97,6 @@ export const signup = async (req: Request, res: Response) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Encrypt payment card information
-    const cipher = crypto.createCipheriv(algorithm, key, iv);
-    let encryptedPaymentCard = cipher.update(payment_card, "utf8", "hex");
-    encryptedPaymentCard += cipher.final("hex");
-
     // Create new user
     const newUser = new User({
       email,
@@ -109,9 +104,18 @@ export const signup = async (req: Request, res: Response) => {
       first_name,
       last_name,
       address,
-      payment_type,
-      payment_card: encryptedPaymentCard,
     });
+
+    // Add optional payment information if present
+    if (payment_type && payment_card) {
+      // Encrypt payment card information
+      const cipher = crypto.createCipheriv(algorithm, key, iv);
+      let encryptedPaymentCard = cipher.update(payment_card, "utf8", "hex");
+      encryptedPaymentCard += cipher.final("hex");
+
+      newUser.payment_type = payment_type;
+      newUser.payment_card = encryptedPaymentCard;
+    }
 
     // Save user to database
     await newUser.save();

@@ -14,6 +14,7 @@ const wishlist_1 = __importDefault(require("./routes/wishlist"));
 const order_1 = __importDefault(require("./routes/order"));
 const message_1 = __importDefault(require("./routes/message"));
 const express_session_1 = __importDefault(require("express-session"));
+const cors_1 = __importDefault(require("cors"));
 // const cloudinary = require("cloudinary").v2;
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
@@ -60,6 +61,7 @@ app.use((req, res, next) => {
     res.status(201);
     next();
 });
+app.use((0, cors_1.default)());
 app.use("/api/product", product_1.default);
 app.use("/api/auth", user_1.default);
 app.use("/api/bag", bag_1.default);
