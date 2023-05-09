@@ -11,23 +11,20 @@
       alt="imagealttext"
       class="h-screen w-full object-cover"
     />
+    <CTA text="Discover our collection" :onClick="handleClick" />
   </picture>
-  <CTA text="Discover our collection" :onClick="handleClick" class="hidden" />
-  <Footer />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import CTA from "../components/CTA.vue";
 import Navbar from "../components/Navbar.vue";
-import Footer from "../components/Footer.vue";
 
 export default defineComponent({
   name: "Home",
   components: {
     CTA,
     Navbar,
-    Footer,
   },
   methods: {
     handleClick() {

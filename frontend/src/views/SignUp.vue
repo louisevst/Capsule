@@ -64,6 +64,12 @@
           />
           <label for="checkbox">I agree to the terms and conditions</label>
         </div>
+        <p class="self-start">
+          Did you mean to
+          <router-link to="/login" class="border-b border-notBlack"
+            >login</router-link
+          >?
+        </p>
         <div class="flex justify-center lg:pt-4">
           <CTA
             text="Sign up"
@@ -85,6 +91,7 @@ import { defineComponent } from "vue";
 import Input from "../components/Input.vue";
 import CTA from "../components/CTA.vue";
 import VueCookies from "vue-cookies";
+import { notify } from "notiwind";
 
 export default defineComponent({
   name: "signUp",
@@ -127,10 +134,18 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
         this.$cookies.set("token", data.token);
-        const token = (this as any).$cookies.get("token");
-        console.log(token);
+        // const token = (this as any).$cookies.get("token");
+        // console.log(token);
       } catch (error) {
         console.log(error);
+        notify(
+          {
+            group: "bottom",
+            title: "Error",
+            text: "Your account wasn't registered, please try again.",
+          },
+          4000
+        );
       }
     },
   },

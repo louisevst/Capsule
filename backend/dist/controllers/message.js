@@ -13,12 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendMessage = void 0;
+const message_1 = __importDefault(require("../models/message"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const nodemailer = require("nodemailer");
 function sendMessage(req) {
     return __awaiter(this, void 0, void 0, function* () {
         const { name, email, subject, message } = req.body;
+        // Save message in db
+        const newMessage = new message_1.default({
+            email,
+            name,
+            subject,
+            message,
+        });
+        yield newMessage.save();
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
@@ -42,7 +51,6 @@ function sendMessage(req) {
     `,
         });
         console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     });
 }
 exports.sendMessage = sendMessage;

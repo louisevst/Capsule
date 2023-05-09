@@ -46,7 +46,7 @@ const arrow = Arrow;
 </script>
 
 <template>
-  <div class="m-2 group w-full h-full" :class="class">
+  <div class="m-2 group" :class="class">
     <div
       class="absolute text-xs-sub font-lato lg:text-bodyh text-transparent px-6 py-2 flex items-center border"
       :class="[bgColor, borderColor]"
