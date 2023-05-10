@@ -1,26 +1,14 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -31,23 +19,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const product_1 = __importDefault(require("./models/product"));
-const poduct_variant_1 = __importDefault(require("./models/poduct_variant"));
-const dotenv = __importStar(require("dotenv"));
+var mongoose_1 = require("mongoose");
+var product_1 = require("./models/product");
+var poduct_variant_1 = require("./models/poduct_variant");
+var dotenv = require("dotenv");
 dotenv.config();
-const password = process.env.MONGODB_PASSWORD;
-const options = {
+var password = process.env.MONGODB_PASSWORD;
+var options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 };
-mongoose_1.default.connect(`mongodb+srv://louisevassart:${password}@cluster.xltoske.mongodb.net/?retryWrites=true&w=majority`, options);
+mongoose_1.default.connect("mongodb+srv://louisevassart:".concat(password, "@cluster.xltoske.mongodb.net/?retryWrites=true&w=majority"), options);
 //categories// jacket // Pants // skirt // top // blouses // Sweater // Dress // jumpsuit // Jewellery // Swimwear
-const products = [
+var products = [
     {
         name: "Allia",
         type: "Pant",
@@ -100019,17 +100031,42 @@ const products = [
     },
 ];
 function seed() {
-    return __awaiter(this, void 0, void 0, function* () {
-        for (const product of products) {
-            const newProduct = new product_1.default(product);
-            yield newProduct.save();
-            for (const variant of product.variants) {
-                const newVariant = new poduct_variant_1.default(Object.assign({ product_id: newProduct._id }, variant));
-                yield newVariant.save();
+    return __awaiter(this, void 0, void 0, function () {
+        var _i, products_1, product, newProduct, _a, _b, variant, newVariant;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _i = 0, products_1 = products;
+                    _c.label = 1;
+                case 1:
+                    if (!(_i < products_1.length)) return [3 /*break*/, 7];
+                    product = products_1[_i];
+                    newProduct = new product_1.default(product);
+                    return [4 /*yield*/, newProduct.save()];
+                case 2:
+                    _c.sent();
+                    _a = 0, _b = product.variants;
+                    _c.label = 3;
+                case 3:
+                    if (!(_a < _b.length)) return [3 /*break*/, 6];
+                    variant = _b[_a];
+                    newVariant = new poduct_variant_1.default(__assign({ product_id: newProduct._id }, variant));
+                    return [4 /*yield*/, newVariant.save()];
+                case 4:
+                    _c.sent();
+                    _c.label = 5;
+                case 5:
+                    _a++;
+                    return [3 /*break*/, 3];
+                case 6:
+                    _i++;
+                    return [3 /*break*/, 1];
+                case 7:
+                    console.log("Database seeded successfully");
+                    mongoose_1.default.disconnect();
+                    return [2 /*return*/];
             }
-        }
-        console.log("Database seeded successfully");
-        mongoose_1.default.disconnect();
+        });
     });
 }
 seed();

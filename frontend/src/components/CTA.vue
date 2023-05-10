@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { PropType } from "vue";
-import Arrow from "../assets/goto.svg";
 
 defineProps({
   class: { type: String, required: false },
@@ -41,8 +40,6 @@ defineProps({
     required: true,
   },
 });
-
-const arrow = Arrow;
 </script>
 
 <template>
@@ -52,23 +49,14 @@ const arrow = Arrow;
       :class="[bgColor, borderColor]"
     >
       {{ text }}
-      <img
-        :src="arrow"
-        class="w-4 h-4 lg:w-12 lg:h-12 ml-4 hidden group-hover:block transition ease-in-out delay-150 duration-100"
-      />
     </div>
     <button
       @click="($event: MouseEvent) => onClick($event)"
       :type="type"
       :class="[buttonColor, textColor, borderColor]"
-      class="relative text-xs-sub font-lato lg:text-sub border left-2 top-2 px-6 py-2 lg:px-10 shadow-md flex items-center transition ease-in-out delay-150 duration-500 focus:shadow-none"
+      class="relative text-xs-sub font-lato lg:text-sub border left-2 top-2 px-6 py-2 lg:px-10 shadow-md flex items-center transition ease-in-out delay-150 duration-500 hover:bg-notWhite hover:text-notBlack focus:shadow-none"
     >
       {{ text }}
-      <img
-        :src="arrow"
-        class="w-4 h-4 lg:w-12 lg:h-12 ml-4 hidden group-hover:block transition ease-in-out delay-150 duration-300"
-        :class="[invertIcon]"
-      />
     </button>
   </div>
 </template>

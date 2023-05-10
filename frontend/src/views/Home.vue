@@ -22,42 +22,47 @@
     </div>
   </section>
   <section
-    class="text-notBlack font-text text-body lg:text-bodyh relative pb-80 lg:pb-96 flex flex-col items-center lg:flex-row-reverse"
+    class="text-notBlack font-text text-body lg:text-bodyh grid lg:grid-cols-3 p-8"
   >
-    <div
-      class="bg-terracota text-notWhite space-y-4 h-3/4 pb-40 lg:pb-4 lg:flex lg:flex-col lg:space-y-0 lg:bg-notWhite lg:text-notBlack"
-    >
+    <img
+      src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938798/Collection/Spring/Chlo%C3%A9-blouse.jpg"
+      alt="An elegant woman near the beach."
+      class="lg:max-h-[900px] lg:ml-auto order-2"
+    />
+
+    <div class="lg:col-span-2 order-2">
       <h2
-        class="font-title text-xs-headline lg:text-headline p-4 lg:p-8 bg-notWhite text-notBlack lg:bg-terracota lg:text-notWhite lg:pl-[700px] lg:py-10"
+        class="lg:mt-10 relative font-title text-xs-headline lg:text-headline p-4 lg:pr-60 bg-notWhite text-notBlack lg:bg-terracota lg:text-notWhite"
       >
-        Spare your precious time with our capsule concept.
+        Spare your precious time<br />
+        with our capsule concept.
       </h2>
-      <diV class="lg:flex lg:pl-[700px]">
-        <p class="p-4 lg:p-8 lg:w-1/2">
+
+      <diV class="lg:flex bg-terracota lg:bg-notWhite lg:justify-start">
+        <p
+          class="p-4 lg:p-8 lg:w-1/2 text-notWhite lg:text-notBlack lg:max-w-2xl"
+        >
           All of our clothes are meant to be worn with each other. Allowing you
           to mix & match your pieces together. We think that the key to
           sustainable fashion is to buy quality clothing that is meant to last.
         </p>
-        <p class="p-4 lg:p-8 lg:w-1/2">
+        <p
+          class="p-4 lg:p-8 lg:w-1/2 text-notWhite lg:text-notBlack lg:max-w-2xl"
+        >
           A capsule closet is a closet composed with basic, timeless and stpled
           pieces where you can easily build nice and differents outfits with.
           Buy quality, not quantity.
         </p>
       </diV>
     </div>
-    <img
-      src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938798/Collection/Spring/Chlo%C3%A9-blouse.jpg"
-      alt="An elegant woman near the beach."
-      class="absolute bottom-0 max-h-[425px] lg:top-10 lg:left-10 lg:max-h-[865px] lg:h-[80vh] pb-8 lg:pb-0"
-    />
   </section>
-  <section class="lg:relative">
+  <section class="lg:grid lg:grid-cols-2 lg:relative lg:my-20 my-4">
     <img
       src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-cottonbro-studio-5119398_ug10ij.jpg"
-      class="lg:ml-auto lg:h-screen"
+      class="lg:max-h-screen lg:ml-auto col-span-2"
     />
     <div
-      class="bg-khaki text-notWhite p-4 py-8 space-y-4 lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:space-y-8 lg:p-20 lg:px-32 lg:left-10 lg:max-w-[800px]"
+      class="bg-khaki text-notWhite p-4 py-8 space-y-4 row-span-1 lg:space-y-8 xl:space-y-12 lg:absolute lg:left-0 lg:m-10 xl:m-52 lg:p-14 lg:max-w-4xl"
     >
       <h2 class="font-title text-xs-headline lg:text-headline">
         We love sustainable fashion.
@@ -72,6 +77,43 @@
         class="flex justify-center items-center lg:self-end"
         bgColor="bg-notWhite"
         buttonColor="bg-blue"
+      />
+    </div>
+  </section>
+  <section
+    class="p-4 text-notBlack font-text text-body space-y-4 lg:flex lg:px-20 lg:justify-center lg:items-center xl:p-60"
+  >
+    <img
+      src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938791/Images/pexels-monstera-7691207_ay4uxa.jpg"
+      alt="Trhee women from different ethnicities in pastel blazer."
+      class="rounded-t-full lg:max-w-md"
+    />
+    <div class="lg:pl-10 lg:space-y-8 space-y-4">
+      <h2 class="font-title text-xs-headline lg:text-headline">
+        Build your own capsule wardrobe.
+      </h2>
+      <h3 class="text-body font-semibold lg:text-bodyh">
+        All of our clothes are meant to last and be as versatile as possible.
+      </h3>
+      <div class="lg:flex">
+        <p class="lg:p-4 lg:max-w-sm">
+          Tired of being stuck with the same repeating outfit and not knowing
+          what you can wear? We’re here for you ! The concept of a capsule
+          wardrobe is to have quality pieces that are easy to wear together.
+        </p>
+        <p class="lg:p-4 lg:max-w-sm">
+          Our collections are build to mix & match with every other piece. Our
+          large colour selection allows you to get the color that suit your
+          features the best.
+        </p>
+      </div>
+      <CTA
+        text="About us"
+        :onClick="handleClick"
+        class="flex justify-center items-center lg:self-end"
+        textColor="text-notWhite"
+        bgColor="bg-notWhite"
+        buttonColor="bg-terracota"
       />
     </div>
   </section>

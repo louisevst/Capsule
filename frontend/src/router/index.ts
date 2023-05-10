@@ -8,6 +8,7 @@ import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import Profile from "../views/Profile.vue";
 import Wishlist from "../views/Wishlist.vue";
+import AllProducts from "../views/AllProducts.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,6 +17,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: Home,
+    },
+    {
+      path: "/product",
+      name: "product",
+      component: AllProducts,
     },
     {
       path: "/about",

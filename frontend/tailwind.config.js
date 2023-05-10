@@ -10,6 +10,12 @@ export default {
         terracota: "#BB7E5D",
         khaki: "#52693A",
         blue: "#C7CEDB",
+        "blue-grey": "#616C79",
+        "Jungle-green": "#37595D",
+        Raspberry: "#8D2A31",
+        "Bright-red": "#F64618",
+        beige: "#B6A294",
+        mustard: "#E5D352",
       },
       fontFamily: {
         title: ["Cormorant Garamond"],

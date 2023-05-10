@@ -8,6 +8,7 @@ import bagRoutes from "./routes/bag";
 import wishlistRoutes from "./routes/wishlist";
 import orderRoutes from "./routes/order";
 import messageRoutes from "./routes/message";
+import detailRoutes from "./routes/product_details";
 import session from "express-session";
 import cors from "cors";
 // const cloudinary = require("cloudinary").v2;
@@ -84,5 +85,6 @@ app.use("/api/bag", bagRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/product/details", detailRoutes);
 
 export default app;
