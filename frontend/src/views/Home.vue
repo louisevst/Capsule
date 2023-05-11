@@ -62,7 +62,7 @@
       class="lg:max-h-screen lg:ml-auto col-span-2"
     />
     <div
-      class="bg-khaki text-notWhite p-4 py-8 space-y-4 row-span-1 lg:space-y-8 xl:space-y-12 lg:absolute lg:left-0 lg:m-10 xl:m-52 lg:p-14 lg:max-w-4xl"
+      class="bg-green text-notWhite p-4 py-8 space-y-4 row-span-1 lg:space-y-8 xl:space-y-12 lg:absolute lg:left-0 lg:m-10 xl:m-52 lg:p-14 lg:max-w-4xl"
     >
       <h2 class="font-title text-xs-headline lg:text-headline">
         We love sustainable fashion.

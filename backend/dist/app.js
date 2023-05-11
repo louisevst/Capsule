@@ -69,5 +69,5 @@ app.use("/api/bag", bag_1.default);
 app.use("/api/wishlist", wishlist_1.default);
 app.use("/api/order", order_1.default);
 app.use("/api/message", message_1.default);
-app.use("/api/product/details", product_details_1.default);
+app.use("/api/details", product_details_1.default);
 exports.default = app;

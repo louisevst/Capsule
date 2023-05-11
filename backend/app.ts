@@ -85,6 +85,6 @@ app.use("/api/bag", bagRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/message", messageRoutes);
-app.use("/api/product/details", detailRoutes);
+app.use("/api/details", detailRoutes);
 
 export default app;

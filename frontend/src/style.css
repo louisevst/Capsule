@@ -23,3 +23,6 @@ select:-webkit-autofill:focus {
 * {
   scroll-behavior: smooth;
 }
+body.no-scroll {
+  overflow: hidden;
+}

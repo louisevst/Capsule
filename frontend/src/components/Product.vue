@@ -18,12 +18,12 @@
     <div class="flex justify-between flex-col">
       <p class="my-2">{{ price }} €</p>
 
-      <div class="flex">
+      <div class="flex flex-wrap">
         <div
           v-for="color in colors"
           :key="color"
-          class="w-4 h-4 lg:w-8 lg:h-8 rounded-full mr-1 border-black border"
-          :style="{ backgroundColor: String(color) }"
+          class="w-4 h-4 lg:w-8 lg:h-8 rounded-full mr-1 mb-1 border-black border"
+          :class="`bg-${color}`"
         ></div>
       </div>
     </div>
