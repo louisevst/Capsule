@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-gradient-to-b from-blue absolute top-0 w-full z-10">
+  <div
+    class="absolute top-0 w-full z-10 transition-opacity ease-linear"
+    :class="showMenu ? 'bg-notWhite' : 'bg-gradient-to-b from-blue'"
+  >
     <nav
       class="px-9 py-8 lg:py-4 lg:px-24 flex items-center justify-center w-full"
     >

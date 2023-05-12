@@ -26,3 +26,78 @@ select:-webkit-autofill:focus {
 body.no-scroll {
   overflow: hidden;
 }
+.bg-Silver {
+  background: radial-gradient(
+      ellipse farthest-corner at right bottom,
+      #f4f4f2 0%,
+      #c4c3c2 8%,
+      #808080 30%,
+      #636363 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse farthest-corner at left top,
+      #d4d1d1 0%,
+      #b9b9b9 8%,
+      #9b9a9a 25%,
+      #686868 62.5%,
+      #4b4b4b 100%
+    );
+}
+.bg-Gold {
+  background: radial-gradient(
+      ellipse farthest-corner at right bottom,
+      #fedb37 0%,
+      #fdb931 8%,
+      #9f7928 30%,
+      #8a6e2f 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse farthest-corner at left top,
+      #ffffff 0%,
+      #ffffac 8%,
+      #d1b464 25%,
+      #5d4a1f 62.5%,
+      #5d4a1f 100%
+    );
+}
+.bg-Khaki {
+  background: #505344;
+}
+.bg-Blue {
+  background: #2c5887;
+}
+.bg-Pink {
+  background: #e4abb3;
+}
+.bg-Teal {
+  background: #a0b2a6;
+}
+.bg-Mustard {
+  background: #ffbb00;
+}
+.bg-White {
+  background: #ffffff;
+}
+.bg-Off-White {
+  background: #fffae9;
+}
+.bg-Black {
+  background: #000000;
+}
+.bg-Blue-Grey {
+  background: #616c79;
+}
+.bg-Jungle-Green {
+  background: #37595d;
+}
+.bg-Raspberry {
+  background: #8d2a31;
+}
+.bg-Bright-Red {
+  background: #f64618;
+}
+.bg-Beige {
+  background: #b6a294;
+}

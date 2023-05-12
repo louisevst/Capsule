@@ -25,12 +25,14 @@
   </ul>
   <ul
     :class="showColors && showFilter ? 'absolute' : 'hidden'"
-    class="overflow-scroll text-notBlack h-screen w-4/5 top-0 right-0 pt-10 bg-notWhite border-l z-40 border-notBlack shadow flex justify-center flex-col"
+    class="overflow-scroll text-notBlack h-screen w-4/5 top-0 right-0 pt-10 bg-notWhite border-l z-40 border-notBlack shadow flex justify-center flex-col flex-wrap"
   >
     <li
+      :class="{ 'font-bold': selectedColors.includes(color) }"
       v-for="color in colors"
       :key="color"
       class="text-xs-sub lg:text-sub font-text relative mb-4"
+      @click="selectColor(color)"
     >
       {{ color }}
     </li>
@@ -40,9 +42,11 @@
     class="overflow-scroll text-notBlack h-screen w-4/5 top-0 right-0 pt-10 bg-notWhite border-l z-40 border-notBlack shadow flex justify-center flex-col"
   >
     <li
+      :class="{ 'font-bold': selectedTypes.includes(type) }"
       v-for="type in types"
       :key="type"
       class="text-xs-sub lg:text-sub font-text relative mb-4"
+      @click="selectType(type)"
     >
       {{ type }}
     </li>
@@ -53,6 +57,8 @@
 import { defineComponent, PropType } from "vue";
 
 export default defineComponent({
+  name: "Filter",
+  emits: ["colorSelected", "typeSelected"],
   props: {
     colors: {
       type: Array<string>,
@@ -72,10 +78,20 @@ export default defineComponent({
     return {
       showCat: false,
       showColors: false,
+      selectedColors: [] as string[],
+      selectedTypes: [] as string[],
     };
   },
 
   methods: {
+    selectColor(color: string) {
+      this.$emit("colorSelected", color);
+      console.log(color);
+    },
+    selectType(type: string) {
+      this.$emit("typeSelected", type);
+      console.log(type);
+    },
     toggleCat() {
       if (this.showFilter) {
         this.showCat = !this.showCat;

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-screen w-screen top-0 bg-black/80 absolute"
+    class="h-screen w-screen bg-black/80 absolute"
     :class="showFilters ? 'absolute' : 'hidden'"
     @click="toggleFilters()"
   ></div>
@@ -8,7 +8,13 @@
     <h1
       class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20"
     >
-      {{ type === "all" ? "All the collection" : type }}
+      {{
+        type.length === 0 || type.includes("all")
+          ? "All the collection"
+          : type.length > 1
+          ? type.join(" & ")
+          : type.toString()
+      }}
     </h1>
     <p class="text-center py-4">
       We have everything you need to build the perfect capsule wardrobe.
@@ -16,45 +22,71 @@
     <div class="border-y border-notBlack overflow-auto whitespace-nowrap">
       <button
         @click="categorizeProducts('all')"
-        :class="{ ' underline underline-offset-2': type === 'all' }"
+        :class="{
+          ' underline underline-offset-2':
+            type.includes('all') || type.length === 0,
+        }"
         class="p-4 inline-block"
       >
         All
       </button>
       <button
         @click="categorizeProducts('Swimsuit')"
-        :class="{ ' underline underline-offset-2': type === 'Swimsuit' }"
+        :class="{ ' underline underline-offset-2': type.includes('Swimsuit') }"
         class="p-4 inline-block"
       >
         Swimsuit
       </button>
       <button
         @click="categorizeProducts('Jewellery')"
-        :class="{ ' underline underline-offset-2': type === 'Jewellery' }"
+        :class="{ ' underline underline-offset-2': type.includes('Jewellery') }"
         class="p-4 inline-block"
       >
         Jewellery
       </button>
       <button
-        @click="categorizeProducts('Blouse')"
-        :class="{ ' underline underline-offset-2': type === 'Blouse' }"
+        @click="categorizeProductsWithTwoTypes('Blouse', 'Top')"
+        :class="{
+          ' underline underline-offset-2':
+            type.includes('Blouse') || type.includes('Top'),
+        }"
         class="p-4 inline-block"
       >
         Blouse & Tops
       </button>
       <button
         @click="categorizeProducts('Jacket')"
-        :class="{ ' underline underline-offset-2': type === 'Jacket' }"
+        :class="{ ' underline underline-offset-2': type.includes('Jacket') }"
         class="p-4 inline-block"
       >
         Jackets
       </button>
       <button
-        @click="categorizeProducts('Dress')"
-        :class="{ ' underline underline-offset-2': type === 'Dress' }"
+        @click="categorizeProductsWithTwoTypes('Pant', 'Skirt')"
+        :class="{
+          ' underline underline-offset-2':
+            type.includes('Pant') || type.includes('Skirt'),
+        }"
         class="p-4 inline-block"
       >
-        Dress
+        Pants & Skirt
+      </button>
+      <button
+        @click="categorizeProducts('Sweater')"
+        :class="{ ' underline underline-offset-2': type.includes('Sweater') }"
+        class="p-4 inline-block"
+      >
+        Sweaters
+      </button>
+      <button
+        @click="categorizeProductsWithTwoTypes('Dress', 'Jumpsuit')"
+        :class="{
+          ' underline underline-offset-2':
+            type.includes('Dress') || type.includes('Jumpsuit'),
+        }"
+        class="p-4 inline-block"
+      >
+        Dress & Jumpsuits
       </button>
     </div>
     <div class="grid grid-cols-2">
@@ -68,6 +100,8 @@
           :colors="colors"
           :toggleFilter="toggleFilters"
           :showFilter="showFilters"
+          @colorSelected="handleColorSelected"
+          @typeSelected="handleTypeSelected"
         />
       </div>
     </div>
@@ -102,6 +136,9 @@ interface Product {
   image: string;
   type: string;
   alt: string;
+  colors: Array<string>;
+  sizes: Array<string>;
+  fits: Array<string>;
 }
 interface Details {
   id: string;
@@ -129,11 +166,13 @@ export default defineComponent({
       filteredProducts: [] as Product[],
       productDetails: [] as Details[],
       colorDetails: [] as colorsDetails[],
-      type: "all",
+      type: [] as string[],
       isDataFetched: false,
       isDataDetailsFetched: false,
-      colors: [],
-      types: [],
+      colors: [] as string[],
+      types: [] as string[],
+      selectedColor: [] as string[],
+      selectedType: [] as string[],
     };
   },
   mounted() {
@@ -143,8 +182,47 @@ export default defineComponent({
     isReadyToRender() {
       return this.isDataFetched;
     },
+
+    // filteredProducts() {
+    //   if (this.selectedColor.length === 0 && this.selectedType.length === 0) {
+    //     return this.products;
+    //   }
+    //   return this.products.filter((product) => {
+    //     const matchColor =
+    //       this.selectedColor.length === 0 ||
+    //       product.color === this.selectedColor;
+    //     const matchType =
+    //       this.selectedType.length === 0 ||
+    //       this.selectedType.includes(product.type);
+    //     return matchColor && matchType;
+    //   });
+    // },
   },
+  emits: ["colorSelected", "typeSelected"],
   methods: {
+    handleColorSelected(color: string) {
+      console.log(color);
+      this.selectedColor = [color.toLowerCase()];
+      this.filterProductsByColor(this.type[0]);
+    },
+    handleTypeSelected(type: string) {
+      console.log(type);
+      this.selectedType = [type];
+      this.type = [type];
+      this.categorizeProducts(type);
+    },
+    filterProductsByColor(type?: string) {
+      if (this.selectedColor.length > 0) {
+        this.filteredProducts = this.products.filter((product) => {
+          const matchesColor = product.colors.includes(this.selectedColor[0]);
+          const matchesType = type ? product.type === type : true;
+          return matchesColor && matchesType;
+        });
+      } else {
+        this.filteredProducts = this.products;
+      }
+    },
+
     toggleFilters() {
       this.showFilters = !this.showFilters;
       if (this.showFilters) {
@@ -188,6 +266,41 @@ export default defineComponent({
         const data = await response.json();
         this.productDetails = data;
 
+        // Create a new object containing the product id and all details available for that product
+        const allDetails: { [key: string]: any } = {};
+
+        this.productDetails.forEach((detail: any) => {
+          const { product_id, size, fit, color } = detail;
+          if (!allDetails[product_id]) {
+            allDetails[product_id] = {
+              sizes: [],
+              fits: [],
+              colors: [],
+            };
+          }
+          if (!allDetails[product_id].sizes.includes(size.toLowerCase())) {
+            allDetails[product_id].sizes.push(size.toLowerCase());
+          }
+          if (!allDetails[product_id].fits.includes(fit.toLowerCase())) {
+            allDetails[product_id].fits.push(fit.toLowerCase());
+          }
+          if (!allDetails[product_id].colors.includes(color.toLowerCase())) {
+            allDetails[product_id].colors.push(color.toLowerCase());
+          }
+        });
+
+        // Add corresponding arrays of fits, sizes, and colors for each product
+        this.products.forEach((product: any) => {
+          const id = product._id;
+
+          if (allDetails[id]) {
+            product.sizes = allDetails[id].sizes;
+            product.fits = allDetails[id].fits;
+            product.colors = allDetails[id].colors;
+          }
+        });
+        console.log(this.products);
+
         // create a new array of objects containing the product id and all colors available for that product
         const allColors: AllColors = {};
 
@@ -196,8 +309,11 @@ export default defineComponent({
           if (!allColors[product_id]) {
             allColors[product_id] = [];
           }
-          if (!allColors[product_id].includes(color)) {
-            allColors[product_id].push(color);
+          const formattedColor = color
+            .toLowerCase()
+            .replace(/\b\w/g, (l) => l.toUpperCase());
+          if (!allColors[product_id].includes(formattedColor)) {
+            allColors[product_id].push(formattedColor);
           }
         });
         this.colorDetails = Object.entries(allColors).map(([id, colors]) => ({
@@ -207,12 +323,16 @@ export default defineComponent({
         // Combine all unique colors into one final array
         this.colorDetails.forEach((item) => {
           item.colors.forEach((color) => {
-            if (!this.colors.includes(color)) {
-              this.colors.push(color);
+            const formattedColor = color
+              .toLowerCase()
+              .replace(/\b\w/g, (l) => l.toUpperCase());
+            if (!this.colors.includes(formattedColor)) {
+              this.colors.push(formattedColor);
             }
           });
         });
         console.log(this.colors);
+
         this.isDataDetailsFetched = true;
       } catch (error) {
         console.log(error);
@@ -242,11 +362,28 @@ export default defineComponent({
       try {
         if (type === "all") {
           this.filteredProducts = this.products;
+          this.type = [type];
         } else {
           this.filteredProducts = this.products.filter(
             (product: Product) => product.type === type
           );
-          this.type = type;
+          this.type = [type];
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    categorizeProductsWithTwoTypes(type1: string, type2: string): void {
+      try {
+        if (type1 === "all" && type2 === "all") {
+          this.filteredProducts = this.products;
+          this.type = [type1];
+        } else {
+          this.filteredProducts = this.products.filter(
+            (product: Product) =>
+              product.type === type1 || product.type === type2
+          );
+          this.type = [type1, type2];
         }
       } catch (error) {
         console.log(error);
