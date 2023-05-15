@@ -38,7 +38,7 @@
         with our capsule concept.
       </h2>
 
-      <diV class="lg:flex bg-terracota lg:bg-notWhite lg:justify-start">
+      <div class="lg:flex bg-terracota lg:bg-notWhite lg:justify-start">
         <p
           class="p-4 lg:p-8 lg:w-1/2 text-notWhite lg:text-notBlack lg:max-w-2xl"
         >
@@ -53,7 +53,7 @@
           pieces where you can easily build nice and differents outfits with.
           Buy quality, not quantity.
         </p>
-      </diV>
+      </div>
     </div>
   </section>
   <section class="lg:grid lg:grid-cols-2 lg:relative lg:my-20 my-4">

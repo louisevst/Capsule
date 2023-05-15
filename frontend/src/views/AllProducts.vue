@@ -4,7 +4,7 @@
     :class="showFilters ? 'absolute' : 'hidden'"
     @click="toggleFilters()"
   ></div>
-  <div class="text-notBlack font-text text-body">
+  <main class="text-notBlack font-text text-body">
     <h1
       class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20"
     >
@@ -19,9 +19,11 @@
     <p class="text-center py-4">
       We have everything you need to build the perfect capsule wardrobe.
     </p>
-    <div class="border-y border-notBlack overflow-auto whitespace-nowrap">
+    <section
+      class="border-y border-notBlack overflow-auto whitespace-nowrap flex justify-center items-center"
+    >
       <button
-        @click="categorizeProducts('all')"
+        @click="changeCat(['all'])"
         :class="{
           ' underline underline-offset-2':
             type.includes('all') || type.length === 0,
@@ -31,21 +33,21 @@
         All
       </button>
       <button
-        @click="categorizeProducts('Swimsuit')"
+        @click="changeCat(['Swimsuit'])"
         :class="{ ' underline underline-offset-2': type.includes('Swimsuit') }"
         class="p-4 inline-block"
       >
         Swimsuit
       </button>
       <button
-        @click="categorizeProducts('Jewellery')"
+        @click="changeCat(['Jewellery'])"
         :class="{ ' underline underline-offset-2': type.includes('Jewellery') }"
         class="p-4 inline-block"
       >
         Jewellery
       </button>
       <button
-        @click="categorizeProductsWithTwoTypes('Blouse', 'Top')"
+        @click="changeCat(['Blouse', 'Top'])"
         :class="{
           ' underline underline-offset-2':
             type.includes('Blouse') || type.includes('Top'),
@@ -55,14 +57,14 @@
         Blouse & Tops
       </button>
       <button
-        @click="categorizeProducts('Jacket')"
+        @click="changeCat(['Jacket'])"
         :class="{ ' underline underline-offset-2': type.includes('Jacket') }"
         class="p-4 inline-block"
       >
         Jackets
       </button>
       <button
-        @click="categorizeProductsWithTwoTypes('Pant', 'Skirt')"
+        @click="changeCat(['Pant', 'Skirt'])"
         :class="{
           ' underline underline-offset-2':
             type.includes('Pant') || type.includes('Skirt'),
@@ -72,14 +74,14 @@
         Pants & Skirt
       </button>
       <button
-        @click="categorizeProducts('Sweater')"
+        @click="changeCat(['Sweater'])"
         :class="{ ' underline underline-offset-2': type.includes('Sweater') }"
         class="p-4 inline-block"
       >
         Sweaters
       </button>
       <button
-        @click="categorizeProductsWithTwoTypes('Dress', 'Jumpsuit')"
+        @click="changeCat(['Dress', 'Jumpsuit'])"
         :class="{
           ' underline underline-offset-2':
             type.includes('Dress') || type.includes('Jumpsuit'),
@@ -88,12 +90,33 @@
       >
         Dress & Jumpsuits
       </button>
-    </div>
+    </section>
     <div class="grid grid-cols-2">
-      <button class="border-b border-l border-notBlack p-2">Sort</button>
+      <button
+        class="border-b border-l border-r border-notBlack p-2 relative flex justify-center w-full items-center"
+        @click="showSort()"
+      >
+        Sort by <img :src="expandMore" alt="Sort by." class="w-6 h-6" />
+      </button>
+      <div
+        :class="sort ? 'absolute w-1/2 border text-center mt-14 ' : 'hidden'"
+      >
+        <div
+          @click="sortProducts('ascending')"
+          class="bg-notWhite cursor-pointer"
+        >
+          Low to high
+        </div>
+        <div
+          @click="sortProducts('descending')"
+          class="bg-notWhite cursor-pointer"
+        >
+          High to low
+        </div>
+      </div>
       <div
         v-if="isReadyToRender"
-        class="border-b border-r border-l border-notBlack p-2 w-full"
+        class="border-b border-r border-notBlack p-2 w-full"
       >
         <Filter
           :types="types"
@@ -119,7 +142,7 @@
         </div>
       </section>
     </div>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">
@@ -127,6 +150,7 @@ import { defineComponent } from "vue";
 import Product from "../components/Product.vue";
 import Filter from "../components/Filter.vue";
 import { ref } from "vue";
+import expandMore from "../assets/expand_more.svg";
 
 interface Product {
   _id: string;
@@ -157,10 +181,23 @@ interface AllColors {
 }
 
 export default defineComponent({
+  props: {
+    cat: {
+      type: Array<string>,
+      required: true,
+    },
+  },
+  watch: {
+    cat(cat) {
+      console.log(cat);
+      this.categorizeProducts(cat);
+    },
+  },
   components: { Product, Filter },
   data() {
     let showFilters = ref(false);
     return {
+      expandMore,
       showFilters,
       products: [] as Product[],
       filteredProducts: [] as Product[],
@@ -173,6 +210,8 @@ export default defineComponent({
       types: [] as string[],
       selectedColor: [] as string[],
       selectedType: [] as string[],
+      sortOrder: "",
+      sort: false,
     };
   },
   mounted() {
@@ -182,41 +221,42 @@ export default defineComponent({
     isReadyToRender() {
       return this.isDataFetched;
     },
-
-    // filteredProducts() {
-    //   if (this.selectedColor.length === 0 && this.selectedType.length === 0) {
-    //     return this.products;
-    //   }
-    //   return this.products.filter((product) => {
-    //     const matchColor =
-    //       this.selectedColor.length === 0 ||
-    //       product.color === this.selectedColor;
-    //     const matchType =
-    //       this.selectedType.length === 0 ||
-    //       this.selectedType.includes(product.type);
-    //     return matchColor && matchType;
-    //   });
-    // },
   },
   emits: ["colorSelected", "typeSelected"],
   methods: {
+    showSort() {
+      this.sort = !this.sort;
+    },
+    changeCat(category: string[]) {
+      console.log(this.types, category);
+      this.categorizeProducts(category);
+    },
     handleColorSelected(color: string) {
       console.log(color);
       this.selectedColor = [color.toLowerCase()];
-      this.filterProductsByColor(this.type[0]);
+      this.filterProductsByColor();
     },
     handleTypeSelected(type: string) {
       console.log(type);
       this.selectedType = [type];
       this.type = [type];
-      this.categorizeProducts(type);
+      this.categorizeProducts(this.type);
     },
-    filterProductsByColor(type?: string) {
+    filterProductsByColor() {
+      if (this.types.length > 0) {
+        if (this.types.includes("all")) {
+          this.filteredProducts = this.products;
+          this.type = ["all"];
+        } else {
+          this.filteredProducts = this.products.filter((product: Product) =>
+            this.types.includes(product.type)
+          );
+          this.type = this.types;
+        }
+      }
       if (this.selectedColor.length > 0) {
-        this.filteredProducts = this.products.filter((product) => {
-          const matchesColor = product.colors.includes(this.selectedColor[0]);
-          const matchesType = type ? product.type === type : true;
-          return matchesColor && matchesType;
+        this.filteredProducts = this.filteredProducts.filter((product) => {
+          return product.colors.includes(this.selectedColor[0]);
         });
       } else {
         this.filteredProducts = this.products;
@@ -358,35 +398,46 @@ export default defineComponent({
       return { id: details.id, colors: capitalizedColors };
     },
     //All Swimsuit blouses
-    categorizeProducts(type: string): void {
+    categorizeProducts(types: string[]): void {
       try {
-        if (type === "all") {
+        console.log(types);
+        if (types.length < 1) {
+          console.log(this.type);
+          this.$router.push(`/product/${types.join("")}`);
+        } else this.$router.push(`/product/${types[0]}`);
+        if (types.includes("all")) {
           this.filteredProducts = this.products;
-          this.type = [type];
+          this.type = ["all"];
         } else {
-          this.filteredProducts = this.products.filter(
-            (product: Product) => product.type === type
-          );
-          this.type = [type];
+          console.log(types);
+          this.filteredProducts = [];
+          this.type = [];
+          types.forEach((type) => this.type.push(type));
+          console.log(this.filteredProducts, this.type);
+          // Loop through each product in the array
+          this.products.forEach((product) => {
+            // Check if the product's type is included in the selected types array
+            if (types.includes(product.type)) {
+              // If yes, add the product to the filtered products array
+              this.filteredProducts.push(product);
+            }
+            return this.filteredProducts;
+          });
         }
       } catch (error) {
         console.log(error);
       }
     },
-    categorizeProductsWithTwoTypes(type1: string, type2: string): void {
-      try {
-        if (type1 === "all" && type2 === "all") {
-          this.filteredProducts = this.products;
-          this.type = [type1];
-        } else {
-          this.filteredProducts = this.products.filter(
-            (product: Product) =>
-              product.type === type1 || product.type === type2
-          );
-          this.type = [type1, type2];
-        }
-      } catch (error) {
-        console.log(error);
+    sortProducts(sort: string) {
+      const products = [...this.filteredProducts];
+      if (sort === "ascending") {
+        return (this.filteredProducts = products.sort(
+          (a, b) => a.price - b.price
+        ));
+      } else {
+        return (this.filteredProducts = products.sort(
+          (a, b) => b.price - a.price
+        ));
       }
     },
   },

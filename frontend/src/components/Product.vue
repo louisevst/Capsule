@@ -4,10 +4,9 @@
       :src="image"
       class="h-[200px] lg:h-[400px] xl:h-[600px] object-cover w-full"
     />
-    <div class="flex flex-col-reverse lg:flex-row">
+    <div class="flex items-center lg:flex-row">
       <p class="lg:self-center">
         <b>{{ name }}</b>
-        {{ description }}
       </p>
       <img
         :src="hearth"
@@ -15,14 +14,15 @@
         @click="toggleHearth"
       />
     </div>
-    <div class="flex justify-between flex-col">
+    <div class="flex flex-col items-stretch">
+      <p>{{ description }}</p>
       <p class="my-2">{{ price }} €</p>
 
-      <div class="flex flex-wrap">
+      <div class="flex flex-wrap justify-stretch">
         <div
           v-for="color in colors"
           :key="color"
-          class="w-4 h-4 lg:w-8 lg:h-8 rounded-full mr-1 mb-1 border-black border"
+          class="w-6 h-6 lg:w-8 lg:h-8 rounded-full mr-1 mb-1 border-black border"
           :class="`bg-${color}`"
         ></div>
       </div>
