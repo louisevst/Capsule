@@ -29,7 +29,8 @@
           label="What's your email?"
           name="email"
           type="email"
-          @input="(event: Event) => { email = (event.target as HTMLInputElement).value }"
+          :value="email"
+          @input="email = $event.target.value"
           placeholder="Type your email here."
           required
         />
@@ -37,7 +38,8 @@
           label="Choose a password."
           name="password"
           type="password"
-          @input="(event: Event) => { password = (event.target as HTMLInputElement).value }"
+          :value="password"
+          @input="password = $event.target.value"
           placeholder="Type your password here."
           required
         />
@@ -104,7 +106,8 @@ export default defineComponent({
         const data = await response.json();
         console.log(data); //here it can be {message: user already exists}
         this.$cookies.set("token", data.token);
-        // const token = (this as any).$cookies.get("token");
+        this.$cookies.set("id", data.user._id);
+        // const token = (this as any).$cookies.get("id");
         // console.log(token);
       } catch (error) {
         console.log(error);

@@ -93,7 +93,7 @@
           class="text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/50 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
         >
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="{ name: 'product', params: { cat: ['all'] } }"
+            <router-link :to="{ name: 'products', params: { cat: ['all'] } }"
               >All</router-link
             >
             <div
@@ -102,24 +102,24 @@
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link
-              :to="{ name: 'product', params: { cat: ['Dress', 'Jumpsuit'] } }"
+              :to="{ name: 'products', params: { cat: ['Dress', 'Jumpsuit'] } }"
               >Dresses & Jumsuits</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link
-              :to="{ name: 'product', params: { cat: ['Top', 'Blouse'] } }"
+              :to="{ name: 'products', params: { cat: ['Top', 'Blouse'] } }"
               >Tops & Blouses</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link
-              :to="{ name: 'product', params: { cat: ['Pant', 'Skirt'] } }"
+              :to="{ name: 'products', params: { cat: ['Pant', 'Skirt'] } }"
               >Pants & Skirts</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="{ path: '/product/Jewellery' }">
+            <router-link :to="{ path: '/products/Jewellery' }">
               Jewellery
             </router-link>
           </li>

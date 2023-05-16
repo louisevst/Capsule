@@ -31,10 +31,21 @@ const createProductVariant = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.createProductVariant = createProductVariant;
+// export const getProductVariantById = async (req: Request, res: Response) => {
+//   try {
+//     const productVariant = await Product_Variant.findById(req.params.id);
+//     res.json(productVariant);
+//   } catch (err: any) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
 const getProductVariantById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productVariant = yield poduct_variant_1.default.findById(req.params.id);
-        res.json(productVariant);
+        const productId = req.params.id;
+        const productVariants = yield poduct_variant_1.default.find({
+            product_id: productId,
+        });
+        res.json(productVariants);
     }
     catch (err) {
         res.status(500).json({ message: err.message });

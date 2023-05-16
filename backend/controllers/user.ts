@@ -130,7 +130,7 @@ export const signup = async (req: Request, res: Response) => {
       process.env.JWT_SECRET || "default_secret"
     );
 
-    res.status(201).json({ token });
+    res.status(201).json({ token, newUser });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
@@ -170,7 +170,7 @@ export const login = async (req: Request, res: Response) => {
       { expiresIn: 86400 }, // Token expiration time in seconds
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, user });
       }
     );
   } catch (error) {

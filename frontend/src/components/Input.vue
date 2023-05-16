@@ -9,11 +9,11 @@
       :id="name"
       :name="name"
       :type="type"
-      :value="value"
+      :value="inputValue"
       :placeholder="placeholder"
       :required="required"
       class="border-t-transparent border-x-transparent border-b text-body border-notBlack w-full focus-visible:border-transparent focus-visible:border-b-terracota focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-2"
-      @input="$emit('input', ($event.target as HTMLInputElement).value)"
+      @input="updateValue($event.target.value)"
       @blur="(event: Event) => $emit('blur', event)"
     />
     <span v-if="error" class="text-sm text-red-500">{{ error }}</span>
@@ -50,6 +50,21 @@ export default {
     error: {
       type: String,
       default: "",
+    },
+  },
+  computed: {
+    inputValue: {
+      get() {
+        return this.value;
+      },
+      set(newValue: string | number) {
+        this.$emit("input", newValue);
+      },
+    },
+  },
+  methods: {
+    updateValue(value) {
+      this.$emit("input", value);
     },
   },
 };

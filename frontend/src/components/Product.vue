@@ -3,6 +3,7 @@
     <img
       :src="image"
       class="h-[200px] lg:h-[400px] xl:h-[600px] object-cover w-full"
+      @click="($event: MouseEvent) => onClick($event)"
     />
     <div class="flex items-center lg:flex-row">
       <p class="lg:self-center">
@@ -31,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import hearth from "../assets/hearth.svg";
 import filledHearth from "../assets/hearth-full.svg";
 
@@ -52,6 +53,10 @@ export default defineComponent({
     },
     image: {
       type: String,
+      required: true,
+    },
+    onClick: {
+      type: Function as PropType<(event: MouseEvent) => void>,
       required: true,
     },
   },

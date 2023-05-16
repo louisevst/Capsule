@@ -107,7 +107,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         req.session.save();
         // Create JWT token
         const token = jsonwebtoken_1.default.sign({ id: newUser.id }, process.env.JWT_SECRET || "default_secret");
-        res.status(201).json({ token });
+        res.status(201).json({ token, newUser });
     }
     catch (error) {
         console.error(error);
@@ -142,7 +142,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         (err, token) => {
             if (err)
                 throw err;
-            res.json({ token });
+            res.json({ token, user });
         });
     }
     catch (error) {

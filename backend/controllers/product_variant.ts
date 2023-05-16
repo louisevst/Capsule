@@ -18,10 +18,22 @@ export const createProductVariant = async (req: Request, res: Response) => {
   }
 };
 
+// export const getProductVariantById = async (req: Request, res: Response) => {
+//   try {
+//     const productVariant = await Product_Variant.findById(req.params.id);
+//     res.json(productVariant);
+//   } catch (err: any) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+
 export const getProductVariantById = async (req: Request, res: Response) => {
   try {
-    const productVariant = await Product_Variant.findById(req.params.id);
-    res.json(productVariant);
+    const productId = req.params.id;
+    const productVariants = await Product_Variant.find({
+      product_id: productId,
+    });
+    res.json(productVariants);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }

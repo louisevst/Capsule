@@ -128,10 +128,11 @@
         />
       </div>
     </div>
-    <div>
+    <div v-if="isReadyToRender">
       <section class="grid grid-cols-2 lg:grid-cols-4">
         <div v-for="product in filteredProducts" :key="product._id">
           <Product
+            :onClick="() => navigateToProductDetails(product._id)"
             :name="product.name"
             :description="product.alt"
             :price="typeof product.price === 'number' ? product.price : 0"
@@ -403,8 +404,8 @@ export default defineComponent({
         console.log(types);
         if (types.length < 1) {
           console.log(this.type);
-          this.$router.push(`/product/${types.join("")}`);
-        } else this.$router.push(`/product/${types[0]}`);
+          this.$router.push(`/products/${types.join("")}`);
+        } else this.$router.push(`/products/${types[0]}`);
         if (types.includes("all")) {
           this.filteredProducts = this.products;
           this.type = ["all"];
@@ -439,6 +440,10 @@ export default defineComponent({
           (a, b) => b.price - a.price
         ));
       }
+    },
+    navigateToProductDetails(productId: string) {
+      // Use the $router instance to programmatically navigate to the product details page
+      this.$router.push({ name: "product", params: { id: productId } });
     },
   },
 });
