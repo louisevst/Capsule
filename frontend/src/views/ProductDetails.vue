@@ -1,4 +1,13 @@
 <template>
+  <PopUp
+    :showModal="isModalVisible"
+    title="Hi there !"
+    @update:show-modal="isModalVisible = $event"
+    :onClick1="() => navigate('login')"
+    :onClick2="() => navigate('sign-up')"
+  >
+    <p>To add an item to your cart please login or sign up if you're new.</p>
+  </PopUp>
   <main
     v-if="isFetchingProduct"
     class="h-screen flex justify-center items-center"
@@ -92,7 +101,12 @@
         text="Add to cart"
         :onClick="updateBag"
         :class="'py-4 flex justify-end'"
-        :buttonColor="`bg-${selectedColor}`"
+        :buttonColor="
+          selectedColor === ''
+            ? 'bg-notBlack'
+            : `
+            bg-${selectedColor}`
+        "
         :textColor="
           selectedColor === 'Black' ||
           selectedColor === 'Blue-Grey' ||
@@ -100,7 +114,8 @@
           selectedColor === 'Jungle-Green' ||
           selectedColor === 'Raspberry' ||
           selectedColor === 'Silver' ||
-          selectedColor === 'Gold'
+          selectedColor === 'Gold' ||
+          selectedColor === ''
             ? 'text-notWhite'
             : 'text-notBlack'
         "
@@ -111,7 +126,8 @@
           selectedColor === 'Jungle-Green' ||
           selectedColor === 'Raspberry' ||
           selectedColor === 'Silver' ||
-          selectedColor === 'Gold'
+          selectedColor === 'Gold' ||
+          selectedColor === ''
             ? 'bg-notWhite'
             : 'bg-notBlack'
         "
@@ -133,7 +149,8 @@ import hearth from "../assets/hearth.svg";
 import filledHearth from "../assets/hearth-full.svg";
 import CTA from "../components/CTA.vue";
 import back from "../assets/arrow_back.svg";
-import VueCookies from "vue-cookies";
+import PopUp from "../components/PopUp.vue";
+import { useRouter } from "vue-router";
 
 interface Product {
   _id: string;
@@ -154,13 +171,14 @@ interface Details {
 }
 
 export default defineComponent({
-  components: { CTA },
+  components: { CTA, PopUp },
   data() {
     const isFetchingProduct = true;
     const userId = this.$cookies.get("id") || "";
     const uniqueSizes: string[] = [];
     const selectedSize = uniqueSizes.length === 1 ? "One Size" : "";
     return {
+      isModalVisible: false,
       back,
       hearth,
       filledHearth,
@@ -170,7 +188,7 @@ export default defineComponent({
       uniqueColors: [] as Array<string>,
       uniqueSizes: uniqueSizes,
       uniqueFits: [] as Array<string>,
-      selectedColor: "Black" as string,
+      selectedColor: "" as string,
       selectedFit: "" as string,
       selectedSize: selectedSize,
       selectedImage: "" as string,
@@ -204,7 +222,7 @@ export default defineComponent({
   },
   methods: {
     goBack() {
-      this.$router.go(-1); // Navigates back to the previous page
+      this.$router.go(-1);
     },
     toggleHearth() {
       this.isHearthFilled = !this.isHearthFilled;
@@ -223,9 +241,7 @@ export default defineComponent({
         );
         const data = await response.json();
         this.product = data;
-        console.log(data);
       } catch (error) {
-        console.log("Product fetch error:", error);
         console.log(error);
       }
       try {
@@ -240,14 +256,12 @@ export default defineComponent({
         );
         const data = await response.json();
         this.productDetails = data;
-        console.log(data);
 
         // Calculate unique sizes after populating productDetails
         this.calculateUniqueColors();
         this.calculateUniqueSizes();
         this.calculateUniqueFits();
       } catch (error) {
-        console.log("Product fetch error:", error);
         console.log(error);
       } finally {
         this.isFetchingProduct = false; // Set isFetchingProduct flag to false
@@ -305,7 +319,7 @@ export default defineComponent({
       }
 
       this.bag.product_variant_id = variant?._id;
-      console.log(variant);
+
       // Check if the bag already exists
       if (this.bagExists()) {
         await this.updateExistingBag();
@@ -352,20 +366,36 @@ export default defineComponent({
     },
     async createBag() {
       try {
-        this.bag.user_id = this.$cookies.get("id");
+        if (this.$cookies.get("id")) {
+          this.bag.user_id = this.$cookies.get("id");
 
-        const response = await fetch("http://localhost:8000/api/bag", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(this.bag),
-        });
-        console.log(await response.json());
+          const response = await fetch("http://localhost:8000/api/bag", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.bag),
+          });
+          console.log(await response.json());
+        } else {
+          this.isModalVisible = true;
+        }
       } catch (error) {
         console.log(error);
       }
     },
+  },
+  setup() {
+    const router = useRouter();
+
+    function navigate(to: string, cat?: string) {
+      const routeParams = cat ? { cat } : {};
+      router.push({ name: to, params: routeParams });
+    }
+
+    return {
+      navigate,
+    };
   },
 });
 </script>

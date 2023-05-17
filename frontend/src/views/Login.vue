@@ -71,6 +71,7 @@ import Input from "../components/Input.vue";
 import CTA from "../components/CTA.vue";
 import VueCookies from "vue-cookies";
 import { notify } from "notiwind";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Login",
@@ -109,6 +110,7 @@ export default defineComponent({
         this.$cookies.set("id", data.user._id);
         // const token = (this as any).$cookies.get("id");
         // console.log(token);
+        this.navigate("products", "all");
       } catch (error) {
         console.log(error);
         notify(
@@ -124,6 +126,18 @@ export default defineComponent({
   },
   created() {
     (this as any).$cookies = VueCookies;
+  },
+  setup() {
+    const router = useRouter();
+
+    function navigate(to: string, cat?: string) {
+      const routeParams = cat ? { cat } : {};
+      router.push({ name: to, params: routeParams });
+    }
+
+    return {
+      navigate,
+    };
   },
 });
 </script>

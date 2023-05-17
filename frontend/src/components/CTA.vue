@@ -1,43 +1,45 @@
-<script setup lang="ts">
-import { PropType } from "vue";
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
 
-defineProps({
-  class: { type: String, required: false },
-  text: {
-    type: String,
-    required: true,
-    default: "Click me!",
-  },
-  textColor: {
-    type: String,
-    default: "text-notBlack",
-  },
-  buttonColor: {
-    type: String,
-    default: "bg-notWhite",
-  },
-  bgColor: {
-    type: String,
-    default: "bg-notBlack",
-  },
-  borderColor: {
-    type: String,
-    default: "border-notBlack",
-  },
-  invertIcon: {
-    type: String,
-    default: "",
-  },
-  type: {
-    type: String as PropType<"button" | "submit" | "reset">,
-    default: "button",
-    validator: (value: string) => {
-      return ["button", "submit", "reset"].includes(value);
+export default defineComponent({
+  props: {
+    class: { type: String, required: false },
+    text: {
+      type: String,
+      required: true,
+      default: "Click me!",
     },
-  },
-  onClick: {
-    type: Function as PropType<(event: MouseEvent) => void>,
-    required: true,
+    textColor: {
+      type: String,
+      default: "text-notBlack",
+    },
+    buttonColor: {
+      type: String,
+      default: "bg-notWhite",
+    },
+    bgColor: {
+      type: String,
+      default: "bg-notBlack",
+    },
+    borderColor: {
+      type: String,
+      default: "border-notBlack",
+    },
+    invertIcon: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: String as PropType<"button" | "submit" | "reset">,
+      default: "button",
+      validator: (value: string) => {
+        return ["button", "submit", "reset"].includes(value);
+      },
+    },
+    onClick: {
+      type: Function as PropType<(event: MouseEvent) => void>,
+      required: true,
+    },
   },
 });
 </script>
@@ -51,7 +53,7 @@ defineProps({
       {{ text }}
     </div>
     <button
-      @click="($event: MouseEvent) => onClick($event)"
+      @click="onClick"
       :type="type"
       :class="[buttonColor, textColor, borderColor]"
       class="relative text-xs-sub font-lato lg:text-sub border left-2 top-2 px-6 py-2 lg:px-10 shadow-md flex items-center transition ease-in-out delay-150 duration-500 hover:bg-notWhite hover:text-notBlack focus:shadow-none"

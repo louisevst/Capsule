@@ -13,8 +13,9 @@ export const getBags = async (req: Request, res: Response) => {
 
 export const getBagById = async (req: Request, res: Response) => {
   try {
-    const bag = await Bag.findById(req.params.id);
-    if (!bag) {
+    const bag = await Bag.find({ user_id: req.params.id });
+    console.log(req.params.id);
+    if (!bag || bag.length === 0) {
       return res.status(404).send("Bag not found");
     }
     res.json(bag);

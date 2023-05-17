@@ -12,7 +12,7 @@
       </h1>
       <CTA
         text="Discover our collection"
-        :onClick="handleClick"
+        :onClick="() => navigate('products', 'all')"
         class="flex justify-center items-center lg:self-end"
         textColor="text-notWhite"
         bgColor="bg-notWhite"
@@ -73,7 +73,7 @@
       </p>
       <CTA
         text="About us"
-        :onClick="handleClick"
+        :onClick="() => navigate('about')"
         class="flex justify-center items-center lg:self-end"
         bgColor="bg-notWhite"
         buttonColor="bg-blue"
@@ -109,7 +109,7 @@
       </div>
       <CTA
         text="About us"
-        :onClick="handleClick"
+        :onClick="() => navigate('about')"
         class="flex justify-center items-center lg:self-end"
         textColor="text-notWhite"
         bgColor="bg-notWhite"
@@ -134,12 +134,13 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    function handleClick() {
-      router.push({ name: "home" }); // navigate to the home page
+    function navigate(to: string, cat?: string) {
+      const routeParams = cat ? { cat } : {};
+      router.push({ name: to, params: routeParams });
     }
 
     return {
-      handleClick,
+      navigate,
     };
   },
 });

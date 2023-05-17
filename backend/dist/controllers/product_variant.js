@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllProductVariants = exports.getProductVariantById = exports.createProductVariant = void 0;
+exports.getAllProductVariants = exports.getProductVariantById = exports.getProductDetails = exports.createProductVariant = void 0;
 const poduct_variant_1 = __importDefault(require("../models/poduct_variant"));
 const createProductVariant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -31,17 +31,19 @@ const createProductVariant = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.createProductVariant = createProductVariant;
-// export const getProductVariantById = async (req: Request, res: Response) => {
-//   try {
-//     const productVariant = await Product_Variant.findById(req.params.id);
-//     res.json(productVariant);
-//   } catch (err: any) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };
+const getProductDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productVariant = yield poduct_variant_1.default.findById(req.params.id);
+        res.json(productVariant);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+exports.getProductDetails = getProductDetails;
 const getProductVariantById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productId = req.params.id;
+        const productId = req.params.product_id;
         const productVariants = yield poduct_variant_1.default.find({
             product_id: productId,
         });

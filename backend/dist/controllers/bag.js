@@ -27,8 +27,9 @@ const getBags = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getBags = getBags;
 const getBagById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const bag = yield bag_1.default.findById(req.params.id);
-        if (!bag) {
+        const bag = yield bag_1.default.find({ user_id: req.params.id });
+        console.log(req.params.id);
+        if (!bag || bag.length === 0) {
             return res.status(404).send("Bag not found");
         }
         res.json(bag);

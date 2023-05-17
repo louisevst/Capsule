@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const product_variant_1 = require("../controllers/product_variant");
 const router = express_1.default.Router();
 router.post("/", product_variant_1.createProductVariant);
-router.get("/:id", product_variant_1.getProductVariantById);
+router.get("/:product_id", product_variant_1.getProductVariantById);
 router.get("/", product_variant_1.getAllProductVariants);
+router.get("/id/:id", product_variant_1.getProductDetails);
 exports.default = router;
