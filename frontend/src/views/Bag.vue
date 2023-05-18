@@ -10,12 +10,15 @@
   >
     <p>To add an item to your cart please login or sign up if you're new.</p>
   </PopUp>
-  <main>
+  <Loader :is-fetching="loading" />
+  <empty v-if="isEmpty" :title="'My bag'" :text="'Your bag is empty.'" />
+  <main v-if="!loading">
     <h1
       class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
     >
       My Bag
     </h1>
+
     <div class="grid lg:grid-cols-2 lg:px-10 2xl:px-20 lg:pb-10">
       <div
         class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 cursor-pointer flex justify-end items-center"
@@ -29,7 +32,6 @@
 
       <section>
         <div
-          v-if="!loading"
           v-for="product in products"
           :key="product._id"
           class="lg:max-w-2xl"
@@ -42,7 +44,7 @@
             :image="product.details.images[0]"
             :size="product.details.size"
             :fit="product.details.fit"
-            @delete="deleteProduct(product._id)"
+            @delete="deleteProduct(product.details._id)"
           />
         </div>
       </section>
@@ -89,6 +91,8 @@ import PopUp from "../components/PopUp.vue";
 import { useRouter } from "vue-router";
 import CTA from "../components/CTA.vue";
 import back from "../assets/arrow_back.svg";
+import empty from "../components/Empty.vue";
+import Loader from "../components/Loader.vue";
 
 interface Product {
   _id: string;
@@ -109,7 +113,8 @@ interface Details {
   color: string;
 }
 interface Bag {
-  product_variant_id: string;
+  _id: string;
+  product_variant_id: Array<string>;
   quantity: number;
 }
 
@@ -119,6 +124,8 @@ export default defineComponent({
     bagProduct,
     PopUp,
     CTA,
+    empty,
+    Loader,
   },
   setup() {
     const router = useRouter();
@@ -139,11 +146,13 @@ export default defineComponent({
       isModalVisible: false,
       user_id: userId,
       bag: [] as Array<Bag>,
+      bagId: "",
       products: [] as Array<Product>,
       loading: true,
       selectedDeliveryType: "basic",
       back,
       router,
+      isEmpty: false,
     };
   },
   computed: {
@@ -181,14 +190,58 @@ export default defineComponent({
     goBack() {
       this.$router.go(-1);
     },
-    deleteProduct(productId: string) {
+    async deleteProduct(productId: string) {
       // Find the index of the product in the array
-      const index = this.products.findIndex(
-        (product) => product._id === productId
+      const productIndex = this.products.findIndex(
+        (product) => product.details._id === productId
       );
-      if (index !== -1) {
-        // Remove the product from the array
-        this.products.splice(index, 1);
+
+      if (productIndex !== -1) {
+        // Remove the product from the products array
+        this.products.splice(productIndex, 1);
+
+        // Find the index of the product in the bag array
+        const bagProductIndex = this.bag.findIndex((bagProduct) =>
+          bagProduct.product_variant_id.includes(productId)
+        );
+
+        if (bagProductIndex !== -1) {
+          // Decrement the quantity of the product in the bag
+          this.bag[bagProductIndex].quantity--;
+
+          if (this.bag[bagProductIndex].quantity === 0) {
+            // If the quantity becomes zero, remove the bag product entirely
+            this.bag.splice(bagProductIndex, 1);
+          }
+
+          // Update the bag in the backend
+          try {
+            console.log(this.bagId);
+            const response = await fetch(
+              `http://localhost:8000/api/bag/${this.bagId}/variants/${productId}  `,
+              {
+                method: "Delete",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            const data = await response.json();
+            this.bag = data;
+            console.log(this.bag);
+          } catch (error) {
+            console.error(error);
+          }
+
+          // Output a success message
+          console.log(`Deleted product with ID ${productId} from the bag.`);
+        } else {
+          console.log(`Product with ID ${productId} not found in the bag.`);
+        }
+      } else {
+        console.log(
+          `Product with ID ${productId} not found in the products array.`
+        );
       }
     },
     async getUser() {
@@ -213,49 +266,77 @@ export default defineComponent({
         );
         const data = await response.json();
         this.bag = data;
-        console.log(this.bag);
+        this.bagId = data[0]._id;
+        if (data[0].product_variant_id.length === 0) {
+          this.isEmpty = true;
+        } else this.isEmpty = false;
       } catch (error) {
         console.log(error);
       }
     },
     async fetchBagItems() {
       try {
-        const productVariantIds = this.bag.map(
-          (item) => item.product_variant_id
-        );
-        const productRequests = productVariantIds.map((productVariantId) =>
-          fetch(`http://localhost:8000/api/details/id/${productVariantId}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((response) => response.json())
-        );
+        console.log(this.bag);
+        for (const item of this.bag) {
+          const productVariantIds = item.product_variant_id;
+          for (const productVariantId of productVariantIds) {
+            const detailsResponse = await fetch(
+              `http://localhost:8000/api/details/id/${productVariantId}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            const productDetails = await detailsResponse.json();
 
-        const products = await Promise.all(productRequests);
+            const productResponse = await fetch(
+              `http://localhost:8000/api/product/${productDetails.product_id}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            const product = await productResponse.json();
 
-        // Make API call for each product ID
-        const productDetailsRequests = products.map((product) =>
-          fetch(`http://localhost:8000/api/product/${product.product_id}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((response) => response.json())
-        );
-
-        const productDetails = await Promise.all(productDetailsRequests);
-        console.log(productDetails);
-        this.products = productDetails.map((productDetail) => ({
-          ...productDetail,
-        }));
-        this.products.forEach((product, index) => {
-          product.details = products[index];
-        });
+            product.details = productDetails;
+            this.products.push(product);
+          }
+        }
         console.log(this.products);
         this.loading = false;
       } catch (error) {
         console.log(error);
+      }
+    },
+    async updateBag() {
+      try {
+        const bagPayload = this.bag.map((bagProduct) => ({
+          product_variant_id: bagProduct.product_variant_id,
+          quantity: bagProduct.quantity,
+        }));
+        console.log(bagPayload);
+        const response = await fetch(
+          `http://localhost:8000/api/bag/${this.user_id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bagPayload),
+          }
+        );
+
+        if (response.ok) {
+          console.log("Bag updated successfully");
+        } else {
+          console.error("Failed to update bag:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error updating bag:", error);
       }
     },
     async createOrder() {

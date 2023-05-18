@@ -10,11 +10,13 @@ const bagSchema = new mongoose_1.default.Schema({
         ref: "User",
         required: true,
     },
-    product_variant_id: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "Product_variant",
-        required: true,
-    },
+    product_variant_id: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "Product_variant",
+            required: true,
+        },
+    ],
     quantity: { type: Number, default: 1, required: true },
     date_added: { type: Date, default: Date.now },
 });

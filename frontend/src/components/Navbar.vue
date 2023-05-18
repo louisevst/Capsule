@@ -16,13 +16,17 @@
       >
         <ul class="flex justify-center pl-4 py-4 flex-col">
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            All
+            <router-link :to="{ name: 'products', params: { cat: ['all'] } }"
+              >All</router-link
+            >
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Dresses & Jumsuits
+            <router-link :to="{ name: 'products', params: { cat: ['Dress'] } }"
+              >Dresses</router-link
+            >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
             Tops & Blouses
@@ -64,7 +68,7 @@
             Join
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Profile
+            <router-link :to="{ path: '/profile' }"> Profile </router-link>
           </li>
         </ul>
       </div>
