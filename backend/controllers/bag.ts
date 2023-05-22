@@ -49,7 +49,8 @@ export const createBag = async (req: Request, res: Response) => {
 export const updateBag = async (req: Request, res: Response) => {
   try {
     const { product_variant_id, quantity } = req.body;
-
+    console.log(product_variant_id);
+    console.log(req.body);
     const bag = await Bag.findById(req.params.id);
 
     if (!bag) {

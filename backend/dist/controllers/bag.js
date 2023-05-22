@@ -63,6 +63,8 @@ exports.createBag = createBag;
 const updateBag = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { product_variant_id, quantity } = req.body;
+        console.log(product_variant_id);
+        console.log(req.body);
         const bag = yield bag_1.default.findById(req.params.id);
         if (!bag) {
             return res.status(404).send("Bag not found");

@@ -14,10 +14,10 @@
     class="grid lg:grid-cols-2 text-notBlack font-text"
   >
     <section
-      class="flex flex-col order-2 p-4 pb-12 space-y-2 lg:space-y-4 lg:justify-end lg:px-20 xl:px-40"
+      class="flex flex-col order-2 p-4 pb-12 space-y-2 lg:space-y-4 lg:justify-end lg:px-20 xl:px-40 lg:pt-20"
     >
       <div
-        class="bg-notWhite/50 lg:bg-transparent lg:static lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 cursor-pointer flex justify-end items-center"
+        class="bg-notWhite/50 lg:bg-transparent lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 lg:top-[7.6rem] lg:left-16 cursor-pointer flex justify-end items-center"
         @click="goBack"
       >
         <img
@@ -51,7 +51,7 @@
         <div
           v-for="(color, index) in uniqueColors"
           :key="index"
-          class="w-8 h-8 lg:w-16 lg:h-16 rounded-full mr-4 mb-4 border-black border cursor-pointer"
+          class="w-8 h-8 lg:w-12 lg:h-12 3xl:w-16 3xl:h-16 rounded-full mr-4 mb-4 border-black border cursor-pointer"
           :class="[
             {
               'outline outline-1 outline-offset-4 lg:outline-offset-8':
@@ -113,11 +113,11 @@
         "
       />
     </section>
-    <section class="lg:-order-first">
+    <section class="lg:-order-first lg:flex lg:items-center">
       <img
         :src="selectedImage ? selectedImage : product.image"
         :alt="product.alt"
-        class="lg:max-h-screen lg:max-w-full lg:p-4 lg:pt-20 xl:pt-36 lg:m-auto"
+        class="lg:h-screen lg:m-auto"
       />
     </section>
   </main>

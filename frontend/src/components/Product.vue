@@ -1,4 +1,17 @@
 <template>
+  <PopUp
+    :showModal="isModalVisible"
+    title="Hi there !"
+    @update:show-modal="isModalVisible = $event"
+    :onClick1="() => navigate('login')"
+    :onClick2="() => navigate('sign-up')"
+    button1text="Login"
+    button2text="Sign up"
+  >
+    <p>
+      To add an item to your wishlist please login or sign up if you're new.
+    </p>
+  </PopUp>
   <article class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1">
     <img
       :src="image"
@@ -12,7 +25,7 @@
       <img
         :src="hearth"
         class="w-8 h-8 lg:w-12 lg:h-12 ml-auto p-1"
-        @click="toggleHearth"
+        @click="toggleHearth(productId)"
       />
     </div>
     <div class="flex flex-col items-stretch">
@@ -35,8 +48,11 @@
 import { defineComponent, PropType } from "vue";
 import hearth from "../assets/hearth.svg";
 import filledHearth from "../assets/hearth-full.svg";
+import PopUp from "../components/PopUp.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
+  components: { PopUp },
   props: {
     name: {
       type: String,
@@ -59,19 +75,118 @@ export default defineComponent({
       type: Function as PropType<(event: MouseEvent) => void>,
       required: true,
     },
+    productId: {
+      type: String,
+      required: true,
+    },
   },
   data() {
+    const userId: string = this.$cookies.get("id") || "";
     return {
+      isModalVisible: false,
+      user_id: userId,
       hearth,
       filledHearth,
       isHearthFilled: false,
     };
   },
   methods: {
-    toggleHearth() {
-      this.isHearthFilled = !this.isHearthFilled;
-      this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
+    async toggleHearth(productId: string) {
+      try {
+        if (this.user_id === "") {
+          this.isModalVisible = true;
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost:8000/api/wishlist/${this.user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          console.log(data);
+          if (data[0]._id) {
+            // Bag exists, retrieve the bag ID
+            console.log(data._id);
+            const wishlistID = data[0]._id;
+            this.updateWishlist(wishlistID, productId);
+          } else {
+            // Bag doesn't exist, create a new bag
+            console.log(data);
+            this.createWishlist();
+          }
+        } else {
+          console.error("Failed to check wishlist:", response.statusText);
+        }
+
+        this.isHearthFilled = !this.isHearthFilled;
+        this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
+      } catch (error) {
+        console.log(error);
+      }
     },
+    async updateWishlist(id: string, product: string) {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/wishlist/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ product }),
+          }
+        );
+        if (response.ok) {
+          console.log("wishlist updated successfully");
+          console.log(await response.json());
+        } else {
+          console.log("wishlist not updated");
+        }
+        this.isHearthFilled = !this.isHearthFilled;
+        this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async createWishlist() {
+      try {
+        const response = await fetch("http://localhost:8000/api/wishlist", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: this.user_id,
+            product_id: this.productId,
+          }),
+        });
+        if (response.ok) {
+          console.log("Wishlist created successfully");
+        } else {
+          console.error("Failed to create wishlist:", response.statusText);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  setup() {
+    const router = useRouter();
+
+    function navigate(to: string, cat?: string) {
+      const routeParams = cat ? { cat } : {};
+      router.push({ name: to, params: routeParams });
+    }
+
+    return {
+      navigate,
+    };
   },
 });
 </script>
