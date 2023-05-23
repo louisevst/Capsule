@@ -80,13 +80,15 @@ exports.getOrders = getOrders;
 function getOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const orderId = req.params.id;
-            const order = yield order_1.default.findById(orderId).populate("user_id");
-            const order_item = yield order_item_1.default.find({
-                // Update this line
-                order_id: orderId,
-            }).populate("product_variant_id");
-            res.json({ order, order_item });
+            const userId = req.params.id;
+            const orders = yield order_1.default.find({ user_id: userId }).populate("user_id");
+            for (const order of orders) {
+                const orderItems = yield order_item_1.default.find({
+                    order_id: order._id,
+                }).populate("product_variant_id");
+                order.order_items = orderItems;
+            }
+            res.json({ orders });
         }
         catch (error) {
             console.error(error);

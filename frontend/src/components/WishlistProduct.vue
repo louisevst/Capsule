@@ -161,53 +161,87 @@ export default defineComponent({
     async addToCart(product_variant: string) {
       try {
         // Check if the user already has a bag
-        const bagResponse = await fetch("http://localhost:8000/api/bag", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const bagResponse = await fetch(
+          `http://localhost:8000/api/bag/${this.user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!bagResponse.ok) {
-          console.error("Failed to retrieve bag:", bagResponse.statusText);
+          if (bagResponse.status === 404) {
+            console.log("Bag not found. Creating a new bag...");
+
+            // Create a new bag
+            const createBagResponse = await fetch(
+              "http://localhost:8000/api/bag",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  product_variant_id: [product_variant],
+                  user_id: this.user_id,
+                }),
+              }
+            );
+
+            if (!createBagResponse.ok) {
+              console.error(
+                "Failed to create bag:",
+                createBagResponse.statusText
+              );
+              return;
+            }
+
+            const createdBagData = await createBagResponse.json();
+            const bagId = createdBagData._id;
+
+            // Continue with adding the item to the bag
+            const payload = {
+              product_variant_id: [product_variant],
+            };
+
+            const addToCartResponse = await fetch(
+              `http://localhost:8000/api/bag/${bagId}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+              }
+            );
+
+            if (addToCartResponse.ok) {
+              console.log("Item added to the cart successfully");
+              console.log(await addToCartResponse.json());
+            } else {
+              console.error(
+                "Failed to add item to the cart:",
+                addToCartResponse.statusText
+              );
+            }
+          } else {
+            console.error("Failed to retrieve bag:", bagResponse.statusText);
+          }
+
           return;
         }
 
+        // Continue with adding the item to the existing bag
         const bagData = await bagResponse.json();
+        const bagId = bagData[0]._id;
 
-        // If the user has no bag, create a new one
-        let bagId;
-        if (!bagData) {
-          const createBagResponse = await fetch(
-            "http://localhost:8000/api/bag",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({}),
-            }
-          );
-
-          if (!createBagResponse.ok) {
-            console.error(
-              "Failed to create bag:",
-              createBagResponse.statusText
-            );
-            return;
-          }
-
-          const createdBagData = await createBagResponse.json();
-          bagId = createdBagData._id;
-        } else {
-          bagId = bagData[0]._id;
-        }
-        console.log(product_variant);
-        // Prepare the payload for the POST request
+        // Prepare the payload for the PUT request
         const payload = {
           product_variant_id: [product_variant],
         };
-        console.log(bagId);
+
         const addToCartResponse = await fetch(
           `http://localhost:8000/api/bag/${bagId}`,
           {
@@ -221,6 +255,7 @@ export default defineComponent({
 
         if (addToCartResponse.ok) {
           console.log("Item added to the cart successfully");
+          console.log(await addToCartResponse.json());
         } else {
           console.error(
             "Failed to add item to the cart:",

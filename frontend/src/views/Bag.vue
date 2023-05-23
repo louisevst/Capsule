@@ -11,7 +11,11 @@
     <p>To add an item to your cart please login or sign up if you're new.</p>
   </PopUp>
   <Loader :is-fetching="loading" />
-  <empty v-if="isEmpty" :title="'My bag'" :text="'Your bag is empty.'" />
+  <empty
+    v-if="isEmpty && !loading"
+    :title="'My bag'"
+    :text="'Your bag is empty.'"
+  />
   <main v-if="!loading">
     <h1
       class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
@@ -72,7 +76,7 @@
           </select>
           <CTA
             text="Checkout"
-            :onClick="() => createOrder()"
+            :onClick="() => navigate('checkout')"
             class="flex justify-center items-center lg:self-end col-span-2 p-4"
             textColor="text-notWhite"
             bgColor="bg-notWhite"
@@ -272,6 +276,7 @@ export default defineComponent({
         } else this.isEmpty = false;
       } catch (error) {
         console.log(error);
+        this.isEmpty = true;
       }
     },
     async fetchBagItems() {
@@ -337,38 +342,6 @@ export default defineComponent({
         }
       } catch (error) {
         console.error("Error updating bag:", error);
-      }
-    },
-    async createOrder() {
-      try {
-        const response = await fetch("http://localhost:8000/api/order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: this.user_id,
-            items: this.products.map((product) => ({
-              product_variant_id: product.details._id,
-              quantity: 1, // Update this as per your requirements
-              price: product.price,
-            })),
-            email: "example@example.com", // Provide the email associated with the order
-          }),
-        });
-
-        if (response.ok) {
-          // Order created successfully
-          const order = await response.json();
-
-          // Navigate to the checkout page passing the order ID as a parameter
-          this.router.push({ name: "checkout", params: { orderId: order.id } });
-        } else {
-          // Handle the error case
-          console.error("Failed to create order:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error creating order:", error);
       }
     },
   },

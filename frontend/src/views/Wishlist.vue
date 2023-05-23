@@ -106,7 +106,7 @@ export default defineComponent({
   methods: {
     async deleteProduct(productId: string) {
       try {
-        const id = this.wishlist._id;
+        const id = this.wishlist[0]._id;
         const response = await fetch(
           `http://localhost:8000/api/wishlist/${id}/${productId}  `,
           {
@@ -160,7 +160,7 @@ export default defineComponent({
         if (response.ok) {
           console.log(data);
 
-          if (data[0].product_id.length === 0) {
+          if (data.length === 0) {
             this.isEmpty = true;
           } else this.isEmpty = false;
 

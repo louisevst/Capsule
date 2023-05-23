@@ -52,14 +52,14 @@ export const getUserById = async (req: Request, res: Response) => {
       return res.status(404).send("User not found");
     }
 
-    // Decrypt payment card information
-    const decipher = crypto.createDecipheriv(algorithm, key, iv);
-    let decryptedPaymentCard = decipher.update(
-      user.payment_card,
-      "hex",
-      "utf8"
-    );
-    decryptedPaymentCard += decipher.final("utf8");
+    let decryptedPaymentCard;
+    if (user.payment_card) {
+      const decipher = crypto.createDecipheriv(algorithm, key, iv);
+      decryptedPaymentCard = decipher.update(user.payment_card, "hex", "utf8");
+      decryptedPaymentCard += decipher.final("utf8");
+    } else {
+      decryptedPaymentCard = null; // Set a default value or handle the absence of payment card information
+    }
 
     res.json({
       id: user.id,
@@ -272,6 +272,22 @@ export const deleteUser = async (req: Request, res: Response) => {
     await User.findByIdAndDelete(req.params.id);
 
     res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+export const logout = async (req: Request, res: Response) => {
+  try {
+    // Clear the user data from the session
+    req.session.destroy((error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+      } else {
+        res.status(200).json({ message: "Logout successful" });
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");

@@ -202,12 +202,11 @@
                   >Profile</router-link
                 >
               </li>
-              <li>
-                <router-link
-                  to="/"
-                  class="block px-4 py-2 hover:bg-terracota hover:text-white"
-                  >Sign Out</router-link
-                >
+              <li
+                class="block px-4 py-2 hover:bg-terracota hover:text-white cursor-pointer"
+                @click="logout"
+              >
+                Log Out
               </li>
             </ul>
           </div>
@@ -224,8 +223,11 @@ import menu from "../assets/menu.svg";
 import expand_more from "../assets/expand_more.svg";
 import expand_less from "../assets/expand_less.svg";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 export default {
   setup() {
+    const router = useRouter();
     let isExpanded = ref(false);
     let showMenu = ref(false);
     let showDropdown = ref(false);
@@ -245,6 +247,7 @@ export default {
     const Expand_less = expand_less;
     const Expand_more = expand_more;
     return {
+      router,
       showDropdown,
       toggleDropdown,
       showMenu,
@@ -261,6 +264,33 @@ export default {
       Expand_more,
       Expand_less,
     };
+  },
+  methods: {
+    async logout() {
+      try {
+        const response = await fetch("http://localhost:8000/api/auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          // Logout successful
+          // Perform any additional cleanup or redirection if needed
+          this.$cookies.remove("token");
+          this.$cookies.remove("id");
+          console.log("Logged out successfully");
+
+          this.router.push("/login");
+        } else {
+          // Logout failed
+          console.error("Failed to log out:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
+    },
   },
 };
 </script>

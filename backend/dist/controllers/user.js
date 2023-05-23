@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.login = exports.signup = exports.getUserById = exports.getUsers = void 0;
+exports.logout = exports.deleteUser = exports.updateUser = exports.login = exports.signup = exports.getUserById = exports.getUsers = void 0;
 const user_1 = __importDefault(require("../models/user"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -53,10 +53,15 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (!user) {
             return res.status(404).send("User not found");
         }
-        // Decrypt payment card information
-        const decipher = crypto_1.default.createDecipheriv(algorithm, key, iv);
-        let decryptedPaymentCard = decipher.update(user.payment_card, "hex", "utf8");
-        decryptedPaymentCard += decipher.final("utf8");
+        let decryptedPaymentCard;
+        if (user.payment_card) {
+            const decipher = crypto_1.default.createDecipheriv(algorithm, key, iv);
+            decryptedPaymentCard = decipher.update(user.payment_card, "hex", "utf8");
+            decryptedPaymentCard += decipher.final("utf8");
+        }
+        else {
+            decryptedPaymentCard = null; // Set a default value or handle the absence of payment card information
+        }
         res.json({
             id: user.id,
             email: user.email,
@@ -225,3 +230,22 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Clear the user data from the session
+        req.session.destroy((error) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send("Server error");
+            }
+            else {
+                res.status(200).json({ message: "Logout successful" });
+            }
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+});
+exports.logout = logout;

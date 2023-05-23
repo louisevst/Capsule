@@ -110,7 +110,7 @@ export default defineComponent({
         const data = await response.json();
         if (response.ok) {
           console.log(data);
-          if (data[0]._id) {
+          if (data.length > 0) {
             // Bag exists, retrieve the bag ID
             console.log(data._id);
             const wishlistID = data[0]._id;

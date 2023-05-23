@@ -82,14 +82,19 @@ export async function getOrders(req: Request, res: Response) {
 // Controller function for retrieving a single order and its order items
 export async function getOrder(req: Request, res: Response) {
   try {
-    const orderId = req.params.id;
-    const order = await Order.findById(orderId).populate("user_id");
+    const userId = req.params.id;
 
-    const order_item = await Order_item.find({
-      // Update this line
-      order_id: orderId,
-    }).populate("product_variant_id");
-    res.json({ order, order_item });
+    const orders = await Order.find({ user_id: userId }).populate("user_id");
+
+    for (const order of orders) {
+      const orderItems = await Order_item.find({
+        order_id: order._id,
+      }).populate("product_variant_id");
+
+      order.order_items = orderItems;
+    }
+
+    res.json({ orders });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
