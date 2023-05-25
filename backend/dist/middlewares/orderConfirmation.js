@@ -26,15 +26,19 @@ function sendOrderConfirmationEmail(userEmail, order, orderItems, Product, produ
         });
         let orderDetails = "";
         orderItems.forEach((item, index) => {
-            const product = Product.find((product) => product._id.toString() === product_Variant[index].product_id.toString());
+            const product = Product.find((product) => {
+                var _a;
+                return product._id.toString() ===
+                    (((_a = product_Variant[index]) === null || _a === void 0 ? void 0 : _a.product_id) || "").toString();
+            });
             const variant = product_Variant[index];
             orderDetails += `
     <tr>
       <td>${product === null || product === void 0 ? void 0 : product.type}</td>
       <td>${product === null || product === void 0 ? void 0 : product.description}</td>
-      <td>${variant.color}</td>
-      <td>${variant.fit}</td>
-      <td>${variant.size}</td>
+      <td>${variant === null || variant === void 0 ? void 0 : variant.color}</td>
+      <td>${variant === null || variant === void 0 ? void 0 : variant.fit}</td>
+      <td>${variant === null || variant === void 0 ? void 0 : variant.size}</td>
       <td>${item.quantity}</td>
       <td>${item.price}</td>
     </tr>

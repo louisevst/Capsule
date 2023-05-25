@@ -205,6 +205,7 @@ export default defineComponent({
       productDetails: [] as Details[],
       colorDetails: [] as colorsDetails[],
       type: [] as string[],
+      //type: [] as Product["type"],
       isDataFetched: false,
       isDataDetailsFetched: false,
       colors: [] as string[],

@@ -26,6 +26,7 @@ const productVariantSchema = new mongoose_1.default.Schema({
         type: [String],
         required: true,
     },
+    name: { type: String, ref: "Product", required: true },
     createdAt: {
         type: Date,
         default: Date.now,

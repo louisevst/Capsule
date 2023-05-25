@@ -1,15 +1,16 @@
 <template>
   <Loader :is-fetching="loading" />
-  <main class="text-notBlack font-text text-body mb-4" v-if="!loading">
+  <main
+    class="text-notBlack font-text text-body mb-4"
+    v-if="!loading && !success"
+  >
     <h1
-      class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
+      class="font-title text-xs-headline lg:text-headline text-center pt-24 lg:pt-28 lg:pb-10"
     >
       My Order
     </h1>
 
-    <div
-      class="lg:grid p-2 lg:grid-cols-2 lg:px-10 2xl:px-20 lg:pb-10 space-y-2"
-    >
+    <div class="lg:px-10 2xl:px-20 lg:pb-10 space-y-2">
       <div
         class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 cursor-pointer flex justify-end items-center"
       >
@@ -20,103 +21,135 @@
         />
       </div>
       <div
-        class="col-span-2 w-full flex justify-between items-center border border-notBlack rounded-lg p-4"
+        class="hidden w-full lg:flex justify-between items-center border border-notBlack rounded-lg p-4"
       >
-        <p>Check your order</p>
+        <p class="text-sub">Check your order</p>
         <CTA text="Payment" :onClick="() => createOrder()" />
       </div>
-      <section
-        class="border border-notBlack rounded-lg p-4 lg:hidden space-y-2 flex justify-between"
-      >
-        <img :src="calendar" alt="calendar" />
-        <div>
-          <h3 class="font-semibold">Delivery time planned</h3>
-          <p>{{ formattedDeliveryDate(delivery) }}</p>
-        </div>
-        <img :src="arrow" alt="Change delivery type." @click="" />
-      </section>
-      <section class="border border-notBlack rounded-lg p-4 hidden lg:block">
-        <label for="delivery">Choose Delivery:</label>
-        <div>
-          <input
-            type="radio"
-            name="delivery"
-            value="basic"
-            class="w-4 h-4 text-notBlack bg-notWhite border-notBlack focus:ring-terracota"
-            v-model="delivery"
-            checked
+      <div class="lg:flex lg:flex-wrap lg:items-start lg:justify-normal">
+        <section
+          class="border border-notBlack rounded-lg p-4 lg:hidden space-y-2 flex justify-between m-2"
+        >
+          <img :src="calendar" alt="calendar" />
+          <div>
+            <h3 class="font-semibold">Delivery time planned</h3>
+            <p>{{ formattedDeliveryDate(delivery) }}</p>
+          </div>
+          <img :src="arrow" alt="Change delivery type." @click="" />
+        </section>
+        <section class="lg:w-1/2 lg:pr-2">
+          <h3 class="hidden lg:block mx-2 text-bodyh">Delivery</h3>
+          <div class="border border-notBlack rounded-lg p-4 hidden lg:block">
+            <label for="delivery">Choose Delivery:</label>
+            <div class="flex items-center">
+              <input
+                type="radio"
+                name="delivery"
+                value="basic"
+                class="w-4 h-4 text-notBlack bg-notWhite border-notBlack focus:ring-terracota"
+                v-model="delivery"
+                checked
+              />
+              <div class="flex flex-col ml-2">
+                <label for="basic">Basic</label>
+                <p>{{ formattedDeliveryDate("basic") }}</p>
+                <p>Free</p>
+              </div>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="radio"
+                name="delivery"
+                value="premium"
+                class="w-4 h-4 text-notBlack bg-notWhite border-notBlack focus:ring-terracota"
+                v-model="delivery"
+              />
+              <div class="flex flex-col ml-2">
+                <label for="premium">Premium</label>
+                <p>{{ formattedDeliveryDate("premium") }}</p>
+                <p>50€</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="lg:w-1/2 m-0">
+          <adress
+            :address="user.address"
+            :first_name="user.first_name"
+            :last_name="user.last_name"
+            @address-updated="updateUserAddress"
           />
-          <label for="basic" class="ml-2"
-            >Basic {{ formattedDeliveryDate("basic") }}</label
-          >
-        </div>
-        <div>
-          <input
-            type="radio"
-            name="delivery"
-            value="premium"
-            class="w-4 h-4 text-notBlack bg-notWhite border-notBlack focus:ring-terracota"
-            v-model="delivery"
+          <payment
+            :cardType="user.payment_type"
+            :cardNumber="user.payment_card"
+            @payment-updated="updateUserPayment"
           />
-          <label for="premium" class="ml-2"
-            >Premium {{ formattedDeliveryDate("premium") }}</label
-          >
+        </section>
+        <!-- <div class="hidden lg:block w-1/2">
+          <h2 class="text-bodyh">Products</h2>
+          <div v-for="product in products" :key="product._id">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p>Price: {{ product.price }}€</p>
+            <img :src="product.image" :alt="product.alt" class="max-h-screen" />
+          </div>
+        </div> -->
+        <div class="hidden lg:block w-1/2 pr-2">
+          <h2 class="text-bodyh">Products</h2>
+          <section v-for="product in products" :key="product._id">
+            <article
+              class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 border border-notBlack mb-2"
+            >
+              <div class="grid grid-cols-4">
+                <img :src="product.image" />
+                <div class="flex justify-center flex-col mx-4 col-span-2">
+                  <p class="lg:text-bodyh font-semibold lg:font-light">
+                    {{ product.name }}
+                  </p>
+                  <p>Price: {{ product.price }} €</p>
+                </div>
+              </div>
+            </article>
+          </section>
         </div>
-      </section>
-      <adress
-        :address="user.address"
-        :first_name="user.first_name"
-        :last_name="user.last_name"
-        @address-updated="updateUserAddress"
-      />
-      <payment
-        :cardType="user.payment_type"
-        :cardNumber="user.payment_card"
-        @payment-updated="updateUserPayment"
-      />
-
-      <!-- <div v-if="!loading">
-        <h2>Products:</h2>
-        <div v-for="product in products" :key="product._id">
-          <h3>{{ product.name }}</h3>
-          <p>{{ product.description }}</p>
-          <p>Price: {{ product.price }}€</p>
-          <img :src="product.image" :alt="product.alt" class="max-h-screen" />
-        </div>
-      </div> -->
+        <section
+          class="sticky bottom-0 bg-notWhite w-full border-t border-notBlack grid grid-cols-2 p-4 lg:static lg:border lg:rounded-lg lg:w-1/2 lg:self-start"
+        >
+          <div class="space-y-2">
+            <p class="lg:text-bodyh font-semibold lg:font-light">Sub-total</p>
+            <p class="lg:text-bodyh font-semibold lg:font-light">Delivery</p>
+            <h4 class="text-xs-sub font-semibold">Total</h4>
+          </div>
+          <div class="ml-auto space-y-2">
+            <p class="lg:text-bodyh font-semibold lg:font-light">
+              {{ calculateTotalPrice() }}€
+            </p>
+            <p class="lg:text-bodyh font-semibold lg:font-light">
+              {{ delivery === "basic" ? "free" : "50 €" }}
+            </p>
+            <p class="text-xs-sub font-semibold">
+              {{ calculateTotalPrice() }}€
+            </p>
+          </div>
+          <CTA
+            text="Payment"
+            :onClick="() => createOrder()"
+            textColor="text-notWhite"
+            bgColor="bg-notWhite"
+            buttonColor="bg-terracota"
+            class="col-span-2 flex justify-center"
+          />
+        </section>
+      </div>
     </div>
-    <section
-      class="sticky bottom-0 bg-notWhite w-full border-t border-notBlack grid grid-cols-2 p-4"
-    >
-      <div class="space-y-2">
-        <p class="lg:text-bodyh font-semibold lg:font-light">Sub-total</p>
-        <p class="lg:text-bodyh font-semibold lg:font-light">Delivery</p>
-        <h4 class="text-xs-sub font-semibold">Total</h4>
-      </div>
-      <div class="ml-auto space-y-2">
-        <p class="lg:text-bodyh font-semibold lg:font-light">
-          {{ calculateTotalPrice() }}€
-        </p>
-        <p class="lg:text-bodyh font-semibold lg:font-light">
-          {{ delivery === "basic" ? "free" : "50 €" }}
-        </p>
-        <p class="text-xs-sub font-semibold">{{ calculateTotalPrice() }}€</p>
-      </div>
-      <CTA
-        text="Payment"
-        :onClick="() => createOrder()"
-        textColor="text-notWhite"
-        bgColor="bg-notWhite"
-        buttonColor="bg-terracota"
-        class="col-span-2 flex justify-center"
-      />
-    </section>
   </main>
+  <OrderSuccess v-if="success" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Loader from "../components/Loader.vue";
+import OrderSuccess from "../components/Order-success.vue";
 import adress from "../components/adress.vue";
 import payment from "../components/payment.vue";
 import back from "../assets/arrow_back.svg";
@@ -152,6 +185,7 @@ interface Details {
   fit: string;
   size: string;
   color: string;
+  name: string;
 }
 interface Bag {
   _id: string;
@@ -160,7 +194,7 @@ interface Bag {
 }
 export default defineComponent({
   name: "Checkout",
-  components: { Loader, adress, payment, CTA },
+  components: { Loader, adress, payment, CTA, OrderSuccess },
   data() {
     const userId: string = this.$cookies.get("id") || "";
     const token: string = this.$cookies.get("token");
@@ -180,6 +214,7 @@ export default defineComponent({
       products: [] as Array<Product>,
       delivery: "basic",
       editDelivery: false,
+      success: false,
     };
   },
   mounted() {
@@ -367,6 +402,7 @@ export default defineComponent({
               product_variant_id: product.details._id,
               quantity: 1, // Update this as per your requirements
               price: product.price,
+              name: product.name,
             })),
             email: this.user.email, // Provide the email associated with the order
           }),
@@ -375,6 +411,8 @@ export default defineComponent({
         if (response.ok) {
           // Order created successfully
           const order = await response.json();
+          this.emptyBag();
+          this.success = true;
           console.log(order);
         } else {
           // Handle the error case
@@ -382,6 +420,18 @@ export default defineComponent({
         }
       } catch (error) {
         console.error("Error creating order:", error);
+      }
+    },
+    async emptyBag() {
+      try {
+        await fetch(`http://localhost:8000/api/bag/${this.bag[0]._id}`, {
+          method: "Delete",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } catch (error: unknown) {
+        console.log(error);
       }
     },
   },

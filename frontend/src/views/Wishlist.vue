@@ -1,4 +1,16 @@
 <template>
+  <PopUp
+    :showModal="isModalVisible"
+    title="Hi there !"
+    @update:show-modal="isModalVisible = $event"
+    :onClick1="() => navigate('login')"
+    :onClick2="() => navigate('sign-up')"
+    button1text="Login"
+    button2text="Sign up"
+    :class="'hidden'"
+  >
+    <p>To add an item to your cart please login or sign up if you're new.</p>
+  </PopUp>
   <Loader :is-fetching="loading" />
   <Empty
     v-if="isEmpty"

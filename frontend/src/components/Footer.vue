@@ -25,8 +25,8 @@
       >
     </div>
     <div class="flex space-x-3 lg:space-x-6">
-      <img :src="facebook" class="w-6 h-6 lg:w-12 lg:h-12" />
-      <img :src="instagram" class="w-6 h-6 lg:w-12 lg:h-12" />
+      <img :src="facebook" class="w-6 h-6" />
+      <img :src="instagram" class="w-6 h-6" />
     </div>
     <div
       class="text-sm flex justify-center flex-col items-center lg:flex-row lg:space-x-1"

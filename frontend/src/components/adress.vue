@@ -1,14 +1,27 @@
 <template>
-  <h2 class="hidden lg:block">Address</h2>
-  <section class="border border-notBlack rounded-lg p-4" v-if="!isEditing">
-    <div class="flex justify-between">
+  <section v-if="!isEditing">
+    <h3 class="hidden lg:block mx-2 text-bodyh">Address</h3>
+    <div
+      class="flex justify-between border border-notBlack rounded-lg m-2 lg:m-0 p-4"
+    >
       <img :src="truck" alt="Delivery truck" />
       <div>
         <h3 class="lg:hidden font-semibold">Delivery address</h3>
         <p>{{ first_name }} {{ last_name }}</p>
         <p>{{ formattedAddress }}</p>
       </div>
-      <img :src="arrow" alt="Change the address." @click="editAddress" />
+      <img
+        :src="arrow"
+        alt="Change the address."
+        class="lg:hidden"
+        @click="editAddress"
+      />
+      <img
+        :src="pen"
+        class="hidden lg:block"
+        alt="Change the address."
+        @click="editAddress"
+      />
     </div>
   </section>
   <section v-else class="border border-notBlack rounded-lg p-4">

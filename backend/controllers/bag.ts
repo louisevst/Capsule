@@ -102,3 +102,18 @@ export const deleteVariantFromBag = async (req: Request, res: Response) => {
     res.status(500).send("Server error");
   }
 };
+export const deleteBag = async (req: Request, res: Response) => {
+  try {
+    const bagId = req.params.id;
+    const bag = await Bag.findByIdAndDelete(bagId);
+
+    if (!bag) {
+      return res.status(404).send("Bag not found");
+    }
+
+    res.json({ message: "Bag deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};

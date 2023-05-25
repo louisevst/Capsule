@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVariantFromBag = exports.updateBag = exports.createBag = exports.getBagById = exports.getBags = void 0;
+exports.deleteBag = exports.deleteVariantFromBag = exports.updateBag = exports.createBag = exports.getBagById = exports.getBags = void 0;
 const bag_1 = __importDefault(require("../models/bag"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const getBags = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -111,3 +111,18 @@ const deleteVariantFromBag = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.deleteVariantFromBag = deleteVariantFromBag;
+const deleteBag = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const bagId = req.params.id;
+        const bag = yield bag_1.default.findByIdAndDelete(bagId);
+        if (!bag) {
+            return res.status(404).send("Bag not found");
+        }
+        res.json({ message: "Bag deleted successfully" });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
+});
+exports.deleteBag = deleteBag;

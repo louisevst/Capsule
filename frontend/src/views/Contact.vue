@@ -118,7 +118,7 @@ export default defineComponent({
       );
     },
     async handleSubmit(event: Event) {
-      event.preventDefault(); // prevent the default form submission behavior
+      event.preventDefault();
       try {
         const response = await fetch("http://localhost:8000/api/message", {
           method: "POST",
@@ -134,7 +134,7 @@ export default defineComponent({
         });
         const data = await response.json();
         console.log(data);
-      } catch (error) {
+      } catch (error: unknown) {
         console.log(error);
         notify(
           {

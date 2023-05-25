@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOrder = exports.getOrders = exports.createOrder = void 0;
 const order_1 = __importDefault(require("../models/order"));
-const order_item_1 = __importDefault(require("../models/order_item")); // Update this line
+const order_item_1 = __importDefault(require("../models/order_item"));
 const poduct_variant_1 = __importDefault(require("../models/poduct_variant"));
 const orderConfirmation_1 = require("../middlewares/orderConfirmation");
 const orderNotification_1 = require("../middlewares/orderNotification");
@@ -32,13 +32,14 @@ function createOrder(req, res) {
             const order_item = yield Promise.all(
             // Update this line
             items.map((item) => __awaiter(this, void 0, void 0, function* () {
-                const { product_variant_id, quantity, price } = item;
+                const { product_variant_id, quantity, price, name } = item;
                 return yield order_item_1.default.create({
                     // Update this line
                     order_id: order._id,
                     product_variant_id,
                     quantity,
                     price,
+                    name,
                 });
             })));
             const orderid = order._id.toString();

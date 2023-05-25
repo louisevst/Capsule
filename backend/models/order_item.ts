@@ -6,6 +6,7 @@ export interface IOrder_items {
   product_variant_id: mongoose.Types.ObjectId;
   quantity: number;
   price: number;
+  name: string;
 }
 
 const order_itemsSchema = new mongoose.Schema<IOrder_items>({
@@ -27,6 +28,7 @@ const order_itemsSchema = new mongoose.Schema<IOrder_items>({
     type: Number,
     required: true,
   },
+  name: { type: String, required: true },
 });
 
 const Order_items = mongoose.model<IOrder_items>(

@@ -16,6 +16,7 @@
             fill="none"
             viewBox="0 0 24 24"
             stroke="black"
+            :class="class"
           >
             <path
               stroke-linecap="round"
@@ -74,6 +75,10 @@ export default defineComponent({
     onClick2: {
       type: Function as PropType<(event: MouseEvent) => void>,
       required: true,
+    },
+    class: {
+      type: String,
+      required: false,
     },
   },
   methods: {

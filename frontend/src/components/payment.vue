@@ -1,6 +1,7 @@
 <template>
-  <section class="border border-notBlack rounded-lg">
-    <div v-if="isEditing">
+  <section class="lg:pb-2">
+    <h3 class="hidden lg:block mx-2 text-bodyh">Payment</h3>
+    <div v-if="isEditing" class="border border-notBlack rounded-lg m-2 lg:m-0">
       <input v-model="newCardType" type="text" placeholder="Enter card type" />
       <input
         v-model="newCardNumber"
@@ -9,7 +10,10 @@
       />
       <button @click="savePayment">Save</button>
     </div>
-    <div v-else class="p-4 flex justify-between">
+    <div
+      v-else
+      class="p-4 flex justify-between border border-notBlack rounded-lg m-2 lg:m-0"
+    >
       <img :src="card" alt="Credit card." />
       <div>
         <h2 class="lg:hidden font-semibold">Payment method</h2>
@@ -18,7 +22,18 @@
           {{ cardNumber ? cardNumber : "Enter your card number." }}
         </p>
       </div>
-      <img :src="arrow" alt="Change the address." @click="editPayment" />
+      <img
+        :src="arrow"
+        class="lg:hidden"
+        alt="Change the address."
+        @click="editPayment"
+      />
+      <img
+        :src="pen"
+        class="hidden lg:block"
+        alt="Change the address."
+        @click="editPayment"
+      />
     </div>
   </section>
 </template>

@@ -1,7 +1,10 @@
 <template>
   <div
-    class="absolute top-0 w-full z-10 transition-opacity ease-linear"
-    :class="showMenu ? 'bg-notWhite' : 'bg-gradient-to-b from-blue'"
+    class="w-full z-10 fixed top-0 transition-colors ease-linear duration-600"
+    :class="{
+      'bg-notWhite border-b border-notBlack': showMenu || isScrolled,
+      'bg-gradient-to-b from-blue': !showMenu && !isScrolled,
+    }"
   >
     <nav
       class="px-9 py-8 lg:py-4 lg:px-24 flex items-center justify-center w-full"
@@ -83,13 +86,13 @@
           Collection
           <img
             :src="Expand_more"
-            :class="!isExpanded ? 'group-hover:block' : 'hidden'"
-            class="w-4 h-4 lg:w-8 lg:h-8 hidden absolute right-2 gro transition ease-in-out delay-150 duration-300 fill-notBlack"
+            :class="!showCollection ? 'block' : 'hidden'"
+            class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack"
           />
           <img
             :src="Expand_less"
-            :class="isExpanded ? 'absolute' : 'hidden'"
-            class="w-4 h-4 lg:w-8 lg:h-8 right-2 gro transition ease-in-out delay-150 duration-300 fill-notBlack"
+            :class="showCollection ? 'block' : 'hidden'"
+            class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack"
           />
         </button>
         <ul
@@ -174,11 +177,11 @@
           <img
             @click="toggleDropdown"
             :src="User"
-            class="lg:h-12 lg:w-12 h-8 w-8 hidden lg:flex"
+            class="lg:h-12 lg:w-12 h-8 w-8 hidden relative lg:flex"
           />
           <div
-            :class="showDropdown ? 'absolute' : 'hidden'"
-            class="z-10 bg-notWhite divide-y divide-gray-400 border border-notBlack shadow w-36"
+            :class="showDropdown ? 'absolute mx-auto' : 'hidden'"
+            class="z-10 bg-notWhite/50 backdrop-blur-md divide-y divide-gray-400 border border-notBlack shadow w-36"
           >
             <ul class="py-2 text-body text-notBlack font-text">
               <li>
@@ -232,6 +235,7 @@ export default {
     let showMenu = ref(false);
     let showDropdown = ref(false);
     let showCollection = ref(false);
+    let isScrolled = ref(false);
     const toggleDropdown = () => (showDropdown.value = !showDropdown.value);
     const toggleNav = () => (showMenu.value = !showMenu.value);
     const toggleCollection = () =>
@@ -247,6 +251,7 @@ export default {
     const Expand_less = expand_less;
     const Expand_more = expand_more;
     return {
+      isScrolled,
       router,
       showDropdown,
       toggleDropdown,
@@ -265,7 +270,38 @@ export default {
       Expand_less,
     };
   },
+  created() {
+    // Attach a click event listener to the document body
+    document.body.addEventListener("click", this.handleOutsideClick);
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    // Clean up the event listener when the component is destroyed
+    document.body.removeEventListener("click", this.handleOutsideClick);
+    window.removeEventListener("scroll", this.handleScroll);
+  },
   methods: {
+    handleScroll() {
+      // Determine if the user has scrolled by checking the scroll position
+      this.isScrolled = window.pageYOffset > 0;
+    },
+    handleOutsideClick(event: MouseEvent) {
+      const clickedElement = event.target as HTMLElement;
+
+      // Check if the sidebar is open and the clicked element is outside
+      if (
+        !this.$el.contains(clickedElement) &&
+        !clickedElement.classList.contains("close-button")
+      ) {
+        this.closeSidebar();
+      }
+    },
+    closeSidebar() {
+      this.showCollection = false;
+      this.showDropdown = false;
+    },
     async logout() {
       try {
         const response = await fetch("http://localhost:8000/api/auth/logout", {

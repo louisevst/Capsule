@@ -27,7 +27,8 @@ export async function sendOrderConfirmationEmail(
   orderItems.forEach((item, index) => {
     const product = Product.find(
       (product) =>
-        product._id.toString() === product_Variant[index].product_id.toString()
+        product._id.toString() ===
+        (product_Variant[index]?.product_id || "").toString()
     );
     const variant = product_Variant[index];
 
@@ -35,9 +36,9 @@ export async function sendOrderConfirmationEmail(
     <tr>
       <td>${product?.type}</td>
       <td>${product?.description}</td>
-      <td>${variant.color}</td>
-      <td>${variant.fit}</td>
-      <td>${variant.size}</td>
+      <td>${variant?.color}</td>
+      <td>${variant?.fit}</td>
+      <td>${variant?.size}</td>
       <td>${item.quantity}</td>
       <td>${item.price}</td>
     </tr>

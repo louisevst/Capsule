@@ -8,6 +8,7 @@ export interface IProductVariant {
   size: string;
   images: string[];
   createdAt: Date;
+  name: string;
 }
 
 const productVariantSchema = new mongoose.Schema<IProductVariant>({
@@ -32,6 +33,7 @@ const productVariantSchema = new mongoose.Schema<IProductVariant>({
     type: [String],
     required: true,
   },
+  name: { type: String, ref: "Product", required: true },
   createdAt: {
     type: Date,
     default: Date.now,

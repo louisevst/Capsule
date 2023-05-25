@@ -23,6 +23,7 @@ const order_itemsSchema = new mongoose_1.default.Schema({
         type: Number,
         required: true,
     },
+    name: { type: String, required: true },
 });
 const Order_items = mongoose_1.default.model("Order_items", order_itemsSchema);
 exports.default = Order_items;

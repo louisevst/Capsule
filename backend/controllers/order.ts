@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Order from "../models/order";
-import Order_item, { IOrder_items } from "../models/order_item"; // Update this line
+import Order_item, { IOrder_items } from "../models/order_item";
 import Product_Variant from "../models/poduct_variant";
 import { sendOrderConfirmationEmail } from "../middlewares/orderConfirmation";
 import { sendOrderNotificationEmail } from "../middlewares/orderNotification";
@@ -24,13 +24,14 @@ export async function createOrder(req: Request, res: Response) {
     const order_item: IOrder_items[] = await Promise.all(
       // Update this line
       items.map(async (item: any) => {
-        const { product_variant_id, quantity, price } = item;
+        const { product_variant_id, quantity, price, name } = item;
         return await Order_item.create({
           // Update this line
           order_id: order._id,
           product_variant_id,
           quantity,
           price,
+          name,
         });
       })
     );

@@ -7,6 +7,7 @@
     :onClick2="() => navigate('sign-up')"
     button1text="Login"
     button2text="Sign up"
+    :class="'hidden'"
   >
     <p>To add an item to your cart please login or sign up if you're new.</p>
   </PopUp>
@@ -16,7 +17,7 @@
     :title="'My bag'"
     :text="'Your bag is empty.'"
   />
-  <main v-if="!loading">
+  <main v-if="!loading && !isEmpty">
     <h1
       class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
     >
@@ -196,57 +197,37 @@ export default defineComponent({
     },
     async deleteProduct(productId: string) {
       // Find the index of the product in the array
-      const productIndex = this.products.findIndex(
+
+      const index = this.products.findIndex(
         (product) => product.details._id === productId
       );
-
-      if (productIndex !== -1) {
-        // Remove the product from the products array
-        this.products.splice(productIndex, 1);
-
-        // Find the index of the product in the bag array
-        const bagProductIndex = this.bag.findIndex((bagProduct) =>
-          bagProduct.product_variant_id.includes(productId)
-        );
-
-        if (bagProductIndex !== -1) {
-          // Decrement the quantity of the product in the bag
-          this.bag[bagProductIndex].quantity--;
-
-          if (this.bag[bagProductIndex].quantity === 0) {
-            // If the quantity becomes zero, remove the bag product entirely
-            this.bag.splice(bagProductIndex, 1);
-          }
-
-          // Update the bag in the backend
-          try {
-            console.log(this.bagId);
-            const response = await fetch(
-              `http://localhost:8000/api/bag/${this.bagId}/variants/${productId}  `,
-              {
-                method: "Delete",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            const data = await response.json();
-            this.bag = data;
-            console.log(this.bag);
-          } catch (error) {
-            console.error(error);
-          }
-
-          // Output a success message
-          console.log(`Deleted product with ID ${productId} from the bag.`);
-        } else {
-          console.log(`Product with ID ${productId} not found in the bag.`);
-        }
-      } else {
-        console.log(
-          `Product with ID ${productId} not found in the products array.`
-        );
+      if (index !== -1) {
+        this.products.splice(index, 1);
       }
+      if (this.bag[0].product_variant_id.length === 0) {
+        this.isEmpty = true;
+      }
+      // Update the bag in the backend
+      try {
+        console.log(this.bagId);
+        const response = await fetch(
+          `http://localhost:8000/api/bag/${this.bagId}/variants/${productId}  `,
+          {
+            method: "Delete",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        this.bag = data;
+        console.log(this.bag);
+      } catch (error) {
+        console.error(error);
+      }
+
+      // Output a success message
+      console.log(`Deleted product with ID ${productId} from the bag.`);
     },
     async getUser() {
       if (this.user_id === "") {
@@ -269,11 +250,14 @@ export default defineComponent({
           }
         );
         const data = await response.json();
-        this.bag = data;
-        this.bagId = data[0]._id;
-        if (data[0].product_variant_id.length === 0) {
+
+        if (data && Array.isArray(data)) {
+          this.bag = data[0].product_variant_id;
+          this.bagId = data[0]._id;
+          this.isEmpty = this.bag.length === 0;
+        } else {
           this.isEmpty = true;
-        } else this.isEmpty = false;
+        }
       } catch (error) {
         console.log(error);
         this.isEmpty = true;
@@ -282,35 +266,34 @@ export default defineComponent({
     async fetchBagItems() {
       try {
         console.log(this.bag);
-        for (const item of this.bag) {
-          const productVariantIds = item.product_variant_id;
-          for (const productVariantId of productVariantIds) {
-            const detailsResponse = await fetch(
-              `http://localhost:8000/api/details/id/${productVariantId}`,
-              {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            const productDetails = await detailsResponse.json();
+        const productVariantIds = Object.values(this.bag);
+        for (const productVariantId of productVariantIds) {
+          const detailsResponse = await fetch(
+            `http://localhost:8000/api/details/id/${productVariantId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const productDetails = await detailsResponse.json();
 
-            const productResponse = await fetch(
-              `http://localhost:8000/api/product/${productDetails.product_id}`,
-              {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            const product = await productResponse.json();
+          const productResponse = await fetch(
+            `http://localhost:8000/api/product/${productDetails.product_id}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const product = await productResponse.json();
 
-            product.details = productDetails;
-            this.products.push(product);
-          }
+          product.details = productDetails;
+          this.products.push(product);
         }
+
         console.log(this.products);
         this.loading = false;
       } catch (error) {
