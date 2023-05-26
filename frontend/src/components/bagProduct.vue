@@ -21,7 +21,7 @@
         <p>Size: {{ size }}</p>
       </div>
       <img
-        class="w-8 h-8 lg:w-12 lg:h-12 ml-auto"
+        class="w-8 h-8 lg:w-12 lg:h-12 ml-auto cursor-pointer"
         :src="close"
         @click="deleteProduct"
       />

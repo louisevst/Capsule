@@ -1,63 +1,72 @@
 <template>
-  <article class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1">
-    <div class="relative">
-      <img :src="image" :alt="alt" class="w-full" />
-      <div class="bg-notWhite/20 rounded-full absolute top-0 m-2">
-        <img
-          class="w-8 h-8 lg:w-12 lg:h-12"
-          :src="close"
-          @click="deleteProduct"
-        />
-      </div>
-    </div>
-    <div class="flex flex-col-reverse">
-      <p>{{ alt }}</p>
-      <p>
+  <article
+    class="relative bg-notWhite/20 rounded-xl text-notBlack text-body m-2 lg:flex lg:flex-col lg:justify-between grid grid-cols-2 border lg:rounded-none border-notBlack"
+  >
+    <img
+      :src="image"
+      :alt="alt"
+      class="h-[300px] lg:h-[400px] xl:h-[600px] object-cover w-full rounded-l-xl lg:rounded-none"
+    />
+
+    <div class="flex flex-col justify-evenly p-4">
+      <img
+        class="w-8 h-8 lg:w-12 lg:h-12 self-end lg:absolute lg:top-0 lg:right-0 lg:bg-notWhite/10 lg:rounded-full"
+        :src="close"
+        @click="deleteProduct"
+      />
+
+      <p class="space-x-2">
         <b>{{ name }}</b>
+        {{ price }} €
       </p>
-    </div>
-    <p>{{ price }} €</p>
-    <p>Color: {{ selectedColor }}</p>
-    <div class="flex py-2 flex-wrap">
-      <div
-        v-for="color in capitalizedColors"
-        :key="color"
-        class="cursor-pointer w-6 h-6 lg:w-8 lg:h-8 rounded-full mr-1 mb-1 border-black border"
-        :class="`bg-${color}`"
-        @click="selectColor(color)"
-      ></div>
-    </div>
-    <p>Size: {{ selectedSize }}</p>
-    <div class="flex py-2 flex-wrap">
-      <div
-        v-for="size in sizes"
-        :key="size"
-        class="cursor-pointer w-8 h-8 rounded-full mr-2 mb-2 border border-notBlack flex justify-center items-center p-2"
-        :class="{ 'bg-notBlack text-notWhite': selectedSize === size }"
-        @click="selectSize(size)"
+      <section class="space-y-2">
+        <div class="flex justify-center items-center">
+          <select
+            class="block py-2.5 px-0 w-full text-sm text-notBlack bg-transparent border-0 border-b border-notBlack appearance-none focus:outline-none focus:ring-0 focus:border-terracota peer"
+            v-model="selectedColor"
+          >
+            <option value="" disabled selected>Select a color</option>
+            <option
+              v-for="color in capitalizedColors"
+              :key="color"
+              :value="color"
+            >
+              {{ color }}
+            </option>
+          </select>
+        </div>
+        <div class="flex justify-center items-center">
+          <select
+            class="block py-2.5 w-full text-sm text-notBlack bg-transparent border-0 border-b border-notBlack appearance-none focus:outline-none focus:ring-0 focus:border-terracota peer px-0"
+            v-model="selectedSize"
+          >
+            <option value="" disabled selected>Select a size</option>
+            <option v-for="size in sizes" :key="size" :value="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+        <div class="flex justify-center items-center">
+          <select
+            class="block py-2.5 px-0 w-full text-sm text-notBlack bg-transparent border-0 border-b border-notBlack appearance-none focus:outline-none focus:ring-0 focus:border-terracota peer"
+            v-model="selectedFit"
+          >
+            <option value="" disabled selected>Select a fit</option>
+
+            <option v-for="fit in fits" :key="fit" :value="fit">
+              {{ fit }}
+            </option>
+          </select>
+        </div>
+      </section>
+      <button
+        class="flex justify-around lg:px-8 2xl:px-16 w-full items-center px-4 font-semibold lg:font-light mt-4 lg:my-8 lg:text-bodyh border border-notBlack rounded-lg lg:bg-notBlack/10 focus:bg-notBlack/10 hover:bg-notBlack/0 hover:transition-opacity hover:ease-linear py-2"
+        @click="findProductId()"
       >
-        {{ size }}
-      </div>
+        {{ success ? "Added" : isAdding ? "" : "Add to bag" }}
+        <successIcon :fetchSuccessful="success" :loading="isAdding" />
+      </button>
     </div>
-    <p>Fit: {{ selectedFit }}</p>
-    <div class="flex py-2 flex-wrap">
-      <div
-        v-for="fit in fits"
-        :key="fit"
-        class="cursor-pointer p-2 rounded-full mr-2 mb-2 border border-notBlack flex justify-center items-center"
-        :class="{ 'bg-notBlack text-notWhite': selectedFit === fit }"
-        @click="selectFit(fit)"
-      >
-        {{ fit }}
-      </div>
-    </div>
-    <button
-      class="flex justify-center items-center w-full border border-notBlack rounded-lg py-1"
-      @click="findProductId()"
-    >
-      Add to cart
-      <img class="w-8 h-8 lg:w-12 lg:h-12 p-1" :src="hearth" />
-    </button>
   </article>
 </template>
 
@@ -66,8 +75,11 @@ import { defineComponent, PropType } from "vue";
 import hearth from "../assets/bag-outline.svg";
 import filledHearth from "../assets/bag.svg";
 import close from "../assets/close.svg";
+import successIcon from "./successIcon.vue";
+import { ProductDetails, Color, Size, Fit } from "../types/Product";
 
 export default defineComponent({
+  components: { successIcon },
   props: {
     _id: { type: String, required: true },
     name: {
@@ -80,15 +92,15 @@ export default defineComponent({
       required: true,
     },
     colors: {
-      type: Array as () => string[],
+      type: Array as () => Color[],
       required: true,
     },
     sizes: {
-      type: Array as () => string[],
+      type: Array as () => Size[],
       required: true,
     },
     fits: {
-      type: Array as () => string[],
+      type: Array as () => Fit[],
       required: true,
     },
     image: {
@@ -114,6 +126,11 @@ export default defineComponent({
       selectedColor: "",
       selectedSize: "",
       selectedFit: "",
+      showColors: false,
+      showFits: false,
+      showSizes: false,
+      success: false,
+      isAdding: false,
     };
   },
   computed: {
@@ -142,13 +159,15 @@ export default defineComponent({
       );
       const productVariants = await detailsResponse.json();
       console.log(productVariants);
-      const matchingProductVariant = productVariants.find((variant) => {
-        return (
-          variant.color.toLowerCase() === this.selectedColor.toLowerCase() &&
-          variant.fit.toLowerCase() === this.selectedFit.toLowerCase() &&
-          variant.size.toLowerCase() === this.selectedSize.toLowerCase()
-        );
-      });
+      const matchingProductVariant = productVariants.find(
+        (variant: ProductDetails) => {
+          return (
+            variant.color.toLowerCase() === this.selectedColor.toLowerCase() &&
+            variant.fit.toLowerCase() === this.selectedFit.toLowerCase() &&
+            variant.size.toLowerCase() === this.selectedSize.toLowerCase()
+          );
+        }
+      );
 
       if (matchingProductVariant) {
         console.log("Matching product variant ID:", matchingProductVariant._id);
@@ -160,6 +179,7 @@ export default defineComponent({
     },
     async addToCart(product_variant: string) {
       try {
+        this.isAdding = true;
         // Check if the user already has a bag
         const bagResponse = await fetch(
           `http://localhost:8000/api/bag/${this.user_id}`,
@@ -218,6 +238,8 @@ export default defineComponent({
             );
 
             if (addToCartResponse.ok) {
+              this.isAdding = false;
+              this.success = true;
               console.log("Item added to the cart successfully");
               console.log(await addToCartResponse.json());
             } else {
@@ -254,6 +276,8 @@ export default defineComponent({
         );
 
         if (addToCartResponse.ok) {
+          this.isAdding = false;
+          this.success = true;
           console.log("Item added to the cart successfully");
           console.log(await addToCartResponse.json());
         } else {
@@ -264,43 +288,11 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        this.success = true;
       }
     },
-
-    // async addToCart() {
-    //   try {
-    //     // Prepare the payload for the POST request
-    //     const payload = {
-    //       user_id: this.user_id,
-    //       name: this.name,
-    //       description: this.description,
-    //       price: this.price,
-    //       color: this.selectedColor,
-    //       size: this.selectedSize,
-    //       fit: this.selectedFit,
-    //       image: this.image,
-    //       alt: this.alt,
-    //     };
-
-    //     const response = await fetch("http://localhost:8000/api/bag", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(payload),
-    //     });
-
-    //     if (response.ok) {
-    //       console.log("Item added to the cart successfully");
-    //     } else {
-    //       console.error("Failed to add item to the cart:", response.statusText);
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // },
     deleteProduct() {
-      // Call the onDelete method when the delete action is triggered
       this.onDelete();
     },
     toggleHearth() {
@@ -315,6 +307,15 @@ export default defineComponent({
     },
     selectFit(fit: string) {
       this.selectedFit = fit;
+    },
+    toggleSizes() {
+      this.showSizes = !this.showSizes;
+    },
+    toggleFits() {
+      this.showFits = !this.showFits;
+    },
+    toggleColors() {
+      this.showColors = !this.showColors;
     },
   },
 });

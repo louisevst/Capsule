@@ -1,10 +1,10 @@
 export type ProductId = string;
-
 export type Name = string;
 export type Description = string;
 export type Alt = string;
 export type Color = string;
 export type Price = number;
+
 export type Type =
   | "Pant"
   | "Blouse"
@@ -21,7 +21,7 @@ export type Size = "XXS" | "XS" | "S" | "M" | "L" | "XL" | "XXL";
 
 export type Fit = "Petite" | "Regular" | "Tall";
 
-export interface Product {
+export interface IProduct {
   _id: ProductId;
   name: Name;
   theme: string;
@@ -34,6 +34,7 @@ export interface Product {
   colors: Array<Color>;
   sizes: Array<Size>;
   fits: Array<Fit>;
+  details?: ProductDetails;
 }
 
 export interface ProductDetails {
@@ -42,11 +43,10 @@ export interface ProductDetails {
   name: Name;
   description: Description;
   price: Price;
-  image: Array<string>;
+  images: Array<string>;
   type: Type;
   alt: Alt;
   color: Color;
   size: Size;
   fit: Fit;
 }
-export default Product;

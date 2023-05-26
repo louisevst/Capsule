@@ -13,8 +13,7 @@
       :placeholder="placeholder"
       :required="required"
       class="border-t-transparent border-x-transparent border-b text-body border-notBlack w-full focus-visible:border-transparent focus-visible:border-b-terracota focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-2"
-      @input="updateValue($event.target.value)"
-      @blur="(event: Event) => $emit('blur', event)"
+      @input="updateValue($event as InputEvent)"
     />
     <span v-if="error" class="text-sm text-red-500">{{ error }}</span>
   </div>
@@ -37,7 +36,7 @@ export default {
     },
     value: {
       type: [String, Number],
-      default: "",
+      default: null,
     },
     placeholder: {
       type: String,
@@ -63,7 +62,8 @@ export default {
     },
   },
   methods: {
-    updateValue(value) {
+    updateValue(event: InputEvent) {
+      const value = (event.target as HTMLInputElement).value;
       this.$emit("input", value);
     },
   },

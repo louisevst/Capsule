@@ -14,10 +14,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProductById = exports.getAllProducts = void 0;
 const product_1 = __importDefault(require("../models/product"));
+const poduct_variant_1 = __importDefault(require("../models/poduct_variant"));
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield product_1.default.find();
-        res.status(200).json(products);
+        // Retrieve the unique sets of sizes, fits, and colors using aggregation
+        poduct_variant_1.default.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    sizes: { $addToSet: "$size" },
+                    fits: { $addToSet: "$fit" },
+                    colors: { $addToSet: "$color" },
+                },
+            },
+        ])
+            .exec()
+            .then((result) => {
+            if (result.length > 0) {
+                const { sizes, fits, colors } = result[0];
+                const productsWithColorsAndFits = products.map((product) => {
+                    let updatedSizes;
+                    let updatedFits;
+                    let updatedColors;
+                    if (product.type === "Jewellery") {
+                        updatedSizes = ["One Size"];
+                        updatedFits = ["Regular"];
+                        updatedColors = ["Silver", "Gold"];
+                    }
+                    else {
+                        updatedSizes = sizes;
+                        updatedFits = fits;
+                        updatedColors = colors;
+                    }
+                    switch (product.theme) {
+                        case "Spring Vibe":
+                            updatedColors = ["Black", "White"];
+                            break;
+                        case "Party":
+                            updatedColors = ["Black", "Gold", "Silver"];
+                            break;
+                        // Add more cases for other themes if needed
+                    }
+                    return Object.assign(Object.assign({}, product.toObject()), { sizes: updatedSizes, fits: updatedFits, colors: updatedColors });
+                });
+                res.status(200).json({ products: productsWithColorsAndFits });
+            }
+            else {
+                res.status(200).json({ products, sizes: [], fits: [], colors: [] });
+            }
+        })
+            .catch((error) => {
+            console.error(error);
+            res.status(500).json({ message: "An error occurred" });
+        });
     }
     catch (error) {
         res.status(500).json({ message: error.message });

@@ -1,8 +1,8 @@
 <template>
   <div
-    class="w-full z-10 fixed top-0 transition-colors ease-linear duration-600"
+    class="w-full z-10 absolute lg:fixed top-0 transition-colors ease-linear duration-600"
     :class="{
-      'bg-notWhite border-b border-notBlack': showMenu || isScrolled,
+      'lg:bg-notWhite lg:border-b lg:border-notBlack ': showMenu || isScrolled,
       'bg-gradient-to-b from-blue': !showMenu && !isScrolled,
     }"
   >
@@ -81,16 +81,16 @@
             toggleCollection();
             toggleExpanded();
           "
-          class="flex relative z-50 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 px-10 bg-notWhite"
+          class="flex relative z-50 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 px-10 bg-notWhite"
         >
           Collection
           <img
-            :src="Expand_more"
+            :src="expand_more"
             :class="!showCollection ? 'block' : 'hidden'"
             class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack"
           />
           <img
-            :src="Expand_less"
+            :src="expand_less"
             :class="showCollection ? 'block' : 'hidden'"
             class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack"
           />
@@ -154,7 +154,7 @@
         @click="toggleNav"
         class="flex lg:hidden grow justify-start"
       >
-        <img :src="Menu" class="w-8 h-8" />
+        <img :src="menu" class="w-8 h-8" />
       </button>
 
       <router-link to="/" class="grow text-center"
@@ -165,19 +165,22 @@
       <div class="flex grow justify-end lg:space-x-4">
         <div>
           <router-link to="/bag">
-            <img :src="Bag" class="lg:h-12 lg:w-12 h-8 w-8" />
+            <img :src="bag" class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16" />
           </router-link>
         </div>
         <div>
           <router-link to="/wishlist">
-            <img :src="Hearth" class="lg:h-12 lg:w-12 h-8 w-8" />
+            <img
+              :src="hearth"
+              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
+            />
           </router-link>
         </div>
         <div>
           <img
             @click="toggleDropdown"
-            :src="User"
-            class="lg:h-12 lg:w-12 h-8 w-8 hidden relative lg:flex"
+            :src="user"
+            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden relative lg:block"
           />
           <div
             :class="showDropdown ? 'absolute mx-auto' : 'hidden'"
@@ -215,60 +218,90 @@
           </div>
         </div>
       </div>
+      <div v-if="isScrolled" class="lg:hidden sticky w-full bg-notWhite">
+        <div>
+          <router-link to="/bag">
+            <img :src="bag" class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16" />
+          </router-link>
+        </div>
+        <div>
+          <router-link to="/wishlist">
+            <img
+              :src="hearth"
+              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
+            />
+          </router-link>
+        </div>
+      </div>
     </nav>
   </div>
+  <nav
+    v-if="isScreenSmaller"
+    class="lg:hidden fixed bottom-0 bg-notWhite w-full p-2 border-t-notBlack border-t"
+  >
+    <ul class="grid grid-cols-3 w-full">
+      <li class="flex justify-center items-center">
+        <router-link to="/bag">
+          <img :src="bag" class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16" />
+        </router-link>
+      </li>
+      <li class="flex justify-center items-center">
+        <router-link to="/wishlist">
+          <img
+            :src="hearth"
+            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
+          />
+        </router-link>
+      </li>
+      <li class="flex justify-center items-center">
+        <router-link to="/profile">
+          <img
+            @click="toggleDropdown"
+            :src="user"
+            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
+          />
+        </router-link>
+      </li>
+    </ul>
+  </nav>
 </template>
 <script lang="ts">
-import bag from "../assets/bag.svg";
-import hearth from "../assets/hearth-full.svg";
-import user from "../assets/user.svg";
+import { defineComponent } from "vue";
+import bag from "../assets/bag-outline.svg";
+import hearth from "../assets/hearth.svg";
+import user from "../assets/account.svg";
 import menu from "../assets/menu.svg";
 import expand_more from "../assets/expand_more.svg";
 import expand_less from "../assets/expand_less.svg";
-import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-export default {
-  setup() {
-    const router = useRouter();
-    let isExpanded = ref(false);
-    let showMenu = ref(false);
-    let showDropdown = ref(false);
-    let showCollection = ref(false);
-    let isScrolled = ref(false);
-    const toggleDropdown = () => (showDropdown.value = !showDropdown.value);
-    const toggleNav = () => (showMenu.value = !showMenu.value);
-    const toggleCollection = () =>
-      (showCollection.value = !showCollection.value);
-    const handleClick = () => {
-      console.log("click");
-    };
-    const toggleExpanded = () => (isExpanded.value = !isExpanded.value);
-    const Menu = menu;
-    const Bag = bag;
-    const Hearth = hearth;
-    const User = user;
-    const Expand_less = expand_less;
-    const Expand_more = expand_more;
+export default defineComponent({
+  name: "navbar",
+  data() {
     return {
-      isScrolled,
-      router,
-      showDropdown,
-      toggleDropdown,
-      showMenu,
-      toggleNav,
-      showCollection,
-      toggleCollection,
-      handleClick,
-      isExpanded,
-      toggleExpanded,
-      Menu,
-      Hearth,
-      User,
-      Bag,
-      Expand_more,
-      Expand_less,
+      isScrolled: false,
+
+      showDropdown: false,
+
+      showMenu: false,
+
+      showCollection: false,
+
+      isExpanded: false,
+
+      menu,
+      hearth,
+      user,
+      bag,
+      expand_more,
+      expand_less,
+      screenWidth: window.innerWidth,
     };
+  },
+  computed: {
+    isScreenSmaller() {
+      return this.screenWidth < 1024;
+    },
   },
   created() {
     // Attach a click event listener to the document body
@@ -276,16 +309,36 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("resize", this.handleResize);
   },
   destroyed() {
     // Clean up the event listener when the component is destroyed
     document.body.removeEventListener("click", this.handleOutsideClick);
+    window.removeEventListener("resize", this.handleResize);
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown;
+    },
+    toggleNav() {
+      this.showMenu = !this.showMenu;
+    },
+    toggleCollection() {
+      this.showCollection = !this.showCollection;
+    },
+    handleClick() {
+      console.log("click");
+    },
+    toggleExpanded() {
+      this.isExpanded = !this.isExpanded;
+    },
+    handleResize() {
+      this.screenWidth = window.innerWidth;
+    },
     handleScroll() {
       // Determine if the user has scrolled by checking the scroll position
-      this.isScrolled = window.pageYOffset > 0;
+      this.isScrolled = window.pageYOffset > 100;
     },
     handleOutsideClick(event: MouseEvent) {
       const clickedElement = event.target as HTMLElement;
@@ -317,8 +370,6 @@ export default {
           this.$cookies.remove("token");
           this.$cookies.remove("id");
           console.log("Logged out successfully");
-
-          this.router.push("/login");
         } else {
           // Logout failed
           console.error("Failed to log out:", response.statusText);
@@ -328,5 +379,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

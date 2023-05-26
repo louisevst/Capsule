@@ -12,7 +12,9 @@
       To add an item to your wishlist please login or sign up if you're new.
     </p>
   </PopUp>
-  <article class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1">
+  <article
+    class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1 flex flex-col justify-between"
+  >
     <img
       :src="image"
       class="h-[200px] lg:h-[400px] xl:h-[600px] object-cover w-full"

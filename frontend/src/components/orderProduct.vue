@@ -1,6 +1,6 @@
 <template>
   <article
-    class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 border border-notBlack"
+    class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 border border-notBlack flex flex-col justify-between"
   >
     <div class="grid grid-cols-4">
       <img :src="image" />

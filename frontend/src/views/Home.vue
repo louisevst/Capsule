@@ -40,7 +40,7 @@
 
       <div class="lg:flex bg-terracota lg:bg-notWhite lg:justify-start">
         <p
-          class="p-4 lg:p-8 lg:w-1/2 text-notWhite lg:text-notBlack lg:max-w-2xl"
+          class="p-4 lg:p-8 lg:text-bodyh lg:w-1/2 text-notWhite lg:text-notBlack lg:max-w-2xl"
         >
           All of our clothes are meant to be worn with each other. Allowing you
           to mix & match your pieces together. We think that the key to

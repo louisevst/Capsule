@@ -10,6 +10,7 @@ import Profile from "../views/Profile.vue";
 import Wishlist from "../views/Wishlist.vue";
 import AllProducts from "../views/AllProducts.vue";
 import ProductDetails from "../views/ProductDetails.vue";
+import Pr from "../views/Products.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -18,6 +19,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: Home,
+    },
+    {
+      path: "/pr",
+      name: "pr",
+      component: Pr,
     },
     {
       path: "/products/:cat+",

@@ -18,29 +18,29 @@
     :text="'Your wishlist is empty.'"
   />
 
-  <main v-if="!loading && !isEmpty">
+  <main v-if="!loading && !isEmpty" class="pb-4 lg:pb-8">
     <h1
-      class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
+      class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pt-28 lg:pb-4"
     >
       My Wishlist
     </h1>
 
-    <div class="grid lg:grid-cols-2 lg:px-10 2xl:px-20 lg:pb-10">
+    <div class="lg:grid lg:grid-cols-4 lg:px-10 2xl:px-32 lg:pb-10">
       <div
-        class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 cursor-pointer flex justify-end items-center"
+        class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 lg:left-4 2xl:left-6 cursor-pointer flex justify-end items-center"
       >
         <img
           :src="back"
           @click="goBack"
-          class="lg:w-12 lg:h-12 w-6 h-6 lg:static lg:-translate-x-8"
+          class="lg:w-12 lg:h-12 w-6 h-6 lg:static"
         />
       </div>
 
-      <section class="grid grid-cols-2 lg:max-w-2xl">
+      <section class="grid sm:grid-cols-2 lg:grid-cols-4 lg:col-span-4">
         <WishlistProduct
           v-for="product in products"
           :_id="product._id"
-          :key="product._id"
+          :key="product._id + product.colors"
           :name="product.name"
           :description="product.description"
           :price="product.price"
@@ -67,28 +67,8 @@ import { useRouter } from "vue-router";
 import Loader from "../components/Loader.vue";
 import Empty from "../components/Empty.vue";
 import back from "../assets/arrow_back.svg";
+import { IProduct, ProductDetails, Size, Fit } from "../types/Product";
 
-interface Product {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  type: string;
-  alt: string;
-  details: Details;
-  colors: Array<string>;
-  sizes: Array<string>;
-  fits: Array<string>;
-}
-interface Details {
-  _id: string;
-  product_id: string;
-  images: Array<string>;
-  fit: string;
-  size: string;
-  color: string;
-}
 interface Wishlist {
   _id: string;
   product_id: Array<string>;
@@ -100,8 +80,8 @@ export default defineComponent({
   data() {
     const userId: string = this.$cookies.get("id") || "";
     return {
-      wishlist: [] as Array<Wishlist>,
-      products: [] as Array<Product>,
+      wishlist: [] as unknown as Wishlist,
+      products: [] as Array<IProduct>,
       isModalVisible: false,
       loading: true,
       user_id: userId,
@@ -118,7 +98,8 @@ export default defineComponent({
   methods: {
     async deleteProduct(productId: string) {
       try {
-        const id = this.wishlist[0]._id;
+        console.log(this.wishlist);
+        const id = this.wishlist._id;
         const response = await fetch(
           `http://localhost:8000/api/wishlist/${id}/${productId}  `,
           {
@@ -211,23 +192,30 @@ export default defineComponent({
           console.log(productDetails);
 
           // Find the corresponding product in this.products and assign the productDetails
+
           const productToUpdate = this.products.find(
             (product) => product._id === productVariantIds
           );
           if (productToUpdate) {
             productToUpdate.details = productDetails;
-            const sizes = [
-              ...new Set(productDetails.map((item: Details) => item.size)),
-            ];
-            item.sizes = sizes;
-            const fits = [
-              ...new Set(productDetails.map((item: Details) => item.fit)),
-            ];
-            item.fits = fits;
-            const colors = [
-              ...new Set(productDetails.map((item: Details) => item.color)),
-            ];
-            item.colors = colors;
+            const sizes = Array.from(
+              new Set<ProductDetails["size"]>(
+                productDetails.map((item: ProductDetails) => item.size)
+              )
+            ).map((size) => size as Size);
+            productToUpdate.sizes = sizes;
+            const fits = Array.from(
+              new Set<ProductDetails["fit"]>(
+                productDetails.map((item: ProductDetails) => item.fit)
+              )
+            ).map((fit) => fit as Fit);
+            productToUpdate.fits = fits;
+            const colors = Array.from(
+              new Set<ProductDetails["color"]>(
+                productDetails.map((item: ProductDetails) => item.color)
+              )
+            );
+            productToUpdate.colors = colors;
           }
         }
 

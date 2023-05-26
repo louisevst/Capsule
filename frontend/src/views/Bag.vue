@@ -17,14 +17,13 @@
     :title="'My bag'"
     :text="'Your bag is empty.'"
   />
-  <main v-if="!loading && !isEmpty">
-    <h1
-      class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
-    >
-      My Bag
-    </h1>
-
+  <main v-if="!loading && !isEmpty" class="flex flex-col justify-around">
     <div class="grid lg:grid-cols-2 lg:px-10 2xl:px-20 lg:pb-10">
+      <h1
+        class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
+      >
+        My Bag
+      </h1>
       <div
         class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 cursor-pointer flex justify-end items-center"
       >
@@ -35,7 +34,7 @@
         />
       </div>
 
-      <section>
+      <section class="pb-4">
         <div
           v-for="product in products"
           :key="product._id"
@@ -54,36 +53,34 @@
         </div>
       </section>
       <section
-        class="border border-notBlack rounded m-1 text-notBlack font-text my-6 lg:mb-auto lg:mt-1"
+        class="space-y-2 sticky bottom-0 bg-notWhite w-full border-t border-notBlack grid grid-cols-2 p-4 lg:static lg:border lg:rounded-lg lg:w-1/2 lg:self-start"
       >
-        <div class="p-4 grid grid-cols-2 space-y-2">
-          <h3 class="text-xs-sub lg:text-sub">Total</h3>
-          <p class="font-semibold lg:text-bodyh flex items-center">
-            {{ getTotalPrice }} €
-          </p>
-          <h4>Sub total</h4>
-          <p>{{ getPrice }} €</p>
-          <h4>Delivery</h4>
-          <p>{{ deliveryFeeDisplay }}</p>
-          <h4 class="flex items-center">Delivery type</h4>
+        <h3 class="text-xs-sub lg:text-sub pb-4">Total</h3>
+        <p class="font-semibold lg:text-bodyh flex items-between pb-4">
+          {{ getTotalPrice }} €
+        </p>
+        <h4>Sub total</h4>
+        <p>{{ getPrice }} €</p>
+        <h4>Delivery</h4>
+        <p>{{ deliveryFeeDisplay }}</p>
+        <h4 class="flex items-center">Delivery type</h4>
 
-          <select
-            id="underline_select"
-            class="block py-2.5 px-0 text-sm text-notBlack bg-transparent border-0 border-b border-notBlack appearance-none focus:outline-none focus:ring-0 focus:border-terracota peer"
-            v-model="selectedDeliveryType"
-          >
-            <option value="basic">Basic (Free)</option>
-            <option value="premium">Premium (50 €)</option>
-          </select>
-          <CTA
-            text="Checkout"
-            :onClick="() => navigate('checkout')"
-            class="flex justify-center items-center lg:self-end col-span-2 p-4"
-            textColor="text-notWhite"
-            bgColor="bg-notWhite"
-            buttonColor="bg-terracota"
-          />
-        </div>
+        <select
+          id="underline_select"
+          class="block py-2.5 px-0 text-sm text-notBlack bg-transparent border-0 border-b border-notBlack appearance-none focus:outline-none focus:ring-0 focus:border-terracota peer"
+          v-model="selectedDeliveryType"
+        >
+          <option value="basic">Basic (Free)</option>
+          <option value="premium">Premium (50 €)</option>
+        </select>
+        <CTA
+          text="Checkout"
+          :onClick="() => navigate('checkout')"
+          class="flex justify-center items-center lg:self-end col-span-2 p-4"
+          textColor="text-notWhite"
+          bgColor="bg-notWhite"
+          buttonColor="bg-terracota"
+        />
       </section>
     </div>
   </main>
@@ -204,7 +201,7 @@ export default defineComponent({
       if (index !== -1) {
         this.products.splice(index, 1);
       }
-      if (this.bag[0].product_variant_id.length === 0) {
+      if (!this.bag) {
         this.isEmpty = true;
       }
       // Update the bag in the backend
@@ -221,7 +218,9 @@ export default defineComponent({
         );
         const data = await response.json();
         this.bag = data;
-        console.log(this.bag);
+        if (!this.bag) {
+          this.isEmpty = true;
+        }
       } catch (error) {
         console.error(error);
       }

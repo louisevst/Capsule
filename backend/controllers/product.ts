@@ -1,10 +1,69 @@
 import { Request, Response } from "express";
 import Product from "../models/product";
+import Product_Variant from "../models/poduct_variant";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
-    res.status(200).json(products);
+
+    // Retrieve the unique sets of sizes, fits, and colors using aggregation
+    Product_Variant.aggregate([
+      {
+        $group: {
+          _id: null,
+          sizes: { $addToSet: "$size" },
+          fits: { $addToSet: "$fit" },
+          colors: { $addToSet: "$color" },
+        },
+      },
+    ])
+      .exec()
+      .then((result) => {
+        if (result.length > 0) {
+          const { sizes, fits, colors } = result[0];
+
+          const productsWithColorsAndFits = products.map((product: any) => {
+            let updatedSizes: string[];
+            let updatedFits: string[];
+            let updatedColors: string[];
+
+            if (product.type === "Jewellery") {
+              updatedSizes = ["One Size"];
+              updatedFits = ["Regular"];
+              updatedColors = ["Silver", "Gold"];
+            } else {
+              updatedSizes = sizes;
+              updatedFits = fits;
+              updatedColors = colors;
+            }
+
+            switch (product.theme) {
+              case "Spring Vibe":
+                updatedColors = ["Black", "White"];
+                break;
+              case "Party":
+                updatedColors = ["Black", "Gold", "Silver"];
+                break;
+              // Add more cases for other themes if needed
+            }
+
+            return {
+              ...product.toObject(),
+              sizes: updatedSizes,
+              fits: updatedFits,
+              colors: updatedColors,
+            };
+          });
+
+          res.status(200).json({ products: productsWithColorsAndFits });
+        } else {
+          res.status(200).json({ products, sizes: [], fits: [], colors: [] });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred" });
+      });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
