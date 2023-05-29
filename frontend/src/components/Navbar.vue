@@ -1,6 +1,7 @@
 <template>
   <div
-    class="w-full z-10 absolute lg:fixed top-0 transition-colors ease-linear duration-600"
+    v-if="!isScreenSmaller"
+    class="w-full z-50 absolute lg:fixed top-0 transition-colors ease-linear duration-600"
     :class="{
       'lg:bg-notWhite lg:border-b lg:border-notBlack ': showMenu || isScrolled,
       'bg-gradient-to-b from-blue': !showMenu && !isScrolled,
@@ -9,79 +10,10 @@
     <nav
       class="px-9 py-8 lg:py-4 lg:px-24 flex items-center justify-center w-full"
     >
-      <!--mobile menu-->
-      <div
-        :class="
-          showMenu
-            ? 'w-full absolute top-24 left-0 border-b border-t border-notBlack  bg-notWhite/50 backdrop-blur-md '
-            : 'hidden'
-        "
-      >
-        <ul class="flex justify-center pl-4 py-4 flex-col">
-          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="{ name: 'products', params: { cat: ['all'] } }"
-              >All</router-link
-            >
-            <div
-              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
-            ></div>
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            <router-link :to="{ name: 'products', params: { cat: ['Dress'] } }"
-              >Dresses</router-link
-            >
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Tops & Blouses
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Pants & Skirts
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Jewellery
-          </li>
-          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            Collections
-            <div
-              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
-            ></div>
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Beach Wear
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Spring/Summer
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Party
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Fall/Winter
-          </li>
-          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            My Account
-            <div
-              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
-            ></div>
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Login
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            Join
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh py-1">
-            <router-link :to="{ path: '/profile' }"> Profile </router-link>
-          </li>
-        </ul>
-      </div>
       <div class="grow hidden lg:block">
         <button
-          @click="
-            toggleCollection();
-            toggleExpanded();
-          "
-          class="flex relative z-50 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 px-10 bg-notWhite"
+          @click="toggleCollection"
+          class="collection flex relative z-50 hover:bg-notBlack/10 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 px-10 bg-notWhite"
         >
           Collection
           <img
@@ -92,43 +24,45 @@
           <img
             :src="expand_less"
             :class="showCollection ? 'block' : 'hidden'"
-            class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack"
+            class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack z-50"
           />
         </button>
         <ul
           :class="showCollection ? 'absolute' : 'hidden'"
-          class="text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/50 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
+          class="menu text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/50 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
         >
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="{ name: 'products', params: { cat: ['all'] } }"
-              >All</router-link
-            >
+            <router-link :to="{ name: 'products' }">All</router-link>
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link
-              :to="{ name: 'products', params: { cat: ['Dress', 'Jumpsuit'] } }"
+              :to="{
+                name: 'products',
+              }"
               >Dresses & Jumsuits</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link
-              :to="{ name: 'products', params: { cat: ['Top', 'Blouse'] } }"
+              :to="{
+                name: 'products',
+              }"
               >Tops & Blouses</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link
-              :to="{ name: 'products', params: { cat: ['Pant', 'Skirt'] } }"
+              :to="{
+                name: 'products',
+              }"
               >Pants & Skirts</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="{ path: '/products/Jewellery' }">
-              Jewellery
-            </router-link>
+            <router-link :to="{ name: 'products' }"> Jewellery </router-link>
           </li>
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
             Collections
@@ -148,16 +82,8 @@
           </li>
         </ul>
       </div>
-      <!-- Mobile menu button -->
-      <button
-        type="button"
-        @click="toggleNav"
-        class="flex lg:hidden grow justify-start"
-      >
-        <img :src="menu" class="w-8 h-8" />
-      </button>
 
-      <router-link to="/" class="grow text-center"
+      <router-link to="/" class="grow text-center w-full"
         ><span class="font-logo text-notBlack lg:text-headline text-xs-headline"
           >CAPSULE</span
         >
@@ -165,14 +91,17 @@
       <div class="flex grow justify-end lg:space-x-4">
         <div>
           <router-link to="/bag">
-            <img :src="bag" class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16" />
+            <img
+              :src="bag"
+              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
+            />
           </router-link>
         </div>
         <div>
           <router-link to="/wishlist">
             <img
               :src="hearth"
-              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
+              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
             />
           </router-link>
         </div>
@@ -235,35 +164,51 @@
       </div>
     </nav>
   </div>
-  <nav
-    v-if="isScreenSmaller"
-    class="lg:hidden fixed bottom-0 bg-notWhite w-full p-2 border-t-notBlack border-t"
+  <header
+    v-else
+    class="w-full z-50 absolute top-0 transition-colors ease-linear duration-600 bg-gradient-to-b from-blue flex justify-center items-center py-8"
   >
-    <ul class="grid grid-cols-3 w-full">
-      <li class="flex justify-center items-center">
-        <router-link to="/bag">
-          <img :src="bag" class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16" />
-        </router-link>
-      </li>
-      <li class="flex justify-center items-center">
-        <router-link to="/wishlist">
-          <img
-            :src="hearth"
-            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
-          />
-        </router-link>
-      </li>
-      <li class="flex justify-center items-center">
-        <router-link to="/profile">
-          <img
-            @click="toggleDropdown"
-            :src="user"
-            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
-          />
-        </router-link>
-      </li>
-    </ul>
-  </nav>
+    <router-link
+      to="/"
+      class="font-logo text-notBlack lg:text-headline text-xs-headline"
+      >CAPSULE
+    </router-link>
+    <nav
+      class="lg:hidden fixed bottom-0 bg-notWhite w-full p-2 border-t-notBlack border-t py-4"
+    >
+      <ul class="grid grid-cols-4 w-full">
+        <li
+          class="flex justify-center items-center"
+          type="button"
+          @click="toggleNav"
+        >
+          <img :src="menu" class="w-8 h-8" />
+        </li>
+        <li class="flex justify-center items-center">
+          <router-link to="/bag">
+            <img :src="bag" class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16" />
+          </router-link>
+        </li>
+        <li class="flex justify-center items-center">
+          <router-link to="/wishlist">
+            <img
+              :src="hearth"
+              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
+            />
+          </router-link>
+        </li>
+        <li class="flex justify-center items-center">
+          <router-link to="/profile">
+            <img
+              @click="toggleDropdown"
+              :src="user"
+              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
+            />
+          </router-link>
+        </li>
+      </ul>
+    </nav>
+  </header>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -273,22 +218,15 @@ import user from "../assets/account.svg";
 import menu from "../assets/menu.svg";
 import expand_more from "../assets/expand_more.svg";
 import expand_less from "../assets/expand_less.svg";
-import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "navbar",
   data() {
     return {
       isScrolled: false,
-
       showDropdown: false,
-
       showMenu: false,
-
-      showCollection: false,
-
       isExpanded: false,
-
       menu,
       hearth,
       user,
@@ -296,6 +234,7 @@ export default defineComponent({
       expand_more,
       expand_less,
       screenWidth: window.innerWidth,
+      showCollection: false,
     };
   },
   computed: {
@@ -318,23 +257,22 @@ export default defineComponent({
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    toggleCollection() {
+      this.showCollection = !this.showCollection;
+    },
     toggleDropdown() {
       this.showDropdown = !this.showDropdown;
     },
     toggleNav() {
       this.showMenu = !this.showMenu;
     },
-    toggleCollection() {
-      this.showCollection = !this.showCollection;
-    },
-    handleClick() {
-      console.log("click");
-    },
+
     toggleExpanded() {
       this.isExpanded = !this.isExpanded;
     },
     handleResize() {
       this.screenWidth = window.innerWidth;
+      console.log(this.screenWidth, this.isScreenSmaller);
     },
     handleScroll() {
       // Determine if the user has scrolled by checking the scroll position
@@ -370,6 +308,7 @@ export default defineComponent({
           this.$cookies.remove("token");
           this.$cookies.remove("id");
           console.log("Logged out successfully");
+          window.location.href = "/login";
         } else {
           // Logout failed
           console.error("Failed to log out:", response.statusText);

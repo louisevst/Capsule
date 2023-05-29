@@ -30,7 +30,7 @@
       v-if="!loading"
       class="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 2xl:gap-20 lg:px-10 2xl:px-40"
     >
-      <editUser />
+      <!-- <editUser /> -->
       <div
         v-if="orders.length === 0"
         class="flex flex-col justify-between space-y-2 lg:space-y-4 pb-2 lg:pb-4 2xl:pb-10 items-start lg:order-first"

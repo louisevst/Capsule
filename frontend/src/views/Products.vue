@@ -5,7 +5,7 @@
       <section class="grid grid-cols-2 lg:grid-cols-4">
         <li v-if="!loading" v-for="product in products" :key="product._id">
           <Product
-            :onClick="() => console.log(product._id)"
+            :onClick="() => navigateToProductDetails(product._id)"
             :name="product.name"
             :description="product.alt"
             :price="typeof product.price === 'number' ? product.price : 0"
@@ -25,7 +25,7 @@ import { IProduct } from "../types/Product"; // Import the Product interface or 
 import Product from "../components/Product.vue";
 
 export default defineComponent({
-  name: "Pr",
+  name: "Products",
   components: { Product },
   data() {
     return {
@@ -47,6 +47,10 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+    },
+    navigateToProductDetails(productId: string) {
+      // Use the $router instance to programmatically navigate to the product details page
+      this.$router.push({ name: "product", params: { id: productId } });
     },
   },
 });

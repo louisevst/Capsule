@@ -8,9 +8,10 @@ import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import Profile from "../views/Profile.vue";
 import Wishlist from "../views/Wishlist.vue";
-import AllProducts from "../views/AllProducts.vue";
+// import AllProducts from "../views/AllProducts.vue";
 import ProductDetails from "../views/ProductDetails.vue";
-import Pr from "../views/Products.vue";
+import Products from "../views/Products.vue";
+import Category from "../views/Category.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -21,16 +22,21 @@ const router = createRouter({
       component: Home,
     },
     {
-      path: "/pr",
-      name: "pr",
-      component: Pr,
+      path: "/products",
+      name: "products",
+      component: Products,
     },
     {
-      path: "/products/:cat+",
-      name: "products",
-      component: AllProducts,
-      props: true,
+      path: "/category/:slug",
+      name: "category",
+      component: Category,
     },
+    // {
+    //   path: "/products/:cat+",
+    //   name: "products",
+    //   component: AllProducts,
+    //   props: true,
+    // },
     {
       path: "/product/:id",
       name: "product",

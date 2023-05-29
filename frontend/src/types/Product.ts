@@ -6,6 +6,7 @@ export type Color = string;
 export type Price = number;
 
 export type Type =
+  | "All"
   | "Pant"
   | "Blouse"
   | "Top"

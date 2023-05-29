@@ -12,7 +12,7 @@
       </h1>
       <CTA
         text="Discover our collection"
-        :onClick="() => navigate('products', 'all')"
+        :onClick="() => navigate('products', 'All')"
         class="flex justify-center items-center lg:self-end"
         textColor="text-notWhite"
         bgColor="bg-notWhite"
@@ -135,7 +135,7 @@ export default defineComponent({
     const router = useRouter();
 
     function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { cat } : {};
+      const routeParams = cat ? { categories: cat } : {};
       router.push({ name: to, params: routeParams });
     }
 
