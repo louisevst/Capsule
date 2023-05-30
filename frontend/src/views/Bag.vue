@@ -18,28 +18,22 @@
     :text="'Your bag is empty.'"
   />
   <main v-if="!loading && !isEmpty" class="flex flex-col justify-around">
-    <div class="grid lg:grid-cols-2 lg:px-10 2xl:px-20 lg:pb-10">
-      <h1
-        class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pb-10"
-      >
-        My Bag
-      </h1>
-      <div
-        class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 cursor-pointer flex justify-end items-center"
-      >
+    <div class="grid lg:grid-cols-2 lg:px-10 2xl:px-60 lg:pb-10">
+      <div class="flex items-center">
         <img
           :src="back"
           @click="goBack"
-          class="lg:w-12 lg:h-12 w-6 h-6 lg:static lg:-translate-x-8"
+          class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10 2xl:ml-40"
         />
+        <h1
+          class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
+        >
+          My bag
+        </h1>
       </div>
 
       <section class="pb-4">
-        <div
-          v-for="product in products"
-          :key="product._id"
-          class="lg:max-w-2xl"
-        >
+        <div v-for="product in products" :key="product._id">
           <bagProduct
             :name="product.name"
             :description="product.description"
@@ -53,7 +47,7 @@
         </div>
       </section>
       <section
-        class="space-y-2 sticky bottom-0 bg-notWhite w-full border-t border-notBlack grid grid-cols-2 p-4 lg:static lg:border lg:rounded-lg lg:w-1/2 lg:self-start"
+        class="lg:m-1 space-y-2 sticky bottom-0 bg-notWhite w-full border-t border-notBlack grid grid-cols-2 p-4 lg:static lg:border lg:rounded-lg lg:self-start"
       >
         <h3 class="text-xs-sub lg:text-sub pb-4">Total</h3>
         <p class="font-semibold lg:text-bodyh flex items-between pb-4">
@@ -133,7 +127,7 @@ export default defineComponent({
     const router = useRouter();
 
     function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { cat } : {};
+      const routeParams = cat ? { slug: cat } : {};
       router.push({ name: to, params: routeParams });
     }
 

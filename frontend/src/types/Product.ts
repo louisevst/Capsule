@@ -22,10 +22,17 @@ export type Size = "XXS" | "XS" | "S" | "M" | "L" | "XL" | "XXL";
 
 export type Fit = "Petite" | "Regular" | "Tall";
 
+export type Theme =
+  | "Fall/Winter"
+  | "Spring/Summer"
+  | "All"
+  | "Party"
+  | "Swimwear";
+
 export interface IProduct {
   _id: ProductId;
   name: Name;
-  theme: string;
+  theme: Theme;
   createdAt: Date;
   description: Description;
   price: Price;

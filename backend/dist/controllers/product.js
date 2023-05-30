@@ -48,13 +48,64 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
                         updatedColors = colors;
                     }
                     switch (product.theme) {
-                        case "Spring Vibe":
-                            updatedColors = ["Black", "White"];
+                        case "Spring/Summer":
+                            updatedColors = [
+                                "Blue",
+                                "Pink",
+                                "Teal",
+                                "Bright-Red",
+                                "Blue-Grey",
+                                "Mustard",
+                                "Jungle-Green",
+                                "Black",
+                                "White",
+                                "Beige",
+                                "Off-White",
+                            ];
                             break;
                         case "Party":
-                            updatedColors = ["Black", "Gold", "Silver"];
+                            updatedColors = [
+                                "Blue",
+                                "Gold",
+                                "Jungle-Green",
+                                "Raspberry",
+                                "Mustard",
+                                "Silver",
+                                "Bright-Red",
+                                "Black",
+                                "White",
+                                "Beige",
+                                "Off-White",
+                            ];
                             break;
-                        // Add more cases for other themes if needed
+                        case "Fall/Winter":
+                            updatedColors = [
+                                "Blue-Grey",
+                                "Jungle-Green",
+                                "Mustard",
+                                "Raspberry",
+                                "Khaki",
+                                "Teal",
+                                "Black",
+                                "White",
+                                "Beige",
+                                "Off-White",
+                            ];
+                            break;
+                        case "Swimwear":
+                            updatedColors = [
+                                "Blue",
+                                "Blue-Grey",
+                                "Jungle-Green",
+                                "Mustard",
+                                "Bright-Red",
+                                "Khaki",
+                                "Black",
+                                "White",
+                                "Beige",
+                                "Off-White",
+                            ];
+                            break;
                     }
                     return Object.assign(Object.assign({}, product.toObject()), { sizes: updatedSizes, fits: updatedFits, colors: updatedColors });
                 });

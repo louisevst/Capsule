@@ -14,8 +14,8 @@ import { Notification, NotificationGroup } from "notiwind";
         <Notification
           v-slot="{ notifications }"
           enter="ease-out duration-300 transition"
-          enter-from="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-4"
-          enter-to="translate-y-0 opacity-100 sm:translate-x-0"
+          enter-from="translate-y-4 opacity-0 sm:translate-y-0 sm:translate-x-4"
+          enter-to="translate-y-2 opacity-100 sm:translate-x-0"
           leave="transition ease-in duration-500"
           leave-from="opacity-100"
           leave-to="opacity-0"
@@ -25,7 +25,7 @@ import { Notification, NotificationGroup } from "notiwind";
           <div
             v-for="notification in notifications"
             :key="notification.id"
-            class="flex w-full max-w-sm mx-auto mt-4 overflow-hidden bg-white rounded-lg shadow-md"
+            class="flex w-full max-w-sm mx-auto mt-4 overflow-hidden bg-white rounded-lg shadow-md mb-20 lg:mb-0"
           >
             <div class="flex items-center justify-center w-12 bg-red-500">
               <svg

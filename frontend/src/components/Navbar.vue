@@ -32,53 +32,56 @@
           class="menu text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/50 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
         >
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="{ name: 'products' }">All</router-link>
+            <router-link :to="`/products/category/All`">All</router-link>
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link
-              :to="{
-                name: 'products',
-              }"
+            <router-link :to="`/products/category/DressJumpsuit`"
               >Dresses & Jumsuits</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link
-              :to="{
-                name: 'products',
-              }"
+            <router-link :to="`/products/category/TopBlouse`"
               >Tops & Blouses</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link
-              :to="{
-                name: 'products',
-              }"
+            <router-link :to="`/products/category/PantSkirt`"
               >Pants & Skirts</router-link
             >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="{ name: 'products' }"> Jewellery </router-link>
+            <router-link :to="`/products/category/Jewellery`">
+              Jewellery
+            </router-link>
           </li>
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            Collections
+            <router-link :to="`/products/collection/All`">
+              Collections</router-link
+            >
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            Beach Wear
+            <router-link :to="`/products/collection/Swimwear`">
+              Beach Wear</router-link
+            >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            Spring/Summer
+            <router-link :to="`/products/collection/Spring%2FSummer`">
+              Spring/Summer</router-link
+            >
           </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">Party</li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            Fall/Winter
+            <router-link :to="`/products/collection/Party`">Party</router-link>
+          </li>
+          <li class="text-body font-bold lg:font-light lg:text-bodyh">
+            <router-link :to="`/products/collection/Fall%2FWinter`">
+              Fall/Winter</router-link
+            >
           </li>
         </ul>
       </div>
@@ -272,7 +275,6 @@ export default defineComponent({
     },
     handleResize() {
       this.screenWidth = window.innerWidth;
-      console.log(this.screenWidth, this.isScreenSmaller);
     },
     handleScroll() {
       // Determine if the user has scrolled by checking the scroll position

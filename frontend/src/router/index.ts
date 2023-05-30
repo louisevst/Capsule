@@ -8,10 +8,10 @@ import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import Profile from "../views/Profile.vue";
 import Wishlist from "../views/Wishlist.vue";
-// import AllProducts from "../views/AllProducts.vue";
 import ProductDetails from "../views/ProductDetails.vue";
-import Products from "../views/Products.vue";
+import Collection from "../views/Collection.vue";
 import Category from "../views/Category.vue";
+import NotFound from "../components/404.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -22,21 +22,19 @@ const router = createRouter({
       component: Home,
     },
     {
-      path: "/products",
-      name: "products",
-      component: Products,
-    },
-    {
-      path: "/category/:slug",
+      path: "/products/category/:slug",
       name: "category",
       component: Category,
+      beforeEnter: (to, _from, next) => {
+        const slug = to.params.slug;
+        next({ path: `/products/category/${slug}` });
+      },
     },
-    // {
-    //   path: "/products/:cat+",
-    //   name: "products",
-    //   component: AllProducts,
-    //   props: true,
-    // },
+    {
+      path: "/products/collection/:slug",
+      name: "collection",
+      component: Collection,
+    },
     {
       path: "/product/:id",
       name: "product",
@@ -81,6 +79,10 @@ const router = createRouter({
       path: "/wishlist",
       name: "wishlist",
       component: Wishlist,
+    },
+    {
+      path: "/:catchAll(.*)",
+      component: NotFound,
     },
   ],
 });

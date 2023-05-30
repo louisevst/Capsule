@@ -111,7 +111,7 @@ export default defineComponent({
     const router = useRouter();
 
     function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { cat } : {};
+      const routeParams = cat ? { slug: cat } : {};
       router.push({ name: to, params: routeParams });
     }
 

@@ -1,25 +1,22 @@
 <template>
   <Loader :is-fetching="loading" />
   <main
-    class="text-notBlack font-text text-body mb-4"
+    class="text-notBlack font-text text-body mb-4 pt-20"
     v-if="!loading && !success"
   >
-    <h1
-      class="font-title text-xs-headline lg:text-headline text-center pt-24 lg:pt-28 lg:pb-10"
-    >
-      My Order
-    </h1>
-
-    <div class="lg:px-10 2xl:px-20 lg:pb-10 space-y-2">
-      <div
-        class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 cursor-pointer flex justify-end items-center"
+    <div class="flex items-center justify-center">
+      <img
+        :src="back"
+        @click="goBack"
+        class="lg:w-12 lg:h-12 w-8 h-8 ml-4 mr-auto lg:ml-10 2xl:ml-40"
+      />
+      <h1
+        class="font-title text-xs-xlheadline lg:text-xlheadline lg:pb-10 m-0 w-full"
       >
-        <img
-          :src="back"
-          @click="goBack"
-          class="lg:w-12 lg:h-12 w-8 h-8 lg:static"
-        />
-      </div>
+        My order
+      </h1>
+    </div>
+    <div class="lg:px-10 2xl:px-60 lg:pb-10 space-y-2">
       <div
         class="hidden w-full lg:flex justify-between items-center border border-notBlack rounded-lg p-4"
       >

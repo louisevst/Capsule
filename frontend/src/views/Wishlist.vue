@@ -19,23 +19,20 @@
   />
 
   <main v-if="!loading && !isEmpty" class="pb-4 lg:pb-8">
-    <h1
-      class="font-title text-xs-xlheadline lg:text-xlheadline text-center pt-20 lg:pt-28 lg:pb-4"
-    >
-      My Wishlist
-    </h1>
+    <div class="flex items-center">
+      <img
+        :src="back"
+        @click="goBack"
+        class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10 2xl:ml-40"
+      />
+      <h1
+        class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
+      >
+        My wishlist
+      </h1>
+    </div>
 
     <div class="lg:grid lg:grid-cols-4 lg:px-10 2xl:px-32 lg:pb-10">
-      <div
-        class="bg-notWhite/50 lg:bg-transparent lg:top-32 2xl:top-40 lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 left-2 lg:left-4 2xl:left-6 cursor-pointer flex justify-end items-center"
-      >
-        <img
-          :src="back"
-          @click="goBack"
-          class="lg:w-12 lg:h-12 w-6 h-6 lg:static"
-        />
-      </div>
-
       <section class="grid sm:grid-cols-2 lg:grid-cols-4 lg:col-span-4">
         <WishlistProduct
           v-for="product in products"
@@ -254,7 +251,7 @@ export default defineComponent({
     const router = useRouter();
 
     function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { cat } : {};
+      const routeParams = cat ? { slug: cat } : {};
       router.push({ name: to, params: routeParams });
     }
 

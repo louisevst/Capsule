@@ -1,7 +1,20 @@
 <template>
-  <main class="2xl:pt-28">
+  <Loader :isFetching="loading" />
+  <main class="2xl:pt-28 pt-20 xl:pt-24">
     <h2 class="font-title text-xs-xlheadline lg:text-xlheadline text-center">
-      {{ category }}
+      {{
+        category === "All"
+          ? "All the collection"
+          : category === "TopBlouse"
+          ? "Tops & Blouses"
+          : category === "DressJumpsuit"
+          ? "Dresses & Jumpsuits"
+          : category === "PantSkirt"
+          ? "Pants & Skirts"
+          : category === "Jewellery"
+          ? category
+          : `${category}s`
+      }}
     </h2>
     <nav>
       <ul
@@ -13,17 +26,75 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/category/All`"> All the collection </router-link>
+          <router-link :to="`/products/category/All`"> All </router-link>
         </li>
         <li
-          v-for="cat in categories"
-          :key="cat"
           :class="{
-            ' underline underline-offset-2': cat === category,
+            ' underline underline-offset-2': category === 'TopBlouse',
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/category/${cat}`">{{ cat }}</router-link>
+          <router-link :to="`/products/category/TopBlouse`">
+            Tops & Blouses
+          </router-link>
+        </li>
+        <li
+          :class="{
+            ' underline underline-offset-2': category === 'PantSkirt',
+          }"
+          class="p-4 inline-block"
+        >
+          <router-link :to="`/products/category/PantSkirt`">
+            Pants & Skirts
+          </router-link>
+        </li>
+        <li
+          :class="{
+            ' underline underline-offset-2': category === 'DressJumpsuit',
+          }"
+          class="p-4 inline-block"
+        >
+          <router-link :to="`/products/category/DressJumpsuit`">
+            Dresses & Jumpsuits
+          </router-link>
+        </li>
+        <li
+          :class="{
+            ' underline underline-offset-2': category === 'Swimsuit',
+          }"
+          class="p-4 inline-block"
+        >
+          <router-link :to="`/products/category/Swimsuit`">
+            Swimsuits
+          </router-link>
+        </li>
+        <li
+          :class="{
+            ' underline underline-offset-2': category === 'Sweater',
+          }"
+          class="p-4 inline-block"
+        >
+          <router-link :to="`/products/category/Sweater`">
+            Sweaters
+          </router-link>
+        </li>
+        <li
+          :class="{
+            ' underline underline-offset-2': category === 'Jacket',
+          }"
+          class="p-4 inline-block"
+        >
+          <router-link :to="`/products/category/Jacket`"> Jackets </router-link>
+        </li>
+        <li
+          :class="{
+            ' underline underline-offset-2': category === 'Jewellery',
+          }"
+          class="p-4 inline-block"
+        >
+          <router-link :to="`/products/category/Jewellery`">
+            Jewellery
+          </router-link>
         </li>
       </ul>
     </nav>
@@ -53,21 +124,36 @@ export default defineComponent({
   components: { Product },
   data() {
     return {
+      loading: true,
       categories: [] as Array<Type>,
       products: [] as Array<IProduct>,
     };
   },
   computed: {
-    category(): Type {
-      return this.$route.params.slug as Type;
+    category(): String {
+      return this.$route.params.slug as String;
     },
     filteredProducts(): Array<IProduct> {
-      if (this.category === "All") {
-        return this.products;
-      } else
-        return this.products.filter(
-          (product) => product.type === this.category
-        );
+      switch (this.category) {
+        case "All":
+          return this.products;
+        case "PantSkirt":
+          return this.products.filter(
+            (product) => product.type === "Pant" || product.type === "Skirt"
+          );
+        case "TopBlouse":
+          return this.products.filter(
+            (product) => product.type === "Top" || product.type === "Blouse"
+          );
+        case "DressJumpsuit":
+          return this.products.filter(
+            (product) => product.type === "Dress" || product.type === "Jumpsuit"
+          );
+        default:
+          return this.products.filter(
+            (product) => product.type === this.category
+          );
+      }
     },
   },
   mounted() {
@@ -80,9 +166,11 @@ export default defineComponent({
         const data = await response.json();
 
         this.products = data.products;
+        console.log(this.products);
         this.categories = Array.from(
           new Set(this.products.map((product) => product.type))
         );
+        this.loading = false;
       } catch (error) {
         console.error(error);
       }

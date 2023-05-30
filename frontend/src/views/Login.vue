@@ -110,7 +110,7 @@ export default defineComponent({
         this.$cookies.set("id", data.user._id);
         // const token = (this as any).$cookies.get("id");
         // console.log(token);
-        this.navigate("products", "all");
+        this.navigate("category", "All");
       } catch (error) {
         console.log(error);
         notify(
@@ -131,7 +131,7 @@ export default defineComponent({
     const router = useRouter();
 
     function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { cat } : {};
+      const routeParams = cat ? { slug: cat } : {};
       router.push({ name: to, params: routeParams });
     }
 

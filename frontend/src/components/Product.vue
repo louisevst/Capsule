@@ -13,24 +13,28 @@
     </p>
   </PopUp>
   <article
-    class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1 flex flex-col justify-between"
+    class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1 flex flex-col justify-between h-full"
+    :class="class"
   >
-    <img
-      :src="image"
-      class="h-[200px] lg:h-[400px] xl:h-[600px] object-cover w-full"
-      @click="($event: MouseEvent) => onClick($event)"
-    />
-    <div class="flex items-center lg:flex-row">
-      <p class="lg:self-center">
-        <b>{{ name }}</b>
-      </p>
+    <div>
       <img
-        :src="hearth"
-        class="w-8 h-8 lg:w-12 lg:h-12 ml-auto p-1"
-        @click="toggleHearth(productId)"
+        :src="image"
+        :alt="description"
+        class="h-[200px] lg:h-[400px] xl:h-[600px] object-cover"
+        @click="($event: MouseEvent) => onClick($event)"
       />
     </div>
-    <div class="flex flex-col items-stretch">
+    <section class="h-full justify-between flex flex-col">
+      <div class="flex items-center lg:flex-row pt-2">
+        <p class="lg:self-center">
+          <b>{{ name }}</b>
+        </p>
+        <img
+          :src="hearth"
+          class="w-8 h-8 lg:w-12 lg:h-12 ml-auto p-1"
+          @click="toggleHearth(productId)"
+        />
+      </div>
       <p>{{ description }}</p>
       <p class="my-2">{{ price }} €</p>
 
@@ -42,7 +46,7 @@
           :class="`bg-${color}`"
         ></div>
       </div>
-    </div>
+    </section>
   </article>
 </template>
 
@@ -81,6 +85,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    class: { type: String, required: false },
   },
   data() {
     const userId: string = this.$cookies.get("id") || "";

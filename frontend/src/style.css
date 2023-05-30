@@ -32,19 +32,19 @@ body.no-scroll {
 .bg-Silver {
   background: radial-gradient(
       ellipse farthest-corner at right bottom,
-      #f4f4f2 0%,
-      #c4c3c2 8%,
+      #ffffff 0%,
+      #a7a7a7 8%,
       #808080 30%,
-      #636363 40%,
+      #6c6c6c 40%,
       transparent 80%
     ),
     radial-gradient(
       ellipse farthest-corner at left top,
-      #d4d1d1 0%,
-      #b9b9b9 8%,
-      #9b9a9a 25%,
-      #686868 62.5%,
-      #4b4b4b 100%
+      #ffffff 0%,
+      #d1d0d0 8%,
+      #ababab 25%,
+      #323232 62.5%,
+      #202020 100%
     );
 }
 .bg-Gold {
