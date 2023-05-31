@@ -9,11 +9,10 @@
       :id="name"
       :name="name"
       :type="type"
-      :value="inputValue"
       :placeholder="placeholder"
       :required="required"
-      class="border-t-transparent border-x-transparent border-b text-body border-notBlack w-full focus-visible:border-transparent focus-visible:border-b-terracota focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-2"
-      @input="updateValue($event as InputEvent)"
+      class="border-t-transparent bg-notWhite border-x-transparent border-b text-body border-notBlack w-full focus-visible:border-transparent focus-visible:border-b-terracota focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-2"
+      @input="updateValue(($event.target as HTMLInputElement).value)"
     />
     <span v-if="error" class="text-sm text-red-500">{{ error }}</span>
   </div>
@@ -36,7 +35,7 @@ export default {
     },
     value: {
       type: [String, Number],
-      default: null,
+      default: "",
     },
     placeholder: {
       type: String,
@@ -50,21 +49,14 @@ export default {
       type: String,
       default: "",
     },
-  },
-  computed: {
     inputValue: {
-      get() {
-        return this.value;
-      },
-      set(newValue: string | number) {
-        this.$emit("input", newValue);
-      },
+      type: [String, Number],
+      default: "",
     },
   },
   methods: {
-    updateValue(event: InputEvent) {
-      const value = (event.target as HTMLInputElement).value;
-      this.$emit("input", value);
+    updateValue(value: string) {
+      this.$emit("update:inputValue", value);
     },
   },
 };

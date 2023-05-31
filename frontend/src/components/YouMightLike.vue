@@ -1,12 +1,12 @@
 <template>
   <section
-    class="relative w-full p-4 pb-8 h-full text-notBlack lg:px-20 2xl:px-40 lg:py-8 lg:pb-12"
+    class="relative w-full p-4 pb-8 h-full text-notBlack md:px-10 lg:px-20 2xl:px-40 lg:py-8 lg:pb-12"
     :class="class"
     data-carousel="slide"
     v-if="products.length > 0"
   >
     <h4 class="text-xs-headline font-title lg:text-headline">{{ title }}</h4>
-    <ul class="w-full overflow-hidden grid grid-cols-2 lg:grid-cols-4">
+    <ul class="overflow-hidden grid grid-cols-2 lg:grid-cols-4">
       <li
         v-for="(product, index) in products"
         :key="product._id"

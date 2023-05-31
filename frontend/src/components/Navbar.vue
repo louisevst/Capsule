@@ -3,14 +3,14 @@
     v-if="!isScreenSmaller"
     class="w-full z-50 absolute lg:fixed top-0 transition-colors ease-linear duration-600"
     :class="{
-      'lg:bg-notWhite lg:border-b lg:border-notBlack ': showMenu || isScrolled,
-      'bg-gradient-to-b from-blue': !showMenu && !isScrolled,
+      'lg:bg-notWhite lg:border-b lg:border-notBlack ': isScrolled,
+      'bg-gradient-to-b from-blue': !isScrolled,
     }"
   >
     <nav
-      class="px-9 py-8 lg:py-4 lg:px-24 flex items-center justify-center w-full"
+      class="py-4 lg:px-20 xl:px-28 2xl:px-40 flex items-center justify-center w-full"
     >
-      <div class="grow hidden lg:block">
+      <div class="grow hidden lg:block bg-notWhite" ref="collection">
         <button
           @click="toggleCollection"
           class="collection flex relative z-50 hover:bg-notBlack/10 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 px-10 bg-notWhite"
@@ -108,15 +108,15 @@
             />
           </router-link>
         </div>
-        <div>
+        <div ref="dropdown" class="relative flex justify-center items-start">
           <img
             @click="toggleDropdown"
             :src="user"
-            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden relative lg:block"
+            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
           />
           <div
-            :class="showDropdown ? 'absolute mx-auto' : 'hidden'"
-            class="z-10 bg-notWhite/50 backdrop-blur-md divide-y divide-gray-400 border border-notBlack shadow w-36"
+            :class="showDropdown ? 'absolute ' : 'hidden'"
+            class="z-10 bg-notWhite/50 backdrop-blur-md divide-y divide-gray-400 border border-notBlack shadow w-36 mt-12 2xl:mt-16"
           >
             <ul class="py-2 text-body text-notBlack font-text">
               <li>
@@ -176,6 +176,95 @@
       class="font-logo text-notBlack lg:text-headline text-xs-headline"
       >CAPSULE
     </router-link>
+    <!-- Menu mobile -->
+    <ul
+      :class="showMenu ? 'absolute' : 'hidden'"
+      class="menu h-screen text-notBlack w-full top-0 bg-notWhite/50 backdrop-blur-md border border-notBlack shadow flex justify-center flex-col items-center"
+    >
+      <li
+        class="text-xs-sub lg:text-sub font-text relative"
+        @click="toggleCollection"
+      >
+        <router-link :to="`/products/category/All`">All</router-link>
+      </li>
+
+      <ul :class="showCollection ? 'block' : 'hidden'">
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/category/DressJumpsuit`"
+            >Dresses & Jumsuits</router-link
+          >
+        </li>
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/category/TopBlouse`"
+            >Tops & Blouses</router-link
+          >
+        </li>
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/category/PantSkirt`"
+            >Pants & Skirts</router-link
+          >
+        </li>
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/category/Jewellery`">
+            Jewellery
+          </router-link>
+        </li>
+      </ul>
+
+      <li
+        class="text-xs-sub lg:text-sub font-text relative"
+        @click="toggleDropdown"
+      >
+        <router-link :to="`/products/collection/All`"> Collections</router-link>
+      </li>
+      <ul :class="showDropdown ? 'block' : 'hidden'">
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/collection/Swimwear`">
+            Beach Wear</router-link
+          >
+        </li>
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/collection/Spring%2FSummer`">
+            Spring/Summer</router-link
+          >
+        </li>
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/collection/Party`">Party</router-link>
+        </li>
+        <li class="text-body font-bold lg:font-light lg:text-bodyh">
+          <router-link :to="`/products/collection/Fall%2FWinter`">
+            Fall/Winter</router-link
+          >
+        </li>
+      </ul>
+      <li>
+        <router-link
+          to="/login"
+          class="text-xs-sub lg:text-sub font-text relative mb-2"
+          >Login</router-link
+        >
+      </li>
+      <li>
+        <router-link
+          to="/sign-up"
+          class="text-xs-sub lg:text-sub font-text relative mb-2"
+          >Join</router-link
+        >
+      </li>
+      <li>
+        <router-link
+          to="/profile"
+          class="text-xs-sub lg:text-sub font-text relative mb-2"
+          >Profile</router-link
+        >
+      </li>
+      <li
+        class="text-xs-sub lg:text-sub font-text relative mb-2 cursor-pointer"
+        @click="logout"
+      >
+        Log Out
+      </li>
+    </ul>
     <nav
       class="lg:hidden fixed bottom-0 bg-notWhite w-full p-2 border-t-notBlack border-t py-4"
     >
@@ -281,14 +370,23 @@ export default defineComponent({
       this.isScrolled = window.pageYOffset > 100;
     },
     handleOutsideClick(event: MouseEvent) {
-      const clickedElement = event.target as HTMLElement;
+      // Check if the clicked element is outside the dropdown and collection
+      const dropdownRef = this.$refs.dropdown as HTMLElement;
+      const collectionRef = this.$refs.collection as HTMLElement;
 
-      // Check if the sidebar is open and the clicked element is outside
-      if (
-        !this.$el.contains(clickedElement) &&
-        !clickedElement.classList.contains("close-button")
-      ) {
-        this.closeSidebar();
+      const isClickedOutsideDropdown = !dropdownRef.contains(
+        event.target as Node
+      );
+      const isClickedOutsideCollection = !collectionRef.contains(
+        event.target as Node
+      );
+
+      // If clicked outside, close the dropdown and collection
+      if (isClickedOutsideDropdown) {
+        this.showDropdown = false;
+      }
+      if (isClickedOutsideCollection) {
+        this.showCollection = false;
       }
     },
     closeSidebar() {

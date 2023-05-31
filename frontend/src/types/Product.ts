@@ -29,6 +29,8 @@ export type Theme =
   | "Party"
   | "Swimwear";
 
+export type ProductVariantId = string;
+
 export interface IProduct {
   _id: ProductId;
   name: Name;
@@ -46,7 +48,7 @@ export interface IProduct {
 }
 
 export interface ProductDetails {
-  _id: string;
+  _id: ProductVariantId;
   product_id: ProductId;
   name: Name;
   description: Description;

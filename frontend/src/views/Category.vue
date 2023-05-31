@@ -118,10 +118,11 @@
 import { defineComponent } from "vue";
 import { IProduct, Type } from "../types/Product";
 import Product from "../components/Product.vue";
+import Loader from "../components/Loader.vue";
 
 export default defineComponent({
   name: "Category",
-  components: { Product },
+  components: { Product, Loader },
   data() {
     return {
       loading: true,

@@ -43,16 +43,16 @@
           label="What's your email?"
           name="email"
           type="email"
-          @input="(event: Event) => { email = (event.target as HTMLInputElement).value }"
           placeholder="Type your email here."
+          @input="(event: Event) => { email = (event.target as HTMLInputElement).value }"
           required
         />
         <Input
           label="Choose a password."
           name="password"
           type="password"
-          @input="(event: Event) => { password = (event.target as HTMLInputElement).value }"
           placeholder="Type your password here."
+          @input="(event: Event) => { password = (event.target as HTMLInputElement).value }"
           required
         />
         <div class="w-full space-x-2 text-body 2xl:text-bodyh font-text">
@@ -107,14 +107,7 @@ export default defineComponent({
   },
   methods: {
     handleClick() {
-      console.log(
-        JSON.stringify({
-          first_name: this.first_name,
-          last_name: this.last_name,
-          email: this.email,
-          password: this.password,
-        })
-      );
+      console.log(this.first_name);
     },
     async handleSubmit(event: Event) {
       event.preventDefault(); // prevent the default form submission behavior
@@ -134,8 +127,7 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
         this.$cookies.set("token", data.token);
-        // const token = (this as any).$cookies.get("token");
-        // console.log(token);
+        this.$cookies.set("id", data.user._id);
       } catch (error) {
         console.log(error);
         notify(

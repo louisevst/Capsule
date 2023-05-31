@@ -2,12 +2,34 @@
   <Loader :isFetching="loading" />
   <main class="2xl:pt-28 pt-20 xl:pt-24">
     <h2 class="font-title text-xs-xlheadline lg:text-xlheadline text-center">
-      {{ collection }}
+      {{
+        collection === "All"
+          ? "All the collection"
+          : collection === "Fall/Winter"
+          ? "Sweater Weather"
+          : collection === "Spring/Summer"
+          ? "Spring Vibes"
+          : collection === "Party"
+          ? "Party Time"
+          : collection === "Swimwear"
+          ? "Beach Wear"
+          : `${collection}`
+      }}
     </h2>
     <nav>
       <ul
         class="border-y border-notBlack overflow-auto whitespace-nowrap flex justify-center items-center"
       >
+        <li
+          :class="{
+            ' underline underline-offset-2': collection === 'All',
+          }"
+          class="p-4 inline-block"
+        >
+          <router-link :to="`/products/collection/All`">
+            All the collections
+          </router-link>
+        </li>
         <li
           :key="cat"
           v-for="cat in collections"
@@ -16,9 +38,20 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link
-            :to="`/products/collection/${encodeURIComponent(cat)}`"
-            >{{ cat }}</router-link
+          <router-link :to="`/products/collection/${encodeURIComponent(cat)}`">
+            {{
+              cat === "All"
+                ? "All the collection"
+                : cat === "Fall/Winter"
+                ? "Sweater Weather"
+                : cat === "Spring/Summer"
+                ? "Spring Vibes"
+                : cat === "Party"
+                ? "Party Time"
+                : cat === "Swimwear"
+                ? "Beach Wear"
+                : `${cat}`
+            }}</router-link
           >
         </li>
       </ul>

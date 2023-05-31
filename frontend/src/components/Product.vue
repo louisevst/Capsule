@@ -16,11 +16,11 @@
     class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1 flex flex-col justify-between h-full"
     :class="class"
   >
-    <div>
+    <div class="h-[200px] md:h-[400px] lg:h-[500px] xl:h-[600px]">
       <img
         :src="image"
         :alt="description"
-        class="h-[200px] lg:h-[400px] xl:h-[600px] object-cover"
+        class="h-full object-cover w-full"
         @click="($event: MouseEvent) => onClick($event)"
       />
     </div>

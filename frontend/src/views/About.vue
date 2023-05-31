@@ -8,16 +8,33 @@
         class="hidden lg:block"
       />
       <div
-        class="bg-notBlack/30 lg:bg-notWhite lg:px-20 2xl:pr-40 lg:text-notBlack h-full lg:h-screen flex justify-center flex-col px-4 space-y-8 lg:space-y-16"
+        class="bg-notBlack/40 lg:bg-notWhite md:px-10 lg:px-20 2xl:pr-40 lg:text-notBlack h-full lg:h-screen flex justify-center flex-col px-4 space-y-8 lg:space-y-16"
       >
-        <h1 class="text-xs-xlheadline lg:text-xlheadline font-title">
+        <h1
+          class="text-xs-xlheadline lg:text-xlheadline font-title text-center mt-2"
+        >
           Who are we ?
         </h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in
-          nisi vitae nulla imperdiet dapibus in at justo. Vestibulum ante ipsum
-          primis in faucibus orci
-        </p>
+        <div class="space-y-4">
+          <p>
+            At Capsule, we are driven by a strong desire to reduce
+            <strong>clothing waste</strong> and empower women to feel confident
+            and beautiful without spending hours getting dressed.
+          </p>
+          <p>
+            Join our community that celebrates individuality, style, and
+            sustainability. Choose Capsule for a more conscious and
+            <strong>empowering</strong>
+            way of dressing. Together, let's redefine fashion and make a
+            difference.
+          </p>
+          <p>
+            We are here to help you build a <strong>quality</strong>,
+            <strong>long-lasting</strong> capsule wardrobe that simplifies your
+            daily dressing routine. Embrace style and purpose. Welcome to
+            Capsule.
+          </p>
+        </div>
         <CTA
           text="Discover our collection"
           :onClick="() => navigate('category', 'All')"
@@ -32,27 +49,53 @@
     <section
       class="relative lg:flex lg:flex-row-reverse h-full w-full lg:px-20 2xl:px-40 lg:py-8 my-8"
     >
-      <div class="px-8 pt-4 lg:w-1/4">
+      <div
+        class="px-8 pt-4 lg:w-1/4 lg:px-0 lg:mr-20 xl:mr-28 2xl:mr-40 md:flex md:justify-center md:w-full"
+      >
         <img
           src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-alessio-cesario-1906815_cldc0w.jpg"
-          class="rounded-t-full w-full lg:mb-8"
+          class="rounded-t-full w-full lg:mb-8 lg:-translate-y-14 md:w-1/2"
         />
       </div>
       <div
-        class="absolute inset-x-0 top-2/4 bg-green -z-50 h-2/4 lg:top-1/4 lg:h-3/4"
+        class="absolute inset-x-0 top-2/4 bg-green -z-50 h-2/4 lg:top-14 lg:h-[90%]"
       ></div>
       <div
-        class="bg-green p-8 space-y-8 relative lg:w-3/4 lg:self-end lg:m-auto lg:bg-transparent"
+        class="bg-green p-8 space-y-8 lg:space-y-4 relative lg:w-3/4 lg:self-end lg:m-auto lg:bg-transparent md:px-10 lg:px-0"
       >
         <h2 class="text-xs-headline lg:text-headline font-title lg:text-start">
           Our engagements.
         </h2>
+        <h4 class="font-semibold lg:font-light lg:text-bodyh">
+          Sustainablity & Quality
+        </h4>
         <p class="lg:max-w-4xl lg:self-center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in
-          nisi vitae nulla imperdiet dapibus in at justo. Vestibulum ante ipsum
-          primis in faucibus orci luctus et ultrices posuere cubilia curae;
-          Nullam finibus, nunc eu pellentesque sollicitudin, purus dolor aliquam
-          nisl, pharetra porta enim mi a mauris. Maecenas ex dolor,.
+          We are committed to sustainable fashion through our production
+          methods. By making clothes on order, we avoid overproduction and
+          reduce waste. Additionally, we prioritize the use of deadstock and
+          recycled fabrics, minimizing our environmental footprint.
+        </p>
+        <p class="lg:max-w-4xl lg:self-center">
+          Our manufacturing process takes place in our own facility, allowing us
+          to closely monitor the quality of every garment we produce. We take
+          pride in delivering clothing that is built to last, ensuring that your
+          purchase from Capsule is a worthwhile investment.
+        </p>
+        <h4 class="font-semibold lg:font-light lg:text-bodyh">
+          Inclusivity Baby
+        </h4>
+        <p class="lg:max-w-4xl lg:self-center">
+          When you choose Capsule, you can be confident that your purchase won't
+          go wrong. Our carefully curated collection of timeless pieces ensures
+          that every item is versatile and can be effortlessly mixed and matched
+          to create stylish outfits for any occasion.
+        </p>
+        <p class="lg:max-w-4xl lg:self-center">
+          We believe that fashion should be inclusive and cater to all body
+          types. That's why we offer a wide range of sizes and fits, from petite
+          to tall and XXS to XXL. Our made-to-order approach allows us to
+          accommodate diverse body shapes and sizes, ensuring that everyone can
+          find their perfect fit.
         </p>
       </div>
     </section>

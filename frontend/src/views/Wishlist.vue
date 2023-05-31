@@ -9,7 +9,9 @@
     button2text="Sign up"
     :class="'hidden'"
   >
-    <p>To add an item to your cart please login or sign up if you're new.</p>
+    <p>
+      To add an item to your wishlist please login or sign up if you're new.
+    </p>
   </PopUp>
   <Loader :is-fetching="loading" />
   <Empty
@@ -18,7 +20,10 @@
     :text="'Your wishlist is empty.'"
   />
 
-  <main v-if="!loading && !isEmpty" class="pb-4 lg:pb-8">
+  <main
+    v-if="!loading && !isEmpty"
+    class="pb-4 lg:pb-8 2xl:pt-28 pt-20 xl:pt-24"
+  >
     <div class="flex items-center">
       <img
         :src="back"

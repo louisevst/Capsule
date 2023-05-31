@@ -25,10 +25,6 @@ const router = createRouter({
       path: "/products/category/:slug",
       name: "category",
       component: Category,
-      beforeEnter: (to, _from, next) => {
-        const slug = to.params.slug;
-        next({ path: `/products/category/${slug}` });
-      },
     },
     {
       path: "/products/collection/:slug",

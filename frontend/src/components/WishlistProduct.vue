@@ -10,7 +10,7 @@
 
     <div class="flex flex-col justify-evenly p-4">
       <img
-        class="w-8 h-8 lg:w-12 lg:h-12 self-end lg:absolute lg:top-0 lg:right-0 lg:bg-notWhite/10 lg:rounded-full"
+        class="w-8 h-8 lg:w-12 lg:h-12 self-end lg:absolute lg:top-0 lg:right-0 lg:bg-notWhite/10 lg:rounded-full cursor-pointer"
         :src="close"
         @click="deleteProduct"
       />
