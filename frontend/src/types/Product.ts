@@ -60,3 +60,9 @@ export interface ProductDetails {
   size: Size;
   fit: Fit;
 }
+
+export interface IWishlist {
+  _id: string;
+  user_id: string;
+  product_id: Array<IProduct>;
+}

@@ -1,6 +1,9 @@
 <template>
   <main class="pt-24 pb-8 h-screen flex flex-col justify-around items-center">
-    <section id="animation-container" class="lg:w-full lg:px-20"></section>
+    <section
+      id="animation-container"
+      class="md:w-full md:px-8 lg:px-20 2xl:px-40"
+    ></section>
     <section class="p-4 space-y-8">
       <h1 class="text-center text-xs-xlheadline font-title lg:text-xlheadline">
         Your order is on it's way.
@@ -12,7 +15,7 @@
     </section>
     <CTA
       text="Continue shopping"
-      :onClick="() => navigate('home')"
+      :onClick="() => navigate('category', 'All')"
       class="flex justify-center items-center"
       textColor="text-notWhite"
       bgColor="bg-notWhite"
@@ -44,12 +47,10 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-
     function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { cat } : {};
+      const routeParams = cat ? { slug: cat } : {};
       router.push({ name: to, params: routeParams });
     }
-
     return {
       navigate,
     };

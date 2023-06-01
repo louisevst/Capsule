@@ -18,7 +18,7 @@
       @mouseover="isOtherCardHovered = true"
       @mouseleave="isOtherCardHovered = false"
     >
-      <h4 class="text-center lg:absolute lg:bottom-0 w-full">
+      <h4 class="text-center lg:absolute lg:bottom-0 w-full py-4">
         {{ card.title }}
       </h4>
       <img :src="card.imageUrl" class="w-full" />

@@ -22,7 +22,7 @@
 
   <main
     v-if="!loading && !isEmpty"
-    class="pb-4 lg:pb-8 2xl:pt-28 pt-20 xl:pt-24"
+    class="pb-4 lg:pb-8 2xl:pt-28 pt-20 xl:pt-24 md:min-h-[90vh] lg:h-auto"
   >
     <div class="flex items-center">
       <img
@@ -33,11 +33,13 @@
       <h1
         class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
       >
-        My wishlist
+        My Wishlist
       </h1>
     </div>
 
-    <div class="lg:grid lg:grid-cols-4 lg:px-10 2xl:px-32 lg:pb-10">
+    <div
+      class="lg:grid lg:grid-cols-4 md:px-4 lg:px-10 xl:px-20 2xl:px-40 md:pb-10"
+    >
       <section class="grid sm:grid-cols-2 lg:grid-cols-4 lg:col-span-4">
         <WishlistProduct
           v-for="product in products"

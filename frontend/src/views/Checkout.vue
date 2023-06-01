@@ -4,19 +4,21 @@
     class="text-notBlack font-text text-body mb-4 pt-20"
     v-if="!loading && !success"
   >
-    <div class="flex items-center justify-center">
+    <div class="flex items-center">
       <img
         :src="back"
         @click="goBack"
-        class="lg:w-12 lg:h-12 w-8 h-8 ml-4 mr-auto lg:ml-10 2xl:ml-40"
+        class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10 2xl:ml-40"
       />
       <h1
-        class="font-title text-xs-xlheadline lg:text-xlheadline lg:pb-10 m-0 w-full"
+        class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
       >
-        My order
+        My Order
       </h1>
     </div>
-    <div class="lg:px-10 2xl:px-60 lg:pb-10 space-y-2">
+    <div
+      class="md:px-8 lg:px-10 2xl:px-60 lg:pb-10 space-y-2 md:h-[70vh] md:flex md:flex-col md:justify-center lg:static lg:h-auto"
+    >
       <div
         class="hidden w-full lg:flex justify-between items-center border border-notBlack rounded-lg p-4"
       >
@@ -109,33 +111,39 @@
             </article>
           </section>
         </div>
+
         <section
-          class="sticky bottom-0 bg-notWhite w-full border-t border-notBlack grid grid-cols-2 p-4 lg:static lg:border lg:rounded-lg lg:w-1/2 lg:self-start"
+          class="md:w-auto md:m-2 lg:m-0 sticky bottom-0 bg-notWhite w-full border-t lg:border-none border-notBlack p-4 lg:p-0 md:static md:border md:rounded-lg lg:w-1/2 lg:self-start lg:flex lg:flex-col"
         >
-          <div class="space-y-2">
-            <p class="lg:text-bodyh font-semibold lg:font-light">Sub-total</p>
-            <p class="lg:text-bodyh font-semibold lg:font-light">Delivery</p>
-            <h4 class="text-xs-sub font-semibold">Total</h4>
-          </div>
-          <div class="ml-auto space-y-2">
-            <p class="lg:text-bodyh font-semibold lg:font-light">
-              {{ calculateTotalPrice() }}€
-            </p>
-            <p class="lg:text-bodyh font-semibold lg:font-light">
-              {{ delivery === "basic" ? "free" : "50 €" }}
-            </p>
-            <p class="text-xs-sub font-semibold">
-              {{ calculateTotalPrice() }}€
-            </p>
-          </div>
-          <CTA
-            text="Payment"
-            :onClick="() => createOrder()"
-            textColor="text-notWhite"
-            bgColor="bg-notWhite"
-            buttonColor="bg-terracota"
-            class="col-span-2 flex justify-center"
-          />
+          <h3 class="hidden lg:block text-bodyh">Delivery</h3>
+          <section
+            class="lg:border lg:rounded-lg lg:border-notBlack lg:w-full lg:p-4 grid grid-cols-2"
+          >
+            <div class="space-y-2">
+              <p class="lg:text-bodyh font-semibold lg:font-light">Sub-total</p>
+              <p class="lg:text-bodyh font-semibold lg:font-light">Delivery</p>
+              <h4 class="text-xs-sub font-semibold">Total</h4>
+            </div>
+            <div class="ml-auto space-y-2">
+              <p class="lg:text-bodyh font-semibold lg:font-light">
+                {{ calculateTotalPrice() }}€
+              </p>
+              <p class="lg:text-bodyh font-semibold lg:font-light">
+                {{ delivery === "basic" ? "free" : "50 €" }}
+              </p>
+              <p class="text-xs-sub font-semibold">
+                {{ calculateTotalPrice() }}€
+              </p>
+            </div>
+            <CTA
+              text="Payment"
+              :onClick="() => createOrder()"
+              textColor="text-notWhite"
+              bgColor="bg-notWhite"
+              buttonColor="bg-terracota"
+              class="col-span-2 flex justify-center"
+            />
+          </section>
         </section>
       </div>
     </div>

@@ -4,12 +4,12 @@
       class="h-screen w-full bg-cover bg-center bg-[url(https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938791/Images/pexels-monstera-7691041_z7d156.jpg)] lg:bg-[url(https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938791/Images/pexels-monstera-7691089_fidxol.jpg)]"
     >
       <div
-        class="p-4 lg:p-32 bg-white/10 space-y-8 xl:space-y-28 flex flex-col justify-center items-center h-full w-full"
+        class="p-4 lg:p-32 bg-white/10 space-y-8 xl:space-y-28 flex flex-col justify-center md:space-y-28 lg:space-y-0 items-center h-full w-full"
       >
         <h1
           class="text-notBlack font-title text-xs-xlheadline lg:text-xlheadline lg:self-end"
         >
-          Timeless, simple and stylish
+          Timeless, Simple and Stylish
         </h1>
         <CTA
           text="Discover our collection"
@@ -28,7 +28,7 @@
       <img
         src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938798/Collection/Spring/Chlo%C3%A9-blouse.jpg"
         alt="An elegant woman near the beach."
-        class="lg:max-h-[700px] lg:ml-auto order-2"
+        class="lg:max-h-[700px] lg:ml-auto order-2 md:px-20"
       />
 
       <div class="lg:col-span-2 order-2">
@@ -102,7 +102,9 @@
       </div>
     </section>
     <CollectionCard />
-    <section class="lg:grid lg:grid-cols-2 lg:relative lg:my-20 my-4">
+    <section
+      class="lg:grid lg:grid-cols-2 lg:relative lg:my-20 my-4 flex flex-col-reverse"
+    >
       <img
         src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-cottonbro-studio-5119398_ug10ij.jpg"
         class="lg:max-h-screen lg:ml-auto col-span-2"
@@ -133,11 +135,11 @@
       <img
         src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938791/Images/pexels-monstera-7691207_ay4uxa.jpg"
         alt="Three women from different ethnicities in pastel blazer."
-        class="rounded-t-full lg:max-w-md"
+        class="rounded-t-full md:max-w-md md:m-auto lg:m-0"
       />
       <div class="lg:pl-10">
         <h2 class="font-title text-xs-headline lg:text-headline p-4">
-          Build your own capsule wardrobe.
+          Build Your Own Capsule Wardrobe.
         </h2>
         <h3 class="text-body font-semibold lg:text-bodyh p-4">
           Elevate Your Everyday Style with Effortless Versatility
@@ -180,8 +182,8 @@
           </p>
         </div>
         <CTA
-          text="About us"
-          :onClick="() => navigate('about')"
+          text="Discover Our Collection"
+          :onClick="() => navigate('category', 'All')"
           class="flex justify-center items-center lg:self-end"
           textColor="text-notWhite"
           bgColor="bg-notWhite"

@@ -14,7 +14,7 @@
     class="grid lg:grid-cols-2 text-notBlack font-text"
   >
     <section
-      class="flex flex-col order-2 p-4 pb-12 space-y-2 lg:space-y-4 lg:justify-end lg:px-20 xl:px-40 lg:pt-20"
+      class="flex flex-col order-2 p-4 pb-12 space-y-2 lg:space-y-4 lg:justify-end xl:justify-center lg:px-20 xl:px-40 lg:pt-20"
     >
       <div
         class="bg-notWhite/50 lg:bg-transparent lg:w-12 lg:h-12 w-8 h-8 rounded-full absolute top-24 lg:top-[7.6rem] lg:left-16 cursor-pointer flex justify-end items-center"
@@ -31,52 +31,133 @@
       </h1>
       <p class="text-xs-sub lg:text-sub">{{ product.price }} €</p>
       <p>{{ product.description }}</p>
-      <p>Size: {{ selectedSize }}</p>
-      <div class="flex flex-wrap justify-stretch">
+
+      <div class="relative">
         <div
-          v-for="(size, index) in uniqueSizes"
-          :key="index"
-          class="px-2 py-1 lg:px-4 rounded-full mr-4 mb-4 border-black border cursor-pointer lg:text-bodyh"
-          :class="{
-            'outline outline-1 outline-offset-4 lg:outline-offset-8':
-              size === selectedSize,
-          }"
-          @click="selectedSize = size"
+          class="flex items-center justify-between w-full py-2.5 text-sm text-notBlack border-b border-notBlack cursor-pointer"
+          @click="toggleSizeDropdown"
         >
-          {{ size }}
+          <span>Select a size here</span>
+          <div
+            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+          >
+            <svg
+              class="w-5 h-5 text-gray-700 transition-transform duration-300 transform"
+              :class="{ 'rotate-180': isSizeDropdownOpen }"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg"
+          v-if="isSizeDropdownOpen"
+        >
+          <div
+            v-for="(size, index) in uniqueSizes"
+            :key="index"
+            class="flex items-center py-2.5 px-4 cursor-pointer hover:bg-gray-100"
+            @click="
+              () => {
+                selectedSize = size;
+                toggleSizeDropdown;
+              }
+            "
+          >
+            <span>{{ size }}</span>
+          </div>
         </div>
       </div>
-      <p>Color: {{ selectedColor }}</p>
-      <div class="flex flex-wrap justify-start items-center">
+
+      <div class="relative">
         <div
-          v-for="(color, index) in uniqueColors"
-          :key="index"
-          class="w-8 h-8 lg:w-12 lg:h-12 3xl:w-16 3xl:h-16 rounded-full mr-4 mb-4 border-black border cursor-pointer"
-          :class="[
-            {
-              'outline outline-1 outline-offset-4 lg:outline-offset-8':
-                color === selectedColor,
-            },
-            `bg-${color}`,
-          ]"
-          @click="selectedColor = color"
-        ></div>
-      </div>
-      <p>Fit: {{ selectedFit }}</p>
-      <div class="flex flex-wrap justify-stretch">
-        <div
-          v-for="(fit, index) in uniqueFits"
-          :key="index"
-          class="px-2 py-1 lg:px-4 rounded-full mr-4 mb-1 border-black border cursor-pointer lg:text-bodyh"
-          :class="{
-            'outline outline-1 outline-offset-4 lg:outline-offset-8':
-              fit === selectedFit,
-          }"
-          @click="selectedFit = fit"
+          class="flex items-center justify-between w-full py-2.5 text-sm text-notBlack border-b border-notBlack cursor-pointer"
+          @click="toggleDropdown"
         >
-          {{ fit }}
+          <span>Select a color here</span>
+          <div
+            class="w-4 h-4 rounded-full"
+            :class="`bg-${selectedColor}`"
+            v-if="selectedColor"
+          ></div>
+          <svg
+            class="w-5 h-5 text-gray-700 transition-transform duration-300 transform"
+            :class="{ 'rotate-180': isDropdownOpen }"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+        <div
+          class="absolute z-10 w-full mt-2 bg-notWhite border border-notBlack divide-y rounded-md shadow-lg"
+          v-if="isDropdownOpen"
+        >
+          <div
+            v-for="(color, index) in uniqueColors"
+            :key="index"
+            class="flex items-center py-2.5 px-4 cursor-pointer hover:bg-gray-100"
+            @click="selectedColor = color"
+          >
+            <div class="w-4 h-4 rounded-full mr-2" :class="`bg-${color}`"></div>
+            <span>{{ color }}</span>
+          </div>
         </div>
       </div>
+
+      <div class="relative">
+        <div
+          class="flex items-center justify-between w-full py-2.5 text-sm text-notBlack border-b border-notBlack cursor-pointer"
+          @click="toggleFitDropdown"
+        >
+          <span>Select a fit here</span>
+          <div
+            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+          >
+            <svg
+              class="w-5 h-5 text-gray-700 transition-transform duration-300 transform"
+              :class="{ 'rotate-180': isFitDropdownOpen }"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg"
+          v-if="isFitDropdownOpen"
+        >
+          <div
+            v-for="(fit, index) in uniqueFits"
+            :key="index"
+            class="flex items-center py-2.5 px-4 cursor-pointer hover:bg-gray-100"
+            @click="
+              () => {
+                selectedFit = fit;
+                toggleFitDropdown;
+              }
+            "
+          >
+            <span>{{ fit }}</span>
+          </div>
+        </div>
+      </div>
+
       <CTA
         text="Add to cart"
         :onClick="updateBag"
@@ -95,7 +176,8 @@
           selectedColor === 'Raspberry' ||
           selectedColor === 'Silver' ||
           selectedColor === 'Gold' ||
-          selectedColor === ''
+          selectedColor === '' ||
+          selectedColor === 'Blue'
             ? 'text-notWhite'
             : 'text-notBlack'
         "
@@ -107,17 +189,18 @@
           selectedColor === 'Raspberry' ||
           selectedColor === 'Silver' ||
           selectedColor === 'Gold' ||
-          selectedColor === ''
+          selectedColor === '' ||
+          selectedColor === 'Blue'
             ? 'bg-notWhite'
             : 'bg-notBlack'
         "
       />
     </section>
-    <section class="lg:-order-first lg:flex lg:items-center">
+    <section class="lg:-order-first lg:flex lg:items-start">
       <img
         :src="selectedImage ? selectedImage : product.image"
         :alt="product.alt"
-        class="lg:h-screen lg:m-auto"
+        class="md:w-full lg:w-auto md:max-h-screen"
       />
     </section>
   </main>
@@ -164,6 +247,9 @@ export default defineComponent({
       back,
       hearth,
       filledHearth,
+      isDropdownOpen: false,
+      isSizeDropdownOpen: false,
+      isFitDropdownOpen: false,
       isHearthFilled: false,
       productDetails: [] as Array<Details>,
       product: {} as Product,
@@ -203,8 +289,16 @@ export default defineComponent({
     this.fetchProductDetails(product_id);
   },
   methods: {
+    toggleSizeDropdown() {
+      this.isSizeDropdownOpen = !this.isSizeDropdownOpen;
+    },
+    toggleFitDropdown() {
+      this.isFitDropdownOpen = !this.isFitDropdownOpen;
+    },
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
     goBack() {
-      console.log("ck");
       this.$router.go(-1);
     },
     toggleHearth() {

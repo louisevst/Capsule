@@ -1,19 +1,19 @@
 <template>
   <main class="font-text text-notWhite text-body">
     <section
-      class="relative h-screen bg-cover lg:overflow-hidden bg-[url(https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-anna-shvets-4672246_agsc78.jpg)] lg:bg-none lg:grid lg:grid-cols-2"
+      class="relative h-screen bg-cover xl:overflow-hidden bg-[url(https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-anna-shvets-4672246_agsc78.jpg)] lg:bg-none lg:grid lg:grid-cols-2"
     >
       <img
         src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-anna-shvets-4672246_agsc78.jpg"
         class="hidden lg:block"
       />
       <div
-        class="bg-notBlack/40 lg:bg-notWhite md:px-10 lg:px-20 2xl:pr-40 lg:text-notBlack h-full lg:h-screen flex justify-center flex-col px-4 space-y-8 lg:space-y-16"
+        class="bg-notBlack/40 lg:bg-notWhite md:px-10 lg:px-20 2xl:pr-40 lg:text-notBlack h-full xl:h-screen flex justify-center flex-col px-4 space-y-8 lg:space-y-16"
       >
         <h1
-          class="text-xs-xlheadline lg:text-xlheadline font-title text-center mt-2"
+          class="text-xs-xlheadline lg:text-headline xl:text-xlheadline font-title text-center mt-2"
         >
-          Who are we ?
+          About Us
         </h1>
         <div class="space-y-4">
           <p>
@@ -36,7 +36,7 @@
           </p>
         </div>
         <CTA
-          text="Discover our collection"
+          text="Discover"
           :onClick="() => navigate('category', 'All')"
           class="flex justify-center items-center lg:self-end"
           textColor="text-notWhite"
@@ -50,11 +50,11 @@
       class="relative lg:flex lg:flex-row-reverse h-full w-full lg:px-20 2xl:px-40 lg:py-8 my-8"
     >
       <div
-        class="px-8 pt-4 lg:w-1/4 lg:px-0 lg:mr-20 xl:mr-28 2xl:mr-40 md:flex md:justify-center md:w-full"
+        class="px-8 pt-4 2xl:w-1/4 lg:px-0 lg:ml-20 xl:mr-20 2xl:mr-40 md:flex md:justify-center md:w-full"
       >
         <img
           src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-alessio-cesario-1906815_cldc0w.jpg"
-          class="rounded-t-full w-full lg:mb-8 lg:-translate-y-14 md:w-1/2"
+          class="rounded-t-full w-full lg:mb-8 lg:-translate-y-14 md:w-1/2 lg:w-full lg:m-40"
         />
       </div>
       <div

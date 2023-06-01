@@ -1,5 +1,7 @@
 <template>
-  <main class="pt-20 2xl:pt-28 text-notBlack font-text text-body p-2">
+  <main
+    class="pt-20 2xl:pt-28 text-notBlack font-text text-body p-2 md:mx-8 lg:mx-0 md:min-h-[80vh]"
+  >
     <div class="flex items-center">
       <img
         :src="back"
@@ -9,7 +11,7 @@
       <h1
         class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
       >
-        My profile
+        My Profile
       </h1>
     </div>
     <PopUp
@@ -51,7 +53,11 @@
           <h3 class="text-xs-sub lg:text-sub">
             {{ order.date_ordered ? formatDate(order.date_ordered) : "" }}
           </h3>
-          <div v-for="item in order.order_items" :key="item._id" class="my-2">
+          <div
+            v-for="item in order.order_items"
+            :key="item._id"
+            class="my-2 md:mr-20 lg:mx-0"
+          >
             <orderProduct
               :price="item.price"
               :image="item.product_variant_id.images[0]"

@@ -4,13 +4,17 @@
   >
     <div class="grid grid-cols-4">
       <img :src="image" />
-      <div class="flex flex-col justify-between mx-4 col-span-1">
+      <div
+        class="flex flex-col justify-between mx-4 md:justify-center md:space-y-2 col-span-1"
+      >
         <p>Price:</p>
         <p>Color:</p>
         <p>Fit:</p>
         <p>Size:</p>
       </div>
-      <div class="flex flex-col justify-between items-start mx-4 col-span-1">
+      <div
+        class="flex flex-col justify-between items-start mx-4 col-span-1 md:justify-center md:space-y-2"
+      >
         <p>{{ price }} €</p>
         <div
           :class="`bg-${capitalizedColors}`"

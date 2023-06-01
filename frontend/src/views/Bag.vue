@@ -13,28 +13,28 @@
   </PopUp>
   <Loader :is-fetching="loading" />
   <empty
-    v-if="isEmpty && !loading"
+    v-if="products.length === 0 && !loading"
     :title="'My bag'"
     :text="'Your bag is empty.'"
   />
   <main
     v-if="!loading && !isEmpty"
-    class="flex flex-col justify-around 2xl:pt-28 pt-20 xl:pt-24"
+    class="flex flex-col justify-around 2xl:pt-28 pt-20 md:pt-24"
   >
-    <div class="flex items-center justify-between w-full">
+    <div class="flex items-center">
       <img
         :src="back"
         @click="goBack"
-        class="lg:w-12 lg:h-12 w-6 h-6 mr-2 lg:ml-10 2xl:ml-40"
+        class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10 2xl:ml-40"
       />
       <h1
-        class="font-title text-xs-xlheadline lg:text-xlheadline lg:pb-10 lg: lg:w-full"
+        class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
       >
-        My bag
+        My Bag
       </h1>
     </div>
-    <div class="grid lg:grid-cols-2 lg:px-10 2xl:px-60 lg:pb-10">
-      <section class="pb-4">
+    <div class="grid lg:grid-cols-2 md:px-4 lg:px-10 2xl:px-60 lg:pb-10">
+      <section class="pb-4 md:min-h-[400px]">
         <div v-for="product in products" :key="product._id">
           <bagProduct
             :name="product.name"

@@ -13,29 +13,27 @@
       <div class="grow hidden lg:block bg-notWhite" ref="collection">
         <button
           @click="toggleCollection"
-          class="collection flex relative z-50 hover:bg-notBlack/10 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 px-10 bg-notWhite"
+          class="collection flex relative pl-10 pr-24 font-normal hover:bg-notBlack/10 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 bg-notWhite"
         >
-          Collection
+          <img :src="menu" class="w-8 h-8 mr-2" />
+          Menu
           <img
             :src="expand_more"
-            :class="!showCollection ? 'block' : 'hidden'"
             class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack"
-          />
-          <img
-            :src="expand_less"
-            :class="showCollection ? 'block' : 'hidden'"
-            class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack z-50"
           />
         </button>
         <ul
           :class="showCollection ? 'absolute' : 'hidden'"
-          class="menu text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/50 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
+          class="menu text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/60 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
         >
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="`/products/category/All`">All</router-link>
+            Products
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
+          </li>
+          <li class="text-body font-bold lg:font-light lg:text-bodyh">
+            <router-link :to="`/products/category/All`">All</router-link>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link :to="`/products/category/DressJumpsuit`"
@@ -82,6 +80,24 @@
             <router-link :to="`/products/collection/Fall%2FWinter`">
               Fall/Winter</router-link
             >
+          </li>
+          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
+            <router-link :to="`/about`"> About</router-link>
+            <div
+              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
+            ></div>
+          </li>
+          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
+            <router-link :to="`/`"> Home</router-link>
+            <div
+              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
+            ></div>
+          </li>
+          <li class="text-body font-bold lg:font-light lg:text-bodyh">
+            <router-link :to="`/sign-up`"> Sign up</router-link>
+          </li>
+          <li class="text-body font-bold lg:font-light lg:text-bodyh">
+            <router-link :to="`/login`">Login</router-link>
           </li>
         </ul>
       </div>
@@ -337,11 +353,10 @@ export default defineComponent({
   created() {
     // Attach a click event listener to the document body
     document.body.addEventListener("click", this.handleOutsideClick);
-  },
-  mounted() {
     window.addEventListener("scroll", this.handleScroll);
     window.addEventListener("resize", this.handleResize);
   },
+
   destroyed() {
     // Clean up the event listener when the component is destroyed
     document.body.removeEventListener("click", this.handleOutsideClick);

@@ -3,10 +3,13 @@
     class="relative w-full p-4 pb-8 h-full text-notBlack md:px-10 lg:px-20 2xl:px-40 lg:py-8 lg:pb-12"
     :class="class"
     data-carousel="slide"
-    v-if="products.length > 0"
   >
     <h4 class="text-xs-headline font-title lg:text-headline">{{ title }}</h4>
-    <ul class="overflow-hidden grid grid-cols-2 lg:grid-cols-4">
+    <Loader :is-fetching="!isReady" />
+    <ul
+      class="overflow-hidden grid grid-cols-2 lg:grid-cols-4"
+      v-if="products.length > 0"
+    >
       <li
         v-for="(product, index) in products"
         :key="product._id"
@@ -91,11 +94,13 @@
 <script lang="ts">
 import Product from "./Product.vue";
 import { IProduct } from "../types/Product";
+import Loader from "./Loader.vue";
 
 export default {
   name: "YouMightLike",
   components: {
     Product,
+    Loader,
   },
   props: {
     displayedProduct: {
@@ -107,6 +112,7 @@ export default {
   },
   data() {
     return {
+      isReady: false,
       screenWidth: window.innerWidth,
       products: [] as IProduct[],
       currentSlideIndex: 0,
@@ -132,6 +138,7 @@ export default {
         const response = await fetch("http://localhost:8000/api/product");
         const data = await response.json();
         this.products = data.products.splice(0, 13);
+        this.isReady = true;
       } catch (error) {
         console.error(error);
       }

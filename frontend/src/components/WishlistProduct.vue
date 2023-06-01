@@ -5,7 +5,7 @@
     <img
       :src="image"
       :alt="alt"
-      class="h-[300px] lg:h-[400px] xl:h-[600px] object-cover w-full rounded-l-xl lg:rounded-none"
+      class="h-[300px] lg:h-[400px] 2xl:h-[600px] object-cover w-full rounded-l-xl lg:rounded-none"
     />
 
     <div class="flex flex-col justify-evenly p-4">

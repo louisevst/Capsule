@@ -16,11 +16,11 @@
     class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1 flex flex-col justify-between h-full"
     :class="class"
   >
-    <div class="h-[200px] md:h-[400px] lg:h-[500px] xl:h-[600px]">
+    <div class="h-[200px] md:h-[400px] lg:h-[500px] 2xl:h-[600px]">
       <img
         :src="image"
         :alt="description"
-        class="h-full object-cover w-full"
+        class="object-cover w-full h-[200px] md:h-[400px] lg:h-[500px] 2xl:h-[600px]"
         @click="($event: MouseEvent) => onClick($event)"
       />
     </div>
@@ -86,6 +86,10 @@ export default defineComponent({
       required: true,
     },
     class: { type: String, required: false },
+    isLiked: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     const userId: string = this.$cookies.get("id") || "";
@@ -94,47 +98,49 @@ export default defineComponent({
       user_id: userId,
       hearth,
       filledHearth,
-      isHearthFilled: false,
+      isHearthFilled: this.isLiked,
     };
+  },
+  mounted() {
+    this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
   },
   methods: {
     async toggleHearth(productId: string) {
-      try {
-        if (this.user_id === "") {
-          this.isModalVisible = true;
-          return;
-        }
-
-        const response = await fetch(
-          `http://localhost:8000/api/wishlist/${this.user_id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+      if (!this.isLiked && !this.isHearthFilled) {
+        try {
+          if (this.user_id === "") {
+            this.isModalVisible = true;
+            return;
           }
-        );
-        const data = await response.json();
-        if (response.ok) {
-          console.log(data);
-          if (data.length > 0) {
-            // Bag exists, retrieve the bag ID
-            console.log(data._id);
-            const wishlistID = data[0]._id;
-            this.updateWishlist(wishlistID, productId);
-          } else {
-            // Bag doesn't exist, create a new bag
+
+          const response = await fetch(
+            `http://localhost:8000/api/wishlist/${this.user_id}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          const data = await response.json();
+          if (response.ok) {
             console.log(data);
-            this.createWishlist();
+            if (data.length > 0) {
+              // Bag exists, retrieve the bag ID
+              console.log(data._id);
+              const wishlistID = data[0]._id;
+              this.updateWishlist(wishlistID, productId);
+            } else {
+              // Bag doesn't exist, create a new bag
+              console.log(data);
+              this.createWishlist();
+            }
+          } else {
+            console.error("Failed to check wishlist:", response.statusText);
           }
-        } else {
-          console.error("Failed to check wishlist:", response.statusText);
+        } catch (error) {
+          console.log(error);
         }
-
-        this.isHearthFilled = !this.isHearthFilled;
-        this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
-      } catch (error) {
-        console.log(error);
       }
     },
     async updateWishlist(id: string, product: string) {
@@ -155,7 +161,7 @@ export default defineComponent({
         } else {
           console.log("wishlist not updated");
         }
-        this.isHearthFilled = !this.isHearthFilled;
+        this.isHearthFilled = true;
         this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
       } catch (error) {
         console.log(error);
@@ -175,6 +181,8 @@ export default defineComponent({
         });
         if (response.ok) {
           console.log("Wishlist created successfully");
+          this.isHearthFilled = true;
+          this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
         } else {
           console.error("Failed to create wishlist:", response.statusText);
         }
