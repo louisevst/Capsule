@@ -26,7 +26,10 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/collection/All`">
+          <router-link
+            :to="`/products/collection/All`"
+            @click="updateFilteredProducts(undefined, 'All')"
+          >
             All the collections
           </router-link>
         </li>
@@ -37,9 +40,11 @@
             ' underline underline-offset-2': cat === collection,
           }"
           class="p-4 inline-block"
-          @click="updateFilteredProducts()"
         >
-          <router-link :to="`/products/collection/${encodeURIComponent(cat)}`">
+          <router-link
+            :to="`/products/collection/${encodeURIComponent(cat)}`"
+            @click="updateFilteredProducts(undefined, cat)"
+          >
             {{
               cat === "All"
                 ? "All the collection"
@@ -61,13 +66,13 @@
       @filter-applied="updateFilteredProducts($event)"
       :availableColors="availableColors"
       :availableCategories="availableCategories"
+      :availableCollections="availableCollections"
+      v-if="!loading"
     />
 
     <ul class="grid grid-cols-2 lg:grid-cols-4">
       <li
-        v-for="product in filterProducts.length > 0
-          ? filterProducts
-          : filteredProducts"
+        v-for="product in filteredProducts"
         :key="product._id"
         v-if="!loading"
       >
@@ -98,116 +103,124 @@ export default defineComponent({
   components: { Product, Loader, FilterProducts },
   data() {
     const userId: string = this.$cookies.get("id") || "";
+    const theme = this.$route.params.slug as Theme;
     return {
       loading: true,
       collections: [] as Array<Theme>,
+      colors: [] as Array<Color>,
+      categories: [] as Array<Type>,
       availableCategories: [] as Array<Type>,
       availableColors: [] as Array<Color>,
+      availableCollections: [] as Array<Theme>,
       products: [] as Array<IProduct>,
       wishlist: [] as unknown as IWishlist,
       user_id: userId,
-      filterProducts: [] as Array<IProduct>,
+      filteredProducts: [] as Array<IProduct>,
+      collection: theme,
     };
   },
-  computed: {
-    collection(): String {
-      return this.$route.params.slug as String;
-    },
-    filteredProducts(): Array<IProduct> {
-      let filteredProducts: Array<IProduct>;
-
-      if (this.collection === "All") {
-        filteredProducts = this.products;
-      } else {
-        filteredProducts = this.products.filter(
-          (product) => product.theme === this.collection
-        );
-      }
-
-      // Update available colors based on the filtered products
-      const colors = Array.from(
-        new Set(filteredProducts.flatMap((product) => product.colors))
-      );
-      this.availableColors = colors.map((color) => {
-        switch (color) {
-          // Map color values to display strings if needed
-          default:
-            return color;
-        }
-      });
-
-      // Update available categories based on the filtered products
-      const categories = Array.from(
-        new Set(filteredProducts.flatMap((product) => product.type))
-      );
-      this.availableCategories = categories.map((category) => {
-        switch (category) {
-          // Map category values to display strings if needed
-          default:
-            return category;
-        }
-      });
-
-      return filteredProducts;
-    },
-  },
+  // computed: {
+  //   // collection(): Theme {
+  //   //   return this.$route.params.slug as Theme;
+  //   // },
+  //   // filteredProducts(): Array<IProduct> {
+  //   //   let filteredProducts: Array<IProduct>;
+  //   //   if (this.collection === "All") {
+  //   //     filteredProducts = this.products;
+  //   //   } else {
+  //   //     filteredProducts = this.products.filter(
+  //   //       (product) => product.theme === this.collection
+  //   //     );
+  //   //   }
+  //   //   // Update available colors based on the filtered products
+  //   //   const colors = Array.from(
+  //   //     new Set(filteredProducts.flatMap((product) => product.colors))
+  //   //   );
+  //   //   this.availableColors = colors.map((color) => {
+  //   //     switch (color) {
+  //   //       // Map color values to display strings if needed
+  //   //       default:
+  //   //         return color;
+  //   //     }
+  //   //   });
+  //   //   // Update available categories based on the filtered products
+  //   //   const categories = Array.from(
+  //   //     new Set(filteredProducts.flatMap((product) => product.type))
+  //   //   );
+  //   //   this.availableCategories = categories.map((category) => {
+  //   //     switch (category) {
+  //   //       // Map category values to display strings if needed
+  //   //       default:
+  //   //         return category;
+  //   //     }
+  //   //   });
+  //   //   const collections = Array.from(
+  //   //     new Set(filteredProducts.flatMap((product) => product.theme))
+  //   //   );
+  //   //   this.availableCollections = collections.map((category) => {
+  //   //     switch (category) {
+  //   //       // Map category values to display strings if needed
+  //   //       default:
+  //   //         return category;
+  //   //     }
+  //   //   });
+  //   //   return filteredProducts;
+  //   // },
+  // },
   mounted() {
-    this.fetchCategoryProducts();
+    this.fetchCategoryProducts(this.collection);
     this.fetchWishlist();
   },
   methods: {
-    updateFilteredProducts(filterCriteria?: any) {
-      if (!filterCriteria) {
-        this.filterProducts = []; // Reset the filterProducts array
-        return; // Exit the method
-      }
-
-      // Apply the filter criteria to the list of products
-      this.filterProducts = this.filteredProducts.filter((product) => {
-        // Check if the product matches the selected filter criteria
-        const colorMatch =
-          filterCriteria.colors.length === 0 ||
-          filterCriteria.colors.includes(product.colors);
-
-        const collectionMatch =
-          filterCriteria.collections.length === 0 ||
-          filterCriteria.collections.includes(product.theme);
-        const categoryMatch =
-          filterCriteria.categories.length === 0 ||
-          filterCriteria.categories.includes(product.type);
-
-        // Return true if all criteria match
-        return colorMatch && collectionMatch && categoryMatch;
-      });
-
-      // Check if the collection has changed
-      const collectionChanged =
-        this.collection !== filterCriteria.collections[0];
-
-      if (collectionChanged) {
-        // Update available colors based on the filtered products
-        const colors = Array.from(
-          new Set(this.filterProducts.flatMap((product) => product.colors))
+    updateFilteredProducts(filterCriteria?: any, collection?: Theme) {
+      console.log(filterCriteria, collection, this.collection);
+      if (
+        filterCriteria === undefined ||
+        Object.entries(filterCriteria).length === 0
+      ) {
+        if (collection === "All") {
+          console.log("if");
+          this.filteredProducts = this.products;
+          this.availableCategories = this.categories;
+          this.availableCollections = this.collections;
+          this.availableColors = this.colors;
+        } else if (collection !== undefined) {
+          console.log("elseif");
+          this.filteredProducts = this.products.filter((product) =>
+            product.theme.includes(collection)
+          );
+          this.availableCategories = Array.from(
+            new Set(this.products.map((product) => product.type))
+          );
+          this.availableCollections = Array.from(
+            new Set(this.products.map((product) => product.theme))
+          );
+          this.availableColors = Array.from(
+            new Set(this.products.flatMap((product) => product.colors))
+          );
+        }
+      } else {
+        console.log("else");
+        this.filteredProducts = this.products.filter((product) =>
+          filterCriteria.categories.includes(product.type)
         );
-        this.availableColors = colors.map((color) => {
-          // Map color values to display strings if needed
-          switch (color) {
-            default:
-              return color;
-          }
-        });
 
-        // Update available categories based on the filtered products
-        const categories = Array.from(
-          new Set(this.filteredProducts.flatMap((product) => product.type))
+        // if (collection !== undefined) {
+        //   this.filteredProducts = this.filteredProducts.filter((product) =>
+        //     product.theme.includes(collection)
+        //   );
+        // }
+        //Check la collection
+        console.log(this.filteredProducts);
+        this.availableCategories = Array.from(
+          new Set(this.filteredProducts.map((product) => product.type))
         );
-        this.availableCategories = categories.map((category) => {
-          // Map category values to display strings if needed
-          switch (category) {
-            default:
-              return category;
-          }
-        });
+        this.availableCollections = Array.from(
+          new Set(this.filteredProducts.map((product) => product.theme))
+        );
+        this.availableColors = Array.from(
+          new Set(this.filteredProducts.flatMap((product) => product.colors))
+        );
       }
     },
     isProductLiked(productId: string): boolean {
@@ -244,16 +257,34 @@ export default defineComponent({
         console.log(error);
       }
     },
-    async fetchCategoryProducts() {
+    async fetchCategoryProducts(collection: Theme) {
       try {
         const response = await fetch("http://localhost:8000/api/product");
         const data = await response.json();
 
         this.products = data.products;
+        if (collection === "All") {
+          this.filteredProducts = this.products;
+        } else {
+          this.filteredProducts = this.products.filter(
+            (product) => collection === product.theme
+          );
+        }
+
         this.collections = Array.from(
           new Set(this.products.map((product) => product.theme))
         );
+        this.availableCollections = this.collections;
 
+        this.colors = Array.from(
+          new Set(this.products.flatMap((product) => product.colors))
+        );
+        this.availableColors = this.colors;
+
+        this.categories = Array.from(
+          new Set(this.products.map((product) => product.type))
+        );
+        this.availableCategories = this.categories;
         this.loading = false;
       } catch (error) {
         console.error(error);

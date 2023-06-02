@@ -8,7 +8,7 @@
     }"
   >
     <nav
-      class="py-4 lg:px-20 xl:px-28 2xl:px-40 flex items-center justify-center w-full"
+      class="py-4 md:py-2 lg:px-20 xl:px-28 2xl:px-40 flex items-center justify-center w-full"
     >
       <div class="grow hidden lg:block bg-notWhite" ref="collection">
         <button
@@ -26,78 +26,100 @@
           :class="showCollection ? 'absolute' : 'hidden'"
           class="menu text-notBlack h-screen w-1/3 top-0 left-0 pt-10 bg-notWhite/60 backdrop-blur-md border-r border-notBlack shadow flex justify-center flex-col pl-24"
         >
-          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
+          <button
+            class="text-xs-sub lg:text-sub font-text relative mb-4 text-left"
+            @click="toggleProd"
+          >
             Products
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/category/All`">All</router-link>
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/category/DressJumpsuit`"
-              >Dresses & Jumsuits</router-link
-            >
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/category/TopBlouse`"
-              >Tops & Blouses</router-link
-            >
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/category/PantSkirt`"
-              >Pants & Skirts</router-link
-            >
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/category/Jewellery`">
-              Jewellery
-            </router-link>
+          </button>
+          <ul :class="prod ? 'block' : 'hidden'">
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/category/All`">All</router-link>
+            </li>
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/category/DressJumpsuit`"
+                >Dresses & Jumsuits</router-link
+              >
+            </li>
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/category/TopBlouse`"
+                >Tops & Blouses</router-link
+              >
+            </li>
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/category/PantSkirt`"
+                >Pants & Skirts</router-link
+              >
+            </li>
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/category/Jewellery`">
+                Jewellery
+              </router-link>
+            </li>
+          </ul>
+          <button
+            class="text-xs-sub lg:text-sub font-text relative mb-4 text-left"
+            @click="toggleCol"
+          >
+            Collections
+            <div
+              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
+            ></div>
+          </button>
+          <ul :class="col ? 'block' : 'hidden'">
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/collection/Swimwear`">
+                Beach Wear</router-link
+              >
+            </li>
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/collection/Spring%2FSummer`">
+                Spring/Summer</router-link
+              >
+            </li>
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/collection/Party`"
+                >Party</router-link
+              >
+            </li>
+            <li class="text-body font-bold lg:font-light lg:text-bodyh">
+              <router-link :to="`/products/collection/Fall%2FWinter`">
+                Fall/Winter</router-link
+              >
+            </li>
+          </ul>
+          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
+            <router-link :to="`/about`">About</router-link>
+            <div
+              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
+            ></div>
           </li>
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="`/products/collection/All`">
-              Collections</router-link
-            >
+            <router-link :to="`/`">Home</router-link>
+            <div
+              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
+            ></div>
+          </li>
+          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
+            <router-link :to="`/contact`">Contact</router-link>
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/collection/Swimwear`">
-              Beach Wear</router-link
-            >
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/collection/Spring%2FSummer`">
-              Spring/Summer</router-link
-            >
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/collection/Party`">Party</router-link>
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/products/collection/Fall%2FWinter`">
-              Fall/Winter</router-link
-            >
-          </li>
-          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="`/about`"> About</router-link>
-            <div
-              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
-            ></div>
-          </li>
-          <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="`/`"> Home</router-link>
-            <div
-              class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
-            ></div>
-          </li>
-          <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/sign-up`"> Sign up</router-link>
+            <router-link :to="`/sign-up`">Sign up</router-link>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
             <router-link :to="`/login`">Login</router-link>
+          </li>
+          <li
+            class="text-body font-bold lg:font-light lg:text-bodyh cursor-pointer"
+            @click="logout"
+          >
+            Log Out
           </li>
         </ul>
       </div>
@@ -112,7 +134,7 @@
           <router-link to="/bag">
             <img
               :src="bag"
-              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
+              class="lg:h-14 lg:w-14 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
             />
           </router-link>
         </div>
@@ -120,7 +142,7 @@
           <router-link to="/wishlist">
             <img
               :src="hearth"
-              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
+              class="lg:h-14 lg:w-14 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
             />
           </router-link>
         </div>
@@ -128,7 +150,7 @@
           <img
             @click="toggleDropdown"
             :src="user"
-            class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
+            class="lg:h-14 lg:w-14 h-8 w-8 2xl:h-16 2xl:w-16 hidden lg:block"
           />
           <div
             :class="showDropdown ? 'absolute ' : 'hidden'"
@@ -164,21 +186,6 @@
               </li>
             </ul>
           </div>
-        </div>
-      </div>
-      <div v-if="isScrolled" class="lg:hidden sticky w-full bg-notWhite">
-        <div>
-          <router-link to="/bag">
-            <img :src="bag" class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16" />
-          </router-link>
-        </div>
-        <div>
-          <router-link to="/wishlist">
-            <img
-              :src="hearth"
-              class="lg:h-12 lg:w-12 h-8 w-8 2xl:h-16 2xl:w-16"
-            />
-          </router-link>
         </div>
       </div>
     </nav>
@@ -343,6 +350,8 @@ export default defineComponent({
       expand_less,
       screenWidth: window.innerWidth,
       showCollection: false,
+      prod: false,
+      col: false,
     };
   },
   computed: {
@@ -364,6 +373,14 @@ export default defineComponent({
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    toggleCol() {
+      this.col = !this.col;
+      this.prod = false;
+    },
+    toggleProd() {
+      this.prod = !this.prod;
+      this.col = false;
+    },
     toggleCollection() {
       this.showCollection = !this.showCollection;
     },

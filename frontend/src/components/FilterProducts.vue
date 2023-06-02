@@ -1,57 +1,153 @@
 <template>
-  <section class="flex w-full justify-between">
-    <!-- Colors filter -->
-    <h3>Colors</h3>
-    <ul>
-      <li v-for="color in availableColors" :key="color">
-        <label :for="color">{{ color }}</label>
-        <input
-          type="checkbox"
-          :id="color"
-          :value="color"
-          v-model="selectedColors"
-        />
-      </li>
-    </ul>
+  <button
+    v-if="!showFilter"
+    class="p-2 w-full flex justify-center items-center"
+    @click="toggleFilter"
+  >
+    Filter <img class="h-6 w-6 ml-2" :src="filter" alt="Filter." />
+  </button>
+  <section
+    v-else
+    class="w-full h-full flex-col bg-notBlack/90 fixed top-0 z-50 flex justify-center md:px-8 lg:px-0 lg:items-end"
+  >
+    <div
+      class="w-screen h-screen absolut hidden lg:w-1/2 xl:w-2/3"
+      @click="toggleFilter"
+    ></div>
+    <div
+      class="px-4 py-4 pb-8 md:px-8 flex justify-center xl:justify-between flex-col bg-notWhite border border-notBlack lg:w-1/2 xl:w-1/3 lg:h-screen"
+    >
+      <img
+        :src="close"
+        alt="Close filter pop-up"
+        class="h-8 w-8 ml-auto lg:h-10 lg:w-10"
+        @click="toggleFilter"
+      />
+      <!-- Colors filter -->
+      <section class="pb-4">
+        <button
+          class="flex justify-between items-center text-xs-sub lg:text-sub pb-4"
+        >
+          Colors
+          <div
+            :class="
+              selectedColors.length > 0
+                ? 'text-notWhite mx-2 w-5 h-5 lg:w-6 lg:h-6 bg-terracota rounded-full flex justify-center items-center text-body'
+                : 'hidden'
+            "
+          >
+            {{ selectedColors.length }}
+          </div>
+        </button>
+        <ul class="bg-notWhite grid grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-1">
+          <li
+            v-for="color in availableColors"
+            :key="color"
+            class="flex justify-end items-center flex-row-reverse"
+          >
+            <label :for="color" class="px-1">{{ color }}</label>
+            <div
+              :class="`w-4 h-4 2xl:w-6 2xl:h-6 bg-${color} rounded-full outline outline-[0.5px] mx-1 md:mx-2`"
+            ></div>
+            <input
+              type="checkbox"
+              :id="color"
+              :value="color"
+              v-model="selectedColors"
+              class="bg-notWhite border-notBlack text-notBlack focus:ring-terracota 2xl:w-8 2xl:h-8"
+            />
+          </li>
+        </ul>
+      </section>
 
-    <!-- Collections filter -->
-    <h3 v-if="availableCollections">Collections</h3>
-    <ul v-if="availableCollections">
-      <li v-for="collection in availableCollections" :key="collection">
-        <label :for="collection">{{ collection }}</label>
-        <input
-          type="checkbox"
-          :id="collection"
-          :value="collection"
-          v-model="selectedCollections"
-        />
-      </li>
-    </ul>
+      <!-- Collections filter -->
+      <section class="relative" v-if="availableCollections.length > 1">
+        <button
+          class="flex justify-between items-center text-xs-sub lg:text-sub pb-4"
+        >
+          Collections
+          <div
+            :class="
+              selectedCollections.length > 0
+                ? 'text-body m-1 text-notWhite w-5 h-5 lg:w-6 lg:h-6 bg-terracota rounded-full flex justify-center items-center'
+                : 'hidden'
+            "
+          >
+            {{ selectedCollections.length }}
+          </div>
+        </button>
+        <ul class="bg-notWhite lg:space-y-1">
+          <li v-for="collection in availableCollections" :key="collection">
+            <input
+              type="checkbox"
+              :id="collection"
+              :value="collection"
+              v-model="selectedCollections"
+              class="bg-notWhite border-notBlack text-notBlack focus:ring-terracota 2xl:w-8 2xl:h-8"
+            />
+            <label :for="collection" class="pl-4">{{ collection }}</label>
+          </li>
+        </ul>
+      </section>
 
-    <!-- Categories filter -->
-    <h3 v-if="availableCategories">Categories</h3>
-    <ul v-if="availableCategories">
-      <li v-for="category in availableCategories" :key="category">
-        <label :for="category">{{ category }}</label>
-        <input
-          type="checkbox"
-          :id="category"
-          :value="category"
-          v-model="selectedCategories"
-        />
-      </li>
-    </ul>
-
-    <!-- Apply filter and Reset buttons -->
-    <div>
-      <button @click="applyFilter">Apply Filter</button>
-      <button @click="resetFilters">Reset</button>
+      <!-- Categories filter -->
+      <section class="relative" v-if="availableCategories.length > 1">
+        <button
+          class="flex justify-between items-center text-xs-sub lg:text-sub pb-4"
+        >
+          Categories
+          <div
+            :class="
+              selectedCategories.length > 0
+                ? 'text-body m-1 text-notWhite w-5 h-5 lg:w-6 lg:h-6 bg-terracota rounded-full flex justify-center items-center'
+                : 'hidden'
+            "
+          >
+            {{ selectedCategories.length }}
+          </div>
+        </button>
+        <ul
+          class="bg-notWhite lg:space-y-1"
+          :class="
+            availableCategories.length < 4
+              ? 'grid'
+              : 'grid grid-cols-2 lg:grid-cols-3'
+          "
+        >
+          <li v-for="category in availableCategories" :key="category">
+            <input
+              type="checkbox"
+              :id="category"
+              :value="category"
+              v-model="selectedCategories"
+              class="bg-notWhite border-notBlack text-notBlack focus:ring-terracota 2xl:w-8 2xl:h-8"
+            /><label :for="category" class="pl-4"> {{ category }}</label>
+          </li>
+        </ul>
+      </section>
+      <div class="w-full pt-8">
+        <button
+          @click="applyFilter"
+          class="border border-notBlack bg-notBlack text-notWhite w-1/2 py-4"
+        >
+          Save
+        </button>
+        <button
+          @click="resetFilters"
+          class="w-1/2 bg-notWhite border border-notBlack py-4"
+        >
+          Reset all filters
+        </button>
+      </div>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import { Color, Type, Theme } from "../types/Product";
+import filter from "../assets/filter.svg";
+import close from "../assets/close.svg";
+
 export default {
   props: {
     availableColors: {
@@ -60,29 +156,46 @@ export default {
     },
     availableCollections: {
       type: Array<Theme>,
-      required: false,
+      required: true,
     },
     availableCategories: {
       type: Array<Type>,
-      required: false,
+      required: true,
     },
   },
   data() {
     return {
+      filter,
       selectedColors: [],
       selectedCollections: [],
       selectedCategories: [],
+      close,
+      showFilter: false,
     };
   },
   methods: {
+    toggleFilter() {
+      this.showFilter = !this.showFilter;
+    },
+
     applyFilter() {
+      this.$emit("filter-applied", {});
       const filterCriteria = {
-        colors: this.selectedColors,
+        colors:
+          this.selectedColors.length > 0
+            ? this.selectedColors
+            : this.availableColors,
 
-        collections: this.selectedCollections,
-        categories: this.selectedCategories,
+        collections:
+          this.selectedCollections.length > 0
+            ? this.selectedCollections
+            : this.availableCollections,
+        categories:
+          this.selectedCategories.length > 0
+            ? this.selectedCategories
+            : this.availableCategories,
       };
-
+      this.showFilter = false;
       // Emit the event with the filter criteria or an empty object if not provided
       this.$emit("filter-applied", filterCriteria || {});
     },

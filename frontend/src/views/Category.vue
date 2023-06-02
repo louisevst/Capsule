@@ -97,9 +97,21 @@
         </li>
       </ul>
     </nav>
+    <FilterProducts
+      v-if="!loading"
+      @filter-applied="updateFilteredProducts($event)"
+      :availableColors="availableColors"
+      :availableCategories="availableCategories"
+      :availableCollections="availableCollections"
+    />
     <Loader :isFetching="loading" />
-    <ul class="grid grid-cols-2 lg:grid-cols-4">
-      <li v-for="product in filteredProducts" :key="product._id">
+    <ul v-if="!loading" class="grid grid-cols-2 lg:grid-cols-4">
+      <li
+        v-for="product in filterProducts.length > 0
+          ? filterProducts
+          : filteredProducts"
+        :key="product._id"
+      >
         <Product
           :onClick="() => navigateToProductDetails(product._id)"
           :name="product.name"
@@ -117,13 +129,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { IProduct, Type, IWishlist } from "../types/Product";
+import { IProduct, Type, IWishlist, Color, Theme } from "../types/Product";
 import Product from "../components/Product.vue";
 import Loader from "../components/Loader.vue";
+import FilterProducts from "../components/FilterProducts.vue";
 
 export default defineComponent({
   name: "Category",
-  components: { Product, Loader },
+  components: { Product, Loader, FilterProducts },
   data() {
     const userId: string = this.$cookies.get("id") || "";
     return {
@@ -132,6 +145,10 @@ export default defineComponent({
       products: [] as Array<IProduct>,
       wishlist: [] as unknown as IWishlist,
       user_id: userId,
+      availableCategories: [] as Array<Type>,
+      availableColors: [] as Array<Color>,
+      availableCollections: [] as Array<Theme>,
+      filterProducts: [] as Array<IProduct>,
     };
   },
   computed: {
@@ -139,26 +156,52 @@ export default defineComponent({
       return this.$route.params.slug as String;
     },
     filteredProducts(): Array<IProduct> {
+      let filteredProducts: Array<IProduct>;
+
       switch (this.category) {
         case "All":
-          return this.products;
+          filteredProducts = this.products;
+          break;
         case "PantSkirt":
-          return this.products.filter(
+          filteredProducts = this.products.filter(
             (product) => product.type === "Pant" || product.type === "Skirt"
           );
+          break;
         case "TopBlouse":
-          return this.products.filter(
+          filteredProducts = this.products.filter(
             (product) => product.type === "Top" || product.type === "Blouse"
           );
+          break;
         case "DressJumpsuit":
-          return this.products.filter(
+          filteredProducts = this.products.filter(
             (product) => product.type === "Dress" || product.type === "Jumpsuit"
           );
+          break;
         default:
-          return this.products.filter(
+          filteredProducts = this.products.filter(
             (product) => product.type === this.category
           );
+          break;
       }
+      const colors = Array.from(
+        new Set(filteredProducts.flatMap((product) => product.colors))
+      );
+      this.availableColors = colors.map((color) => {
+        switch (color) {
+          // Map color values to display strings if needed
+          default:
+            return color;
+        }
+      });
+      const categories = Array.from(
+        new Set(filteredProducts.map((product) => product.type))
+      );
+      this.availableCategories = categories;
+      const Collection = Array.from(
+        new Set(filteredProducts.map((product) => product.theme))
+      );
+      this.availableCollections = Collection;
+      return filteredProducts;
     },
   },
   mounted() {
@@ -166,6 +209,60 @@ export default defineComponent({
     this.fetchWishlist();
   },
   methods: {
+    updateFilteredProducts(filterCriteria?: any) {
+      console.log(filterCriteria);
+      if (!filterCriteria) {
+        this.filterProducts = []; // Reset the filterProducts array
+        return; // Exit the method
+      }
+
+      // Apply the filter criteria to the list of products
+      this.filterProducts = this.filteredProducts.filter((product) => {
+        // Check if the product matches the selected filter criteria
+        const colorMatch =
+          filterCriteria.colors.length === 0 ||
+          filterCriteria.colors.some((color: Color) =>
+            product.colors.includes(color)
+          );
+
+        const categoryMatch =
+          filterCriteria.categories.length === 0 ||
+          filterCriteria.categories.includes(product.type);
+
+        // Return true if all criteria match
+        console.log(colorMatch);
+        return colorMatch && categoryMatch;
+      });
+
+      // Check if the collection has changed
+      const collectionChanged = this.category !== filterCriteria.categories[0];
+
+      if (collectionChanged) {
+        // Update available colors based on the filtered products
+        const colors = Array.from(
+          new Set(this.filteredProducts.flatMap((product) => product.colors))
+        );
+        this.availableColors = colors.map((color) => {
+          // Map color values to display strings if needed
+          switch (color) {
+            default:
+              return color;
+          }
+        });
+
+        // Update available categories based on the filtered products
+        const categories = Array.from(
+          new Set(this.filteredProducts.flatMap((product) => product.type))
+        );
+        this.availableCategories = categories.map((category) => {
+          // Map category values to display strings if needed
+          switch (category) {
+            default:
+              return category;
+          }
+        });
+      }
+    },
     isProductLiked(productId: string): boolean {
       if (this.user_id !== "") {
         return this.wishlist.product_id.some(

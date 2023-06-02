@@ -13,7 +13,7 @@
     </p>
   </PopUp>
   <article
-    class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1 flex flex-col justify-between h-full"
+    class="bg-notWhite/20 rounded-xl text-notBlack text-body p-4 m-1 flex flex-col justify-between h-full cursor-pointer"
     :class="class"
   >
     <div class="h-[200px] md:h-[400px] lg:h-[500px] 2xl:h-[600px]">

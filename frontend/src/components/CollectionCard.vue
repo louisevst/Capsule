@@ -11,7 +11,7 @@
         'lg:w-[600px] lg:h-[600px] relative':
           index === middleCardIndex && !isOtherCardHovered,
 
-        'lg:bg-black cursor-pointer': true,
+        ' cursor-pointer': true,
         'lg:hover:h-[600px] lg:hover:w-[600px]': true,
       }"
       @click="navigate('collection', card.title)"

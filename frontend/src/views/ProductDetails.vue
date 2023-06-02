@@ -37,12 +37,15 @@
           class="flex items-center justify-between w-full py-2.5 text-sm text-notBlack border-b border-notBlack cursor-pointer"
           @click="toggleSizeDropdown"
         >
-          <span>Select a size here</span>
+          <div v-if="selectedSize">
+            {{ selectedSize }}
+          </div>
+          <span v-else>Select a size here</span>
           <div
-            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            class="absolute inset-y-0 right-0 flex items-center pointer-events-none"
           >
             <svg
-              class="w-5 h-5 text-gray-700 transition-transform duration-300 transform"
+              class="w-5 h-5 text-notBlack transition-transform duration-300 transform"
               :class="{ 'rotate-180': isSizeDropdownOpen }"
               fill="none"
               stroke-linecap="round"
@@ -56,7 +59,7 @@
           </div>
         </div>
         <div
-          class="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg"
+          class="absolute z-10 w-full mt-2 bg-notWhite border border-notBlack divide-y rounded-md shadow-lg"
           v-if="isSizeDropdownOpen"
         >
           <div
@@ -80,12 +83,14 @@
           class="flex items-center justify-between w-full py-2.5 text-sm text-notBlack border-b border-notBlack cursor-pointer"
           @click="toggleDropdown"
         >
-          <span>Select a color here</span>
-          <div
-            class="w-4 h-4 rounded-full"
-            :class="`bg-${selectedColor}`"
-            v-if="selectedColor"
-          ></div>
+          <div v-if="selectedColor" class="flex items-center">
+            <div
+              class="w-4 h-4 rounded-full"
+              :class="`bg-${selectedColor}`"
+            ></div>
+            <p class="px-2">{{ selectedColor }}</p>
+          </div>
+          <span v-else>Select a color here</span>
           <svg
             class="w-5 h-5 text-gray-700 transition-transform duration-300 transform"
             :class="{ 'rotate-180': isDropdownOpen }"
@@ -120,9 +125,13 @@
           class="flex items-center justify-between w-full py-2.5 text-sm text-notBlack border-b border-notBlack cursor-pointer"
           @click="toggleFitDropdown"
         >
-          <span>Select a fit here</span>
+          <div v-if="selectedFit">
+            {{ selectedFit }}
+          </div>
+
+          <span v-else>Select a fit here</span>
           <div
-            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+            class="absolute inset-y-0 right-0 flex items-center pointer-events-none"
           >
             <svg
               class="w-5 h-5 text-gray-700 transition-transform duration-300 transform"
@@ -139,7 +148,7 @@
           </div>
         </div>
         <div
-          class="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg"
+          class="absolute z-10 w-full mt-2 bg-notWhite border border-notBlack divide-y rounded-md shadow-lg"
           v-if="isFitDropdownOpen"
         >
           <div
