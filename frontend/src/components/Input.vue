@@ -6,13 +6,14 @@
       >{{ label }}</label
     >
     <input
-      :id="name"
+      :id="`current-${name}`"
       :name="name"
       :type="type"
       :placeholder="placeholder"
       :required="required"
       class="border-t-transparent bg-notWhite border-x-transparent border-b text-body border-notBlack w-full focus-visible:border-transparent focus-visible:border-b-terracota focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-2"
       @input="updateValue(($event.target as HTMLInputElement).value)"
+      autocomplete="on"
     />
     <span v-if="error" class="text-sm text-red-500">{{ error }}</span>
   </div>

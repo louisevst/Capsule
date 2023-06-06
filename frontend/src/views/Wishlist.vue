@@ -15,20 +15,20 @@
   </PopUp>
   <Loader :is-fetching="loading" />
   <Empty
-    v-if="isEmpty"
+    v-if="isEmpty || products.length === 0"
     :title="'My wishlist'"
     :text="'Your wishlist is empty.'"
   />
 
   <main
-    v-if="!loading && !isEmpty"
+    v-if="!loading && !isEmpty && products.length > 0"
     class="pb-4 lg:pb-8 2xl:pt-28 pt-20 xl:pt-24 md:min-h-[90vh] lg:h-auto"
   >
     <div class="flex items-center">
       <img
         :src="back"
         @click="goBack"
-        class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10 2xl:ml-40"
+        class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10"
       />
       <h1
         class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
@@ -37,10 +37,8 @@
       </h1>
     </div>
 
-    <div
-      class="lg:grid lg:grid-cols-4 md:px-4 lg:px-10 xl:px-20 2xl:px-40 md:pb-10"
-    >
-      <section class="grid sm:grid-cols-2 lg:grid-cols-4 lg:col-span-4">
+    <div class="lg:grid lg:grid-cols-2 md:px-4 lg:px-10 md:pb-10">
+      <section class="grid sm:grid-cols-2 lg:col-span-4">
         <WishlistProduct
           v-for="product in products"
           :_id="product._id"
@@ -55,6 +53,7 @@
           :alt="product.alt"
           :user_id="user_id"
           @delete="deleteProduct(product._id)"
+          :onClick="() => navigateToProductDetails(product._id)"
         />
       </section>
     </div>
@@ -119,7 +118,7 @@ export default defineComponent({
             (product) => product._id !== productId
           );
           this.products = updatedWishlist;
-          console.log(this.products);
+
           if (this.products.length < 1) {
             this.isEmpty = true;
           }
@@ -137,7 +136,6 @@ export default defineComponent({
       if (this.user_id === "") {
         this.isModalVisible = true;
       } else {
-        console.log(this.user_id);
         await this.fetchWishlist();
         this.fetchWishlistItems();
       }
@@ -155,8 +153,6 @@ export default defineComponent({
         );
         const data = await response.json();
         if (response.ok) {
-          console.log(data);
-
           if (data.length === 0) {
             this.isEmpty = true;
           } else this.isEmpty = false;
@@ -164,7 +160,7 @@ export default defineComponent({
           if (data[0]._id) {
             // wishlist exists, retrieve the wishlist ID
             this.wishlist = data[0];
-            console.log(data[0].product_id);
+
             this.products = data[0].product_id;
             // const wishlistID = data[0]._id;
           } else {
@@ -181,7 +177,6 @@ export default defineComponent({
       try {
         for (const item of this.products) {
           const productVariantIds = item._id;
-          console.log(productVariantIds);
 
           const detailsResponse = await fetch(
             `http://localhost:8000/api/details/${productVariantIds}`,
@@ -193,7 +188,6 @@ export default defineComponent({
             }
           );
           const productDetails = await detailsResponse.json();
-          console.log(productDetails);
 
           // Find the corresponding product in this.products and assign the productDetails
 
@@ -223,7 +217,6 @@ export default defineComponent({
           }
         }
 
-        console.log(this.products);
         this.loading = false;
       } catch (error) {
         console.log(error);
@@ -241,10 +234,7 @@ export default defineComponent({
             body: JSON.stringify({ product }),
           }
         );
-        if (response.ok) {
-          console.log("wishlist updated successfully");
-          console.log(await response.json());
-        } else {
+        if (!response.ok) {
           console.log("wishlist not updated");
         }
         this.isHearthFilled = !this.isHearthFilled;
@@ -252,6 +242,9 @@ export default defineComponent({
       } catch (error) {
         console.log(error);
       }
+    },
+    navigateToProductDetails(productId: string) {
+      this.$router.push({ name: "product", params: { id: productId } });
     },
   },
   setup() {

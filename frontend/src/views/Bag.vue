@@ -18,7 +18,7 @@
     :text="'Your bag is empty.'"
   />
   <main
-    v-if="!loading && !isEmpty"
+    v-if="!loading && !isEmpty && products.length > 0"
     class="flex flex-col justify-around 2xl:pt-28 pt-20 md:pt-24"
   >
     <div class="flex items-center">
@@ -33,7 +33,10 @@
         My Bag
       </h1>
     </div>
-    <div class="grid lg:grid-cols-2 md:px-4 lg:px-10 2xl:px-60 lg:pb-10">
+    <div
+      class="grid lg:grid-cols-2 md:px-4 lg:px-10 2xl:px-60 lg:pb-10"
+      v-if="products.length > 0"
+    >
       <section class="pb-4 md:min-h-[400px]">
         <div v-for="product in products" :key="product._id">
           <bagProduct
@@ -220,15 +223,11 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-
-      // Output a success message
-      console.log(`Deleted product with ID ${productId} from the bag.`);
     },
     async getUser() {
       if (this.user_id === "") {
         this.isModalVisible = true;
       } else {
-        console.log(this.user_id);
         await this.fetchBag();
         this.fetchBagItems();
       }
@@ -260,7 +259,6 @@ export default defineComponent({
     },
     async fetchBagItems() {
       try {
-        console.log(this.bag);
         const productVariantIds = Object.values(this.bag);
         for (const productVariantId of productVariantIds) {
           const detailsResponse = await fetch(
@@ -289,7 +287,6 @@ export default defineComponent({
           this.products.push(product);
         }
 
-        console.log(this.products);
         this.loading = false;
       } catch (error) {
         console.log(error);
@@ -301,7 +298,7 @@ export default defineComponent({
           product_variant_id: bagProduct.product_variant_id,
           quantity: bagProduct.quantity,
         }));
-        console.log(bagPayload);
+
         const response = await fetch(
           `http://localhost:8000/api/bag/${this.user_id}`,
           {
@@ -314,7 +311,6 @@ export default defineComponent({
         );
 
         if (response.ok) {
-          console.log("Bag updated successfully");
         } else {
           console.error("Failed to update bag:", response.statusText);
         }

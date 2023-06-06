@@ -1,18 +1,19 @@
 <template>
   <article
-    class="relative bg-notWhite/20 rounded-xl text-notBlack text-body m-2 lg:flex lg:flex-col lg:justify-between grid grid-cols-2 border lg:rounded-none border-notBlack"
+    class="relative bg-notWhite/20 rounded-xl text-notBlack text-body m-2 lg:flex lg:justify-between grid grid-cols-2 border lg:rounded-none border-notBlack"
   >
     <img
       :src="image"
       :alt="alt"
-      class="h-[300px] lg:h-[400px] 2xl:h-[600px] object-cover w-full rounded-l-xl lg:rounded-none"
+      class="h-[300px] lg:h-[500px] object-cover w-full rounded-l-xl lg:rounded-none lg:w-1/2"
+      @click="($event: MouseEvent) => onClick($event)"
     />
 
-    <div class="flex flex-col justify-evenly p-4">
+    <div class="flex flex-col justify-evenly p-4 lg:w-1/2">
       <img
         class="w-8 h-8 lg:w-12 lg:h-12 self-end lg:absolute lg:top-0 lg:right-0 lg:bg-notWhite/10 lg:rounded-full cursor-pointer"
         :src="close"
-        @click="deleteProduct"
+        @click.prevent="deleteProduct"
       />
 
       <p class="space-x-2">
@@ -114,6 +115,10 @@ export default defineComponent({
     },
     user_id: {
       type: String,
+      required: true,
+    },
+    onClick: {
+      type: Function as PropType<(event: MouseEvent) => void>,
       required: true,
     },
   },

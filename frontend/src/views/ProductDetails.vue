@@ -69,7 +69,7 @@
             @click="
               () => {
                 selectedSize = size;
-                toggleSizeDropdown;
+                toggleSizeDropdown();
               }
             "
           >
@@ -112,7 +112,12 @@
             v-for="(color, index) in uniqueColors"
             :key="index"
             class="flex items-center py-2.5 px-4 cursor-pointer hover:bg-gray-100"
-            @click="selectedColor = color"
+            @click="
+              () => {
+                selectedColor = color;
+                toggleDropdown();
+              }
+            "
           >
             <div class="w-4 h-4 rounded-full mr-2" :class="`bg-${color}`"></div>
             <span>{{ color }}</span>
@@ -158,7 +163,7 @@
             @click="
               () => {
                 selectedFit = fit;
-                toggleFitDropdown;
+                toggleFitDropdown();
               }
             "
           >
@@ -224,23 +229,22 @@ import back from "../assets/arrow_back.svg";
 import PopUp from "../components/PopUp.vue";
 import { useRouter } from "vue-router";
 import Loader from "../components/Loader.vue";
+import {
+  IProduct,
+  ProductVariantId,
+  ProductId,
+  Fit,
+  Size,
+  Color,
+} from "../types/Product";
 
-interface Product {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  type: string;
-  alt: string;
-}
 interface Details {
-  _id: string;
-  product_id: string;
+  _id: ProductVariantId;
+  product_id: ProductId;
   images: Array<string>;
-  fit: string;
-  size: string;
-  color: string;
+  fit: Fit;
+  size: Size;
+  color: Color;
 }
 
 export default defineComponent({
@@ -261,10 +265,10 @@ export default defineComponent({
       isFitDropdownOpen: false,
       isHearthFilled: false,
       productDetails: [] as Array<Details>,
-      product: {} as Product,
+      product: {} as IProduct,
       uniqueColors: [] as Array<string>,
       uniqueSizes: uniqueSizes,
-      uniqueFits: [] as Array<string>,
+      uniqueFits: [] as Array<Fit>,
       selectedColor: "" as string,
       selectedFit: "" as string,
       selectedSize: selectedSize,
@@ -342,7 +346,7 @@ export default defineComponent({
         );
         const data = await response.json();
         this.productDetails = data;
-        console.log(data);
+
         // Calculate unique sizes after populating productDetails
         this.calculateUniqueColors();
         this.calculateUniqueSizes();
@@ -356,7 +360,7 @@ export default defineComponent({
     calculateUniqueColors() {
       const uniqueColorSet = new Set();
       this.uniqueColors = this.productDetails.reduce(
-        (uniqueColors, product) => {
+        (uniqueColors: Array<string>, product) => {
           if (!uniqueColorSet.has(product.color)) {
             uniqueColorSet.add(product.color);
             const capitalizedColor = product.color
@@ -372,23 +376,29 @@ export default defineComponent({
     },
     calculateUniqueSizes() {
       const uniqueSizeSet = new Set();
-      this.uniqueSizes = this.productDetails.reduce((uniqueSizes, product) => {
-        if (!uniqueSizeSet.has(product.size)) {
-          uniqueSizeSet.add(product.size);
-          uniqueSizes.push(product.size);
-        }
-        return uniqueSizes;
-      }, []);
+      this.uniqueSizes = this.productDetails.reduce(
+        (uniqueSizes: Array<Size>, product) => {
+          if (!uniqueSizeSet.has(product.size)) {
+            uniqueSizeSet.add(product.size);
+            uniqueSizes.push(product.size);
+          }
+          return uniqueSizes;
+        },
+        []
+      );
     },
     calculateUniqueFits() {
       const uniqueFitSet = new Set();
-      this.uniqueFits = this.productDetails.reduce((uniqueFits, product) => {
-        if (!uniqueFitSet.has(product.fit)) {
-          uniqueFitSet.add(product.fit);
-          uniqueFits.push(product.fit);
-        }
-        return uniqueFits;
-      }, []);
+      this.uniqueFits = this.productDetails.reduce(
+        (uniqueFits: Array<Fit>, product) => {
+          if (!uniqueFitSet.has(product.fit)) {
+            uniqueFitSet.add(product.fit);
+            uniqueFits.push(product.fit);
+          }
+          return uniqueFits;
+        },
+        []
+      );
     },
     async updateBag() {
       // Set the product variant ID based on the selected size and color
@@ -403,7 +413,7 @@ export default defineComponent({
         console.error("Selected variant not found");
         return;
       }
-      console.log(variant);
+
       this.bag.product_variant_id = variant?._id;
 
       // Check if the bag already exists
@@ -420,7 +430,6 @@ export default defineComponent({
     async updateExistingBag() {
       try {
         if (this.bagExists()) {
-          console.log("User ID:", this.bag.user_id);
           const response = await fetch(
             `http://localhost:8000/api/bag/${this.bag.user_id}`,
             {
@@ -431,7 +440,7 @@ export default defineComponent({
             }
           );
           const data = await response.json();
-          console.log(data);
+
           if (!data) {
             // Bag doesn't exist, create a new bag
             await this.createBag();

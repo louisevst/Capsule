@@ -1,6 +1,8 @@
 <template>
-  <main class="2xl:pt-28 pt-20 xl:pt-24">
-    <h2 class="font-title text-xs-xlheadline lg:text-xlheadline text-center">
+  <main class="2xl:pt-28 pt-20 xl:pt-24 pb-8">
+    <h2
+      class="font-title text-xs-xlheadline lg:text-xlheadline text-center md:pb-4"
+    >
       {{
         category === "All"
           ? "All the collection"
@@ -25,7 +27,14 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/All`"> All </router-link>
+          <router-link
+            :to="`/products/category/All`"
+            @click="
+              updateFilteredProducts({ colors: [], categories: [] }, 'All')
+            "
+          >
+            All
+          </router-link>
         </li>
         <li
           :class="{
@@ -33,7 +42,15 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/TopBlouse`">
+          <router-link
+            :to="`/products/category/TopBlouse`"
+            @click="
+              updateFilteredProducts(
+                { colors: [], categories: [] },
+                'TopBlouse'
+              )
+            "
+          >
             Tops & Blouses
           </router-link>
         </li>
@@ -43,7 +60,15 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/PantSkirt`">
+          <router-link
+            :to="`/products/category/PantSkirt`"
+            @click="
+              updateFilteredProducts(
+                { colors: [], categories: [] },
+                'PantSkirt'
+              )
+            "
+          >
             Pants & Skirts
           </router-link>
         </li>
@@ -53,7 +78,15 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/DressJumpsuit`">
+          <router-link
+            :to="`/products/category/DressJumpsuit`"
+            @click="
+              updateFilteredProducts(
+                { colors: [], categories: [] },
+                'DressJumpsuit'
+              )
+            "
+          >
             Dresses & Jumpsuits
           </router-link>
         </li>
@@ -63,7 +96,12 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/Swimsuit`">
+          <router-link
+            :to="`/products/category/Swimsuit`"
+            @click="
+              updateFilteredProducts({ colors: [], categories: [] }, 'Swimsuit')
+            "
+          >
             Swimsuits
           </router-link>
         </li>
@@ -73,7 +111,12 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/Sweater`">
+          <router-link
+            :to="`/products/category/Sweater`"
+            @click="
+              updateFilteredProducts({ colors: [], categories: [] }, 'Sweater')
+            "
+          >
             Sweaters
           </router-link>
         </li>
@@ -83,7 +126,14 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/Jacket`"> Jackets </router-link>
+          <router-link
+            :to="`/products/category/Jacket`"
+            @click="
+              updateFilteredProducts({ colors: [], categories: [] }, 'Jacket')
+            "
+          >
+            Jackets
+          </router-link>
         </li>
         <li
           :class="{
@@ -91,7 +141,15 @@
           }"
           class="p-4 inline-block"
         >
-          <router-link :to="`/products/category/Jewellery`">
+          <router-link
+            :to="`/products/category/Jewellery`"
+            @click="
+              updateFilteredProducts(
+                { colors: [], categories: [] },
+                'Jewellery'
+              )
+            "
+          >
             Jewellery
           </router-link>
         </li>
@@ -102,12 +160,11 @@
       @filter-applied="updateFilteredProducts($event)"
       :availableColors="availableColors"
       :availableCategories="availableCategories"
-      :availableCollections="availableCollections"
     />
     <Loader :isFetching="loading" />
     <ul v-if="!loading" class="grid grid-cols-2 lg:grid-cols-4">
       <li
-        v-for="product in filterProducts.length > 0
+        v-for="product in filterProducts.length < 0
           ? filterProducts
           : filteredProducts"
         :key="product._id"
@@ -157,7 +214,9 @@ export default defineComponent({
     },
     filteredProducts(): Array<IProduct> {
       let filteredProducts: Array<IProduct>;
-
+      if (this.filterProducts.length > 0) {
+        return this.filterProducts;
+      }
       switch (this.category) {
         case "All":
           filteredProducts = this.products;
@@ -209,35 +268,61 @@ export default defineComponent({
     this.fetchWishlist();
   },
   methods: {
-    updateFilteredProducts(filterCriteria?: any) {
-      console.log(filterCriteria);
-      if (!filterCriteria) {
-        this.filterProducts = []; // Reset the filterProducts array
+    updateFilteredProducts(
+      filterCriteria: {
+        colors: string[];
+        categories: string | string[];
+      },
+      category?: string
+    ) {
+      if (
+        !filterCriteria ||
+        Object.keys(filterCriteria).length === 0 ||
+        (filterCriteria.colors.length === 0 &&
+          filterCriteria.categories.length === 0)
+      ) {
+        switch (category) {
+          case "All":
+            this.filterProducts = this.products;
+            this.getColorsandCategories();
+            break;
+          case "PantSkirt":
+            this.filterProducts = this.products.filter(
+              (product) => product.type === "Pant" || product.type === "Skirt"
+            );
+            this.getColorsandCategories();
+            break;
+          case "TopBlouse":
+            this.filterProducts = this.products.filter(
+              (product) => product.type === "Top" || product.type === "Blouse"
+            );
+            this.getColorsandCategories();
+            break;
+          case "DressJumpsuit":
+            this.filterProducts = this.products.filter(
+              (product) =>
+                product.type === "Dress" || product.type === "Jumpsuit"
+            );
+            this.getColorsandCategories();
+            break;
+          default:
+            this.filterProducts = this.products.filter(
+              (product) => product.type === category
+            );
+            this.getColorsandCategories();
+            break;
+        } // Reset the filterProducts array
         return; // Exit the method
       }
+      // Convert categories to an array if it's a single string
+      const categories = Array.isArray(filterCriteria.categories)
+        ? filterCriteria.categories
+        : [filterCriteria.categories];
+      // Check if the categories have changed
+      const categoryChanged =
+        categories.length > 0 && this.category !== categories[0];
 
-      // Apply the filter criteria to the list of products
-      this.filterProducts = this.filteredProducts.filter((product) => {
-        // Check if the product matches the selected filter criteria
-        const colorMatch =
-          filterCriteria.colors.length === 0 ||
-          filterCriteria.colors.some((color: Color) =>
-            product.colors.includes(color)
-          );
-
-        const categoryMatch =
-          filterCriteria.categories.length === 0 ||
-          filterCriteria.categories.includes(product.type);
-
-        // Return true if all criteria match
-        console.log(colorMatch);
-        return colorMatch && categoryMatch;
-      });
-
-      // Check if the collection has changed
-      const collectionChanged = this.category !== filterCriteria.categories[0];
-
-      if (collectionChanged) {
+      if (categoryChanged) {
         // Update available colors based on the filtered products
         const colors = Array.from(
           new Set(this.filteredProducts.flatMap((product) => product.colors))
@@ -251,10 +336,9 @@ export default defineComponent({
         });
 
         // Update available categories based on the filtered products
-        const categories = Array.from(
+        this.availableCategories = Array.from(
           new Set(this.filteredProducts.flatMap((product) => product.type))
-        );
-        this.availableCategories = categories.map((category) => {
+        ).map((category) => {
           // Map category values to display strings if needed
           switch (category) {
             default:
@@ -262,7 +346,24 @@ export default defineComponent({
           }
         });
       }
+
+      // Apply the filter criteria to the list of products
+      this.filterProducts = this.filteredProducts.filter((product) => {
+        // Check if the product matches the selected filter criteria
+        const colorMatch =
+          filterCriteria.colors.length === 0 ||
+          filterCriteria.colors.some((color: Color) =>
+            product.colors.includes(color)
+          );
+
+        const categoryMatch =
+          categories.length === 0 || categories.includes(product.type);
+
+        // Return true if all criteria match
+        return colorMatch && categoryMatch;
+      });
     },
+
     isProductLiked(productId: string): boolean {
       if (this.user_id !== "") {
         return this.wishlist.product_id.some(
@@ -284,9 +385,7 @@ export default defineComponent({
         );
         const data = await response.json();
         if (response.ok) {
-          console.log(data);
           this.wishlist = data[0];
-          console.log(this.wishlist);
         } else {
           console.error("Failed to check wishlist:", response.statusText);
         }
@@ -300,7 +399,7 @@ export default defineComponent({
         const data = await response.json();
 
         this.products = data.products;
-        console.log(this.products);
+
         this.categories = Array.from(
           new Set(this.products.map((product) => product.type))
         );
@@ -311,6 +410,28 @@ export default defineComponent({
     },
     navigateToProductDetails(productId: string) {
       this.$router.push({ name: "product", params: { id: productId } });
+    },
+    getColorsandCategories() {
+      this.availableCategories = Array.from(
+        new Set(this.filterProducts.flatMap((product) => product.type))
+      ).map((category) => {
+        // Map category values to display strings if needed
+        switch (category) {
+          default:
+            return category;
+        }
+      });
+
+      const colors = Array.from(
+        new Set(this.filterProducts.flatMap((product) => product.colors))
+      );
+      this.availableColors = colors.map((color) => {
+        // Map color values to display strings if needed
+        switch (color) {
+          default:
+            return color;
+        }
+      });
     },
   },
 });

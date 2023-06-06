@@ -9,7 +9,7 @@
       <p class="font-text text-xs-sub lg:text-sub">{{ text }}</p>
       <CTA
         text="Explore our collection"
-        :onClick="() => navigate('products', 'all')"
+        :onClick="() => navigate('category', 'All')"
         class="flex justify-center items-center"
         textColor="text-notWhite"
         bgColor="bg-notWhite"
@@ -29,11 +29,11 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: "Modal Title",
+      default: "Title",
     },
     text: {
       type: String,
-      default: "ebjbdjbjjdjdjjsjskolfohkidhdigbjdj",
+      default: "Oooops",
     },
   },
   components: {
@@ -44,7 +44,7 @@ export default defineComponent({
     const router = useRouter();
 
     function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { cat } : {};
+      const routeParams = cat ? { slug: cat } : {};
       router.push({ name: to, params: routeParams });
     }
 

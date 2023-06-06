@@ -17,7 +17,7 @@
       >
         <p>{{ price }} €</p>
         <div
-          :class="`bg-${capitalizedColors}`"
+          :class="`bg-${color}`"
           class="w-4 h-4 border border-notBlack rounded-full lg:w-8 lg:h-8"
         ></div>
 
@@ -29,9 +29,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
+export default {
+  name: "orderProduct",
   props: {
     price: {
       type: Number,
@@ -54,15 +53,5 @@ export default defineComponent({
       required: true,
     },
   },
-  computed: {
-    capitalizedColors(): string {
-      const words = this.color.split("-");
-      const capitalizedWords = words.map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      });
-      console.log(capitalizedWords.join("-"));
-      return capitalizedWords.join("-");
-    },
-  },
-});
+};
 </script>

@@ -8,14 +8,15 @@
     }"
   >
     <nav
-      class="py-4 md:py-2 lg:px-20 xl:px-28 2xl:px-40 flex items-center justify-center w-full"
+      class="md:py-2 lg:py-0 lg:px-20 xl:px-28 2xl:px-40 flex items-center justify-center w-full"
     >
-      <div class="grow hidden lg:block bg-notWhite" ref="collection">
+      <div class="grow lg:block" ref="collection">
         <button
           @click="toggleCollection"
-          class="collection flex relative pl-10 pr-24 font-normal hover:bg-notBlack/10 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 bg-notWhite"
+          class="collection flex relative pl-10 pr-24 font-normal hover:underline hover:underline-offset-4 items-center text-notBlack text-bodyh font-text py-1"
         >
-          <img :src="menu" class="w-8 h-8 mr-2" />
+          <!--          class="collection flex relative pl-10 pr-24 font-normal hover:bg-notBlack/10 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 bg-notWhite"
+ <img :src="menu" class="w-8 h-8 mr-2" /> -->
           Menu
           <img
             :src="expand_more"
@@ -37,25 +38,38 @@
           </button>
           <ul :class="prod ? 'block' : 'hidden'">
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/category/All`">All</router-link>
+              <router-link
+                :to="`/products/category/All`"
+                @click="toggleCollection"
+                >All</router-link
+              >
             </li>
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/category/DressJumpsuit`"
+              <router-link
+                :to="`/products/category/DressJumpsuit`"
+                @click="toggleCollection"
                 >Dresses & Jumsuits</router-link
               >
             </li>
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/category/TopBlouse`"
+              <router-link
+                :to="`/products/category/TopBlouse`"
+                @click="toggleCollection"
                 >Tops & Blouses</router-link
               >
             </li>
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/category/PantSkirt`"
+              <router-link
+                :to="`/products/category/PantSkirt`"
+                @click="toggleCollection"
                 >Pants & Skirts</router-link
               >
             </li>
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/category/Jewellery`">
+              <router-link
+                :to="`/products/category/Jewellery`"
+                @click="toggleCollection"
+              >
                 Jewellery
               </router-link>
             </li>
@@ -71,49 +85,68 @@
           </button>
           <ul :class="col ? 'block' : 'hidden'">
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/collection/Swimwear`">
+              <router-link
+                :to="`/products/collection/Swimwear`"
+                @click="toggleCollection"
+              >
                 Beach Wear</router-link
               >
             </li>
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/collection/Spring%2FSummer`">
+              <router-link
+                :to="`/products/collection/Spring%2FSummer`"
+                @click="toggleCollection"
+              >
                 Spring/Summer</router-link
               >
             </li>
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/collection/Party`"
+              <router-link
+                :to="`/products/collection/Party`"
+                @click="toggleCollection"
                 >Party</router-link
               >
             </li>
             <li class="text-body font-bold lg:font-light lg:text-bodyh">
-              <router-link :to="`/products/collection/Fall%2FWinter`">
+              <router-link
+                :to="`/products/collection/Fall%2FWinter`"
+                @click="toggleCollection"
+              >
                 Fall/Winter</router-link
               >
             </li>
           </ul>
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="`/about`">About</router-link>
+            <router-link :to="`/about`" @click="toggleCollection"
+              >About</router-link
+            >
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="`/`">Home</router-link>
+            <router-link :to="`/`" @click="toggleCollection">Home</router-link>
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-xs-sub lg:text-sub font-text relative mb-4">
-            <router-link :to="`/contact`">Contact</router-link>
+            <router-link :to="`/contact`" @click="toggleCollection"
+              >Contact</router-link
+            >
             <div
               class="bottom-0 left-0 w-3/4 bg-notBlack absolute border-b border-solid border-notBlack"
             ></div>
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/sign-up`">Sign up</router-link>
+            <router-link :to="`/sign-up`" @click="toggleCollection"
+              >Sign up</router-link
+            >
           </li>
           <li class="text-body font-bold lg:font-light lg:text-bodyh">
-            <router-link :to="`/login`">Login</router-link>
+            <router-link :to="`/login`" @click="toggleCollection"
+              >Login</router-link
+            >
           </li>
           <li
             class="text-body font-bold lg:font-light lg:text-bodyh cursor-pointer"

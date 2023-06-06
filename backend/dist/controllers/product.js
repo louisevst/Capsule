@@ -37,74 +37,95 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     let updatedSizes;
                     let updatedFits;
                     let updatedColors;
+                    updatedSizes = sizes;
+                    updatedFits = fits;
+                    updatedColors = []; // Reset the colors before applying
                     if (product.type === "Jewellery") {
                         updatedSizes = ["One Size"];
                         updatedFits = ["Regular"];
                         updatedColors = ["Silver", "Gold"];
                     }
                     else {
-                        updatedSizes = sizes;
-                        updatedFits = fits;
                         updatedColors = colors;
                     }
                     switch (product.theme) {
                         case "Spring/Summer":
-                            updatedColors = [
-                                "Blue",
-                                "Pink",
-                                "Teal",
-                                "Bright-Red",
-                                "Blue-Grey",
-                                "Mustard",
-                                "Jungle-Green",
-                                "Black",
-                                "White",
-                                "Beige",
-                                "Off-White",
-                            ];
+                            if (product.type === "Jewellery") {
+                                updatedColors = ["Silver", "Gold"]; // Only allow "Silver" and "Gold" for "Jewellery"
+                            }
+                            else {
+                                updatedColors = [
+                                    "Blue",
+                                    "Pink",
+                                    "Teal",
+                                    "Bright-Red",
+                                    "Blue-Grey",
+                                    "Mustard",
+                                    "Jungle-Green",
+                                    "Black",
+                                    "White",
+                                    "Beige",
+                                    "Off-White",
+                                ];
+                            }
                             break;
                         case "Party":
-                            updatedColors = [
-                                "Blue",
-                                "Gold",
-                                "Jungle-Green",
-                                "Raspberry",
-                                "Mustard",
-                                "Silver",
-                                "Bright-Red",
-                                "Black",
-                                "White",
-                                "Beige",
-                                "Off-White",
-                            ];
+                            if (product.type === "Jewellery") {
+                                updatedColors = ["Silver", "Gold"]; // Only allow "Silver" and "Gold" for "Jewellery"
+                            }
+                            else {
+                                updatedColors = [
+                                    "Blue",
+                                    "Gold",
+                                    "Jungle-Green",
+                                    "Raspberry",
+                                    "Mustard",
+                                    "Silver",
+                                    "Bright-Red",
+                                    "Black",
+                                    "White",
+                                    "Beige",
+                                    "Off-White",
+                                ];
+                            }
                             break;
                         case "Fall/Winter":
-                            updatedColors = [
-                                "Blue-Grey",
-                                "Jungle-Green",
-                                "Mustard",
-                                "Raspberry",
-                                "Khaki",
-                                "Teal",
-                                "Black",
-                                "White",
-                                "Beige",
-                                "Off-White",
-                            ];
+                            if (product.type === "Jewellery") {
+                                updatedColors = ["Silver", "Gold"]; // Only allow "Silver" and "Gold" for "Jewellery"
+                            }
+                            else {
+                                updatedColors = [
+                                    "Blue-Grey",
+                                    "Jungle-Green",
+                                    "Mustard",
+                                    "Raspberry",
+                                    "Khaki",
+                                    "Teal",
+                                    "Black",
+                                    "White",
+                                    "Beige",
+                                    "Off-White",
+                                ];
+                            }
                             break;
                         case "Swimwear":
-                            updatedColors = [
-                                "Blue",
-                                "Blue-Grey",
-                                "Jungle-Green",
-                                "Mustard",
-                                "Bright-Red",
-                                "Khaki",
-                                "Black",
-                                "White",
-                                "Beige",
-                                "Off-White",
-                            ];
+                            if (product.type === "Jewellery") {
+                                updatedColors = ["Silver", "Gold"]; // Only allow "Silver" and "Gold" for "Jewellery"
+                            }
+                            else {
+                                updatedColors = [
+                                    "Blue",
+                                    "Blue-Grey",
+                                    "Jungle-Green",
+                                    "Mustard",
+                                    "Bright-Red",
+                                    "Khaki",
+                                    "Black",
+                                    "White",
+                                    "Beige",
+                                    "Off-White",
+                                ];
+                            }
                             break;
                     }
                     return Object.assign(Object.assign({}, product.toObject()), { sizes: updatedSizes, fits: updatedFits, colors: updatedColors });

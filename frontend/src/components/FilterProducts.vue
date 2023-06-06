@@ -1,7 +1,7 @@
 <template>
   <button
     v-if="!showFilter"
-    class="p-2 w-full flex justify-center items-center"
+    class="p-2 w-full flex justify-center items-center lg:pr-5 lg:p-0 lg:pt-4 lg:justify-end"
     @click="toggleFilter"
   >
     Filter <img class="h-6 w-6 ml-2" :src="filter" alt="Filter." />
@@ -11,16 +11,16 @@
     class="w-full h-full flex-col bg-notBlack/90 fixed top-0 z-50 flex justify-center md:px-8 lg:px-0 lg:items-end"
   >
     <div
-      class="w-screen h-screen absolut hidden lg:w-1/2 xl:w-2/3"
+      class="w-screen h-screen absolut hidden lg:w-1/2"
       @click="toggleFilter"
     ></div>
     <div
-      class="px-4 py-4 pb-8 md:px-8 flex justify-center xl:justify-between flex-col bg-notWhite border border-notBlack lg:w-1/2 xl:w-1/3 lg:h-screen"
+      class="px-4 py-4 pb-8 md:px-8 flex justify-center xl:justify-between flex-col bg-notWhite border border-notBlack lg:w-1/2 lg:h-screen"
     >
       <img
         :src="close"
         alt="Close filter pop-up"
-        class="h-8 w-8 ml-auto lg:h-10 lg:w-10"
+        class="h-8 w-8 ml-auto lg:h-10 lg:w-10 cursor-pointer"
         @click="toggleFilter"
       />
       <!-- Colors filter -->
@@ -60,38 +60,11 @@
         </ul>
       </section>
 
-      <!-- Collections filter -->
-      <section class="relative" v-if="availableCollections.length > 1">
-        <button
-          class="flex justify-between items-center text-xs-sub lg:text-sub pb-4"
-        >
-          Collections
-          <div
-            :class="
-              selectedCollections.length > 0
-                ? 'text-body m-1 text-notWhite w-5 h-5 lg:w-6 lg:h-6 bg-terracota rounded-full flex justify-center items-center'
-                : 'hidden'
-            "
-          >
-            {{ selectedCollections.length }}
-          </div>
-        </button>
-        <ul class="bg-notWhite lg:space-y-1">
-          <li v-for="collection in availableCollections" :key="collection">
-            <input
-              type="checkbox"
-              :id="collection"
-              :value="collection"
-              v-model="selectedCollections"
-              class="bg-notWhite border-notBlack text-notBlack focus:ring-terracota 2xl:w-8 2xl:h-8"
-            />
-            <label :for="collection" class="pl-4">{{ collection }}</label>
-          </li>
-        </ul>
-      </section>
-
       <!-- Categories filter -->
-      <section class="relative" v-if="availableCategories.length > 1">
+      <section
+        class="relative"
+        v-if="availableCategories && availableCategories.length > 1"
+      >
         <button
           class="flex justify-between items-center text-xs-sub lg:text-sub pb-4"
         >
@@ -117,7 +90,7 @@
           <li v-for="category in availableCategories" :key="category">
             <input
               type="checkbox"
-              :id="category"
+              :id="`category-${category}`"
               :value="category"
               v-model="selectedCategories"
               class="bg-notWhite border-notBlack text-notBlack focus:ring-terracota 2xl:w-8 2xl:h-8"
@@ -144,9 +117,9 @@
 </template>
 
 <script lang="ts">
-import { Color, Type, Theme } from "../types/Product";
-import filter from "../assets/filter.svg";
+import { Color, Type } from "../types/Product";
 import close from "../assets/close.svg";
+import filter from "../assets/filter.svg";
 
 export default {
   props: {
@@ -154,55 +127,40 @@ export default {
       type: Array<Color>,
       required: true,
     },
-    availableCollections: {
-      type: Array<Theme>,
-      required: true,
-    },
+
     availableCategories: {
       type: Array<Type>,
-      required: true,
+      required: false,
     },
   },
   data() {
     return {
-      filter,
       selectedColors: [],
-      selectedCollections: [],
+
       selectedCategories: [],
       close,
+      filter,
       showFilter: false,
     };
   },
+
   methods: {
     toggleFilter() {
       this.showFilter = !this.showFilter;
     },
-
     applyFilter() {
-      this.$emit("filter-applied", {});
       const filterCriteria = {
-        colors:
-          this.selectedColors.length > 0
-            ? this.selectedColors
-            : this.availableColors,
-
-        collections:
-          this.selectedCollections.length > 0
-            ? this.selectedCollections
-            : this.availableCollections,
-        categories:
-          this.selectedCategories.length > 0
-            ? this.selectedCategories
-            : this.availableCategories,
+        colors: this.selectedColors,
+        categories: this.selectedCategories,
       };
-      this.showFilter = false;
+
       // Emit the event with the filter criteria or an empty object if not provided
       this.$emit("filter-applied", filterCriteria || {});
+      this.showFilter = false;
     },
     resetFilters() {
       // Reset all selected filters
       this.selectedColors = [];
-      this.selectedCollections = [];
       this.selectedCategories = [];
 
       // Emit an event with empty filter criteria to reset the filters in the parent component

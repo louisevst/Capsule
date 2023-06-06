@@ -22,10 +22,10 @@
       :onClick2="() => navigate('sign-up')"
       button1text="Login"
       button2text="Sign up"
-      :class="'hidden'"
     >
       <p>To add an item to your cart please login or sign up if you're new.</p>
     </PopUp>
+
     <Loader :is-fetching="loading" />
 
     <div
@@ -49,19 +49,19 @@
       </div>
       <div v-else class="lg:order-first">
         <h2 class="text-xs-headline lg:text-headline font-title">My Orders</h2>
-        <div v-for="order in orders.reverse()" :key="order._id">
+        <div v-for="order in orders" :key="order._id">
           <h3 class="text-xs-sub lg:text-sub">
             {{ order.date_ordered ? formatDate(order.date_ordered) : "" }}
           </h3>
           <div
-            v-for="item in order.order_items"
-            :key="item._id"
+            v-for="(item, index) in order.order_items"
+            :key="`${item._id}_${index}_${Date.now()}`"
             class="my-2 md:mr-20 lg:mx-0"
           >
             <orderProduct
               :price="item.price"
               :image="item.product_variant_id.images[0]"
-              :color="item.product_variant_id.color"
+              :color="capitalizeColor(item.product_variant_id.color)"
               :size="item.product_variant_id.size"
               :fit="item.product_variant_id.fit"
             />
@@ -71,78 +71,39 @@
     </div>
   </main>
 </template>
+
 <script lang="ts">
+import { onMounted, computed, ref } from "vue";
+import back from "../assets/arrow_back.svg";
 import PopUp from "../components/PopUp.vue";
-import { defineComponent } from "vue";
-import Loader from "../components/Loader.vue";
 import { useRouter } from "vue-router";
 import orderProduct from "../components/orderProduct.vue";
-import { ProductDetails } from "../types/Product";
-import editUser from "../components/editUser.vue";
-import back from "../assets/arrow_back.svg";
+import Loader from "../components/Loader.vue";
 import CTA from "../components/CTA.vue";
 
-interface User {
-  _id: string;
-  email: string;
-}
-
-interface Order_items {
-  _id: string;
-  order_id: string;
-  price: number;
-  product_variant_id: ProductDetails;
-  name: string;
-  images: Array<string>;
-}
-
-interface Order {
-  date_ordered: string;
-  order_items: Array<Order_items>;
-  total_price: number;
-  user_id: User;
-  _id: string;
-}
-
-export default defineComponent({
-  name: "Profile",
-  components: {
-    PopUp,
-    orderProduct,
-    Loader,
-    editUser,
-    CTA,
+export default {
+  // Component options
+  components: { PopUp, orderProduct, Loader, CTA },
+  data() {
+    return { back };
   },
   setup() {
+    // Move the logic inside the setup function
+
+    const loading = ref(true);
+    const orders = ref([]);
+    const isModalVisible = ref(false);
     const router = useRouter();
 
-    function navigate(to: string, cat?: string) {
-      const routeParams = cat ? { slug: cat } : {};
-      router.push({ name: to, params: routeParams });
-    }
+    const capitalizeColor = (color: string): string => {
+      const words = color.split("-");
+      const capitalizedWords = words.map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      });
 
-    return {
-      navigate,
+      return capitalizedWords.join("-");
     };
-  },
-  data() {
-    const userId: string = this.$cookies.get("id") || "";
-    return {
-      userId: userId,
-      loading: true,
-      orders: [] as Array<Order>,
-      isModalVisible: false,
-      back,
-    };
-  },
-  mounted() {
-    this.fetchOrders();
-  },
-  methods: {
-    goBack() {
-      this.$router.go(-1);
-    },
-    formatDate(date: string): string {
+    const formatDate = (date: string): string => {
       let orderDay = new Date(date);
       return orderDay
         .toLocaleDateString("en-UK", {
@@ -151,20 +112,34 @@ export default defineComponent({
           day: "2-digit",
         })
         .replace(/\//g, ".");
-    },
-    navigate(to: string, cat?: string) {
-      const router = useRouter();
-      const routeParams = cat ? { cat } : {};
+    };
+    const navigate = (to: string, cat?: string) => {
+      const routeParams = cat ? { slug: cat } : {};
       router.push({ name: to, params: routeParams });
-    },
-    async fetchOrders() {
-      try {
-        if (this.userId === "") {
-          return (this.isModalVisible = true);
+    };
+
+    const getUserId = () => {
+      const cookies = document.cookie.split("; ");
+      console.log(cookies);
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split("=");
+        if (name === "id") {
+          console.log(value);
+          return value;
         }
-        console.log(this.userId);
+      }
+      return null; // Return null if the 'id' cookie is not found
+    };
+
+    const userId = computed(() => {
+      // Compute the user ID using the getUserId function
+      return getUserId();
+    });
+
+    const fetchOrders = async () => {
+      try {
         const response = await fetch(
-          `http://localhost:8000/api/order/${this.userId}`,
+          `http://localhost:8000/api/order/${userId.value}`,
           {
             method: "GET",
             headers: {
@@ -173,14 +148,30 @@ export default defineComponent({
           }
         );
         const data = await response.json();
-        console.log(data);
-        this.orders = data.orders;
-
-        this.loading = false;
+        if (data.orders) {
+          orders.value = data.orders.reverse();
+          console.log(orders.value);
+          loading.value = false;
+        }
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
-    },
+    };
+
+    onMounted(fetchOrders); // Call getUser when the component is mounted
+
+    const goBack = () => {
+      router.go(-1);
+    };
+    return {
+      loading,
+      orders,
+      isModalVisible,
+      navigate,
+      goBack,
+      capitalizeColor,
+      formatDate,
+    };
   },
-});
+};
 </script>

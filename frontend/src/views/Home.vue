@@ -28,7 +28,7 @@
       <img
         src="https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938798/Collection/Spring/Chlo%C3%A9-blouse.jpg"
         alt="An elegant woman near the beach."
-        class="lg:max-h-[700px] lg:ml-auto order-2 md:px-20"
+        class="lg:ml-auto order-2 md:px-20 lg:px-0 lg:max-h-[90vh] lg:flex lg:mt-auto"
       />
 
       <div class="lg:col-span-2 order-2">
@@ -60,8 +60,8 @@
               Gone are the days of rummaging through your wardrobe, trying to
               put together an outfit that works. With our carefully curated
               collection, every piece is thoughtfully created to be effortlessly
-              paired with one another. Mixing and matching becomes a breeze,
-              allowing you to create a multitude of stylish and unique looks.
+              paired with one another, allowing you to create a multitude of
+              stylish and unique looks.
             </p>
             <button
               v-if="!showSection"
@@ -80,12 +80,10 @@
               Sustainability Meets Timeless Chic
             </h3>
             <p>
-              We understand the importance of investing in quality clothing that
-              stands the test of time. That's why all our garments are produced
-              on order, using only the finest recycled and deadstock fabrics. By
-              embracing our capsule concept, you'll not only reduce waste but
-              also build a closet of versatile, staple pieces that never go out
-              of style.
+              All our garments are produced on order, using only the finest
+              recycled and deadstock fabrics. By embracing our capsule concept,
+              you'll not only reduce waste but also build a closet of versatile,
+              staple pieces that never go out of style.
             </p>
             <h3 class="font-semibold lg:hidden">
               Unleash Your Creativity, Elevate Your Wardrobe
