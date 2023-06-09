@@ -2,6 +2,13 @@
 import Navbar from "./components/Navbar.vue";
 import Footer from "./components/Footer.vue";
 import { Notification, NotificationGroup } from "notiwind";
+
+interface NotificationItem {
+  id: number;
+  title: string;
+  text: string;
+  // Add other properties if necessary
+}
 </script>
 
 <template>
@@ -23,7 +30,7 @@ import { Notification, NotificationGroup } from "notiwind";
           move-delay="delay-300"
         >
           <div
-            v-for="notification in notifications"
+            v-for="notification in (notifications as Array<NotificationItem>)"
             :key="notification.id"
             class="flex w-full max-w-sm mx-auto mt-4 overflow-hidden bg-white rounded-lg shadow-md mb-20 lg:mb-0"
           >
