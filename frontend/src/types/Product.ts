@@ -1,3 +1,5 @@
+import { IUser } from "./User";
+
 export type ProductId = string;
 export type Name = string;
 export type Description = string;
@@ -65,4 +67,21 @@ export interface IWishlist {
   _id: string;
   user_id: string;
   product_id: Array<IProduct>;
+}
+
+export interface OrderedProducts {
+  name: Name;
+  order_id: string;
+  price: number;
+  product_variant_id: ProductDetails;
+  quantity: number;
+  _id: ProductId;
+}
+
+export interface IOrder {
+  date_ordered: Date;
+  order_items: Array<OrderedProducts>;
+  total_price: number;
+  user_id: IUser;
+  _id: string;
 }

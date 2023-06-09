@@ -2,17 +2,18 @@
   <main
     class="pt-20 2xl:pt-28 text-notBlack font-text text-body p-2 md:mx-8 lg:mx-0 md:min-h-[80vh]"
   >
-    <div class="flex items-center">
+    <div class="flex items-center justify-between w-full">
       <img
         :src="back"
         @click="goBack"
-        class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10 2xl:ml-40"
+        class="lg:w-12 lg:h-12 w-8 h-8 lg:ml-10 2xl:ml-40"
       />
       <h1
-        class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
+        class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 lg:m-0 lg:w-full"
       >
         My Profile
       </h1>
+      <div class="lg:w-12 lg:h-12 w-6 h-6 lg:ml-10 2xl:ml-40"></div>
     </div>
     <PopUp
       :showModal="isModalVisible"
@@ -28,10 +29,7 @@
 
     <Loader :is-fetching="loading" />
 
-    <div
-      v-if="!loading"
-      class="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 2xl:gap-20 lg:px-10 2xl:px-40"
-    >
+    <div v-if="!loading" class="space-y-4 lg:px-10 2xl:px-40">
       <!-- <editUser /> -->
       <div
         v-if="orders.length === 0"
@@ -47,9 +45,16 @@
           buttonColor="bg-terracota"
         />
       </div>
-      <div v-else class="lg:order-first">
+      <div
+        v-else
+        class="lg:order-first flex justify-center flex-col items-center"
+      >
         <h2 class="text-xs-headline lg:text-headline font-title">My Orders</h2>
-        <div v-for="order in orders" :key="order._id">
+        <div
+          v-for="order in orders"
+          :key="order._id"
+          class="flex-col items-center flex justify-center"
+        >
           <h3 class="text-xs-sub lg:text-sub">
             {{ order.date_ordered ? formatDate(order.date_ordered) : "" }}
           </h3>
@@ -80,6 +85,7 @@ import { useRouter } from "vue-router";
 import orderProduct from "../components/orderProduct.vue";
 import Loader from "../components/Loader.vue";
 import CTA from "../components/CTA.vue";
+import { IOrder } from "../types/Product";
 
 export default {
   // Component options
@@ -91,7 +97,7 @@ export default {
     // Move the logic inside the setup function
 
     const loading = ref(true);
-    const orders = ref([]);
+    const orders = ref<IOrder[]>([]);
     const isModalVisible = ref(false);
     const router = useRouter();
 
@@ -103,7 +109,7 @@ export default {
 
       return capitalizedWords.join("-");
     };
-    const formatDate = (date: string): string => {
+    const formatDate = (date: Date): string => {
       let orderDay = new Date(date);
       return orderDay
         .toLocaleDateString("en-UK", {

@@ -4,17 +4,18 @@
     class="text-notBlack font-text text-body mb-4 pt-20"
     v-if="!loading && !success"
   >
-    <div class="flex items-center">
+    <div class="flex items-center justify-between w-full">
       <img
         :src="back"
         @click="goBack"
-        class="lg:w-12 lg:h-12 w-6 h-6 mr-auto lg:ml-10 2xl:ml-40"
+        class="lg:w-12 lg:h-12 w-8 h-8 lg:ml-10 2xl:ml-40"
       />
       <h1
-        class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 mr-auto lg:m-0 self-end lg:w-full"
+        class="font-title text-xs-xlheadline lg:text-xlheadline text-center lg:pb-10 lg:m-0 lg:w-full"
       >
         My Order
       </h1>
+      <div class="lg:w-12 lg:h-12 w-6 h-6 lg:ml-10 2xl:ml-40"></div>
     </div>
     <div
       class="md:px-8 lg:px-10 2xl:px-60 lg:pb-10 space-y-2 md:h-[70vh] md:flex md:flex-col md:justify-center lg:static lg:h-auto"

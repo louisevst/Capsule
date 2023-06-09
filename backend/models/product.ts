@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { type } from "os";
 
 export interface IProduct {
   _id: mongoose.Types.ObjectId;

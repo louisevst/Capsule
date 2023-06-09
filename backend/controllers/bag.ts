@@ -79,16 +79,14 @@ export const deleteVariantFromBag = async (req: Request, res: Response) => {
     const bagId = req.params.id;
     const variantId = req.params.variantId;
 
-    if (!mongoose.Types.ObjectId.isValid(variantId)) {
-      return res.status(404).send("Invalid variantId");
-    }
+    const variant = new mongoose.Types.ObjectId(variantId);
 
     const bag = await Bag.findById(bagId);
     if (!bag) {
       return res.status(404).send("Bag not found");
     }
 
-    const index = bag.product_variant_id.indexOf(variantId);
+    const index = bag.product_variant_id.indexOf(variant);
     if (index === -1) {
       return res.status(404).send("Variant not found in bag");
     }

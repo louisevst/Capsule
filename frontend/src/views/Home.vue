@@ -137,12 +137,12 @@
       />
       <div class="lg:pl-10">
         <h2 class="font-title text-xs-headline lg:text-headline p-4">
-          Build Your Own Capsule Wardrobe.
+          Build Your Own Capsule.
         </h2>
         <h3 class="text-body font-semibold lg:text-bodyh p-4">
           Elevate Your Everyday Style with Effortless Versatility
         </h3>
-        <div class="lg:flex lg:mr-20 2xl:mr-40 lg:py-10">
+        <div class="lg:flex lg:mr-20 2xl:mr-40 lg:pb-10">
           <p class="p-4">
             Are you tired of feeling stuck in the same outfit cycle, unsure of
             what to wear? It's time to transform your wardrobe with Capsule. Our

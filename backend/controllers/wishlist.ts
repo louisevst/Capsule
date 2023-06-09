@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Wishlist from "../models/wishlist";
 import { Types } from "mongoose";
 import mongoose from "mongoose";
+import { ObjectId } from "mongoose";
 
 // Controller function for creating a new wishlist item
 export async function createWishlistItem(req: Request, res: Response) {
@@ -48,10 +49,8 @@ export async function getWishlistItems(req: Request, res: Response) {
 export async function deleteWishlistItem(req: Request, res: Response) {
   try {
     const { id, product } = req.params;
-    console.log(id, product, req.params);
-    if (!mongoose.Types.ObjectId.isValid(product)) {
-      return res.status(404).send("Invalid product id");
-    }
+
+    const productId = new mongoose.Types.ObjectId(product);
     // Find and delete the wishlist item document in the database
     const wishlistItem = await Wishlist.findById(id);
 
@@ -60,7 +59,7 @@ export async function deleteWishlistItem(req: Request, res: Response) {
     }
 
     // Find the index of the product in the wishlist item's product array
-    const productIndex = wishlistItem.product_id.indexOf(product);
+    const productIndex = wishlistItem.product_id.indexOf(productId);
 
     if (productIndex === -1) {
       return res.status(404).json({ message: "Product not found in wishlist" });

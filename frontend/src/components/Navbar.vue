@@ -10,18 +10,15 @@
     <nav
       class="md:py-2 lg:py-0 lg:px-20 xl:px-28 2xl:px-40 flex items-center justify-center w-full"
     >
-      <div class="grow lg:block" ref="collection">
+      <div class="grow xl:pr-[99.728px] lg:pr-[109.97]" ref="collection">
         <button
           @click="toggleCollection"
-          class="collection flex relative pl-10 pr-24 font-normal hover:underline hover:underline-offset-4 items-center text-notBlack text-bodyh font-text py-1"
+          class="collection flex relative font-normal hover:underline hover:underline-offset-4 items-center text-notBlack text-bodyh font-text"
         >
           <!--          class="collection flex relative pl-10 pr-24 font-normal hover:bg-notBlack/10 bg-notBlack/10 items-center group text-notBlack text-bodyh font-text border border-notBlack py-1 bg-notWhite"
  <img :src="menu" class="w-8 h-8 mr-2" /> -->
           Menu
-          <img
-            :src="expand_more"
-            class="w-4 h-4 lg:w-8 lg:h-8 transition ease-in-out delay-150 duration-300 fill-notBlack"
-          />
+          <img :src="expand_more" class="w-4 h-4 lg:w-8 lg:h-8 fill-notBlack" />
         </button>
         <ul
           :class="showCollection ? 'absolute' : 'hidden'"

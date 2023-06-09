@@ -2,7 +2,7 @@
   <div>
     <div
       v-show="showModal"
-      class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 text-notBlack font-text z-50"
+      class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 text-notBlack font-text z-50"
     >
       <div
         class="max-w-2xl p-6 bg-white rounded-md shadow-xl space-y-4 lg:space-y-8"
