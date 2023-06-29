@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Order from "../models/order";
+import Order, { IOrder } from "../models/order";
 import Order_item, { IOrder_items } from "../models/order_item";
 import Product_Variant from "../models/poduct_variant";
 import { sendOrderConfirmationEmail } from "../middlewares/orderConfirmation";
@@ -92,7 +92,7 @@ export async function getOrder(req: Request, res: Response) {
         order_id: order._id,
       }).populate("product_variant_id");
 
-      order.order_items = orderItems;
+      order.order_items = orderItems.map((item) => item.product_variant_id);
     }
 
     res.json({ orders });
