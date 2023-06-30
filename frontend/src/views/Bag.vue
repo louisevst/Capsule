@@ -228,13 +228,14 @@ export default defineComponent({
       if (this.user_id === "") {
         this.isModalVisible = true;
       } else {
-        this.fetchBag();
+        await this.fetchBag();
+        this.fetchBagItems();
       }
     },
     async fetchBag() {
       try {
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
+          `https://capsule-wardrobe.onrender.com/api/bag/${this.user_id}`,
           {
             method: "GET",
             headers: {
@@ -243,12 +244,13 @@ export default defineComponent({
           }
         );
         const data = await response.json();
-        if (data === undefined || data === null) {
-          this.isEmpty = true;
-        } else {
+
+        if (data && Array.isArray(data)) {
           this.bag = data[0].product_variant_id;
           this.bagId = data[0]._id;
-          this.fetchBagItems();
+          this.isEmpty = this.bag.length === 0;
+        } else {
+          this.isEmpty = true;
         }
       } catch (error) {
         console.log(error);
@@ -260,7 +262,7 @@ export default defineComponent({
         const productVariantIds = Object.values(this.bag);
         for (const productVariantId of productVariantIds) {
           const detailsResponse = await fetch(
-            `https://capsule-wardrobe.onrender.com:8000/api/details/id/${productVariantId}`,
+            `https://capsule-wardrobe.onrender.com/api/details/id/${productVariantId}`,
             {
               method: "GET",
               headers: {
@@ -271,7 +273,7 @@ export default defineComponent({
           const productDetails = await detailsResponse.json();
 
           const productResponse = await fetch(
-            `https://capsule-wardrobe.onrender.com:8000/api/product/${productDetails.product_id}`,
+            `https://capsule-wardrobe.onrender.com/api/product/${productDetails.product_id}`,
             {
               method: "GET",
               headers: {
@@ -298,7 +300,7 @@ export default defineComponent({
         }));
 
         await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
+          `https://capsule-wardrobe.onrender.com/api/bag/${this.user_id}`,
           {
             method: "PUT",
             headers: {
