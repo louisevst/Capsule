@@ -224,7 +224,7 @@ export default defineComponent({
     },
 
     isProductLiked(productId: string): boolean {
-      if (!this.wishlist || !productId) {
+      if (!this.wishlist || !productId || this.user_id === "") {
         return false;
       } else
         return this.wishlist.product_id.some(
