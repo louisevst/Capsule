@@ -41,7 +41,7 @@
       />
       <CTA
         text="Update"
-        :onClick="(event) => handleSubmit(event)"
+        :onClick="(event:Event) => handleSubmit(event)"
         class="flex justify-center items-center lg:self-end"
         textColor="text-notWhite"
         bgColor="bg-notWhite"
