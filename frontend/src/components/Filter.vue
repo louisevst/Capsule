@@ -94,11 +94,9 @@ export default defineComponent({
   methods: {
     selectColor(color: string) {
       this.$emit("colorSelected", color);
-      console.log(color);
     },
     selectType(type: string) {
       this.$emit("typeSelected", type);
-      console.log(type);
     },
     toggleCat() {
       if (this.showFilter) {

@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col lg:flex-row">
-    <section class="relative bg-black lg:w-1/2">
+    <section class="relative bg-black lg:w-1/2 lg:max-h-screen">
       <img
       src=https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-cottonbro-studio-5119214_am3me2.jpg
       alt="A woman with bold eye makeup" class="opacity-80 w-full h-full

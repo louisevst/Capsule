@@ -446,9 +446,9 @@ export default defineComponent({
             await this.createBag();
           } else {
             // Bag exists, update the existing bag
-            console.log(data[0]._id);
+
             const bagId = data[0]._id;
-            const updateResponse = await fetch(
+            await fetch(
               `https://capsule-wardrobe.onrender.com/api/bag/${bagId}`,
               {
                 method: "PUT",
@@ -461,7 +461,6 @@ export default defineComponent({
                 }),
               }
             );
-            console.log(updateResponse);
           }
         } else {
           console.error("User ID is missing");
@@ -476,17 +475,13 @@ export default defineComponent({
         if (this.$cookies.get("id")) {
           this.bag.user_id = this.$cookies.get("id");
 
-          const response = await fetch(
-            "https://capsule-wardrobe.onrender.com/api/bag",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(this.bag),
-            }
-          );
-          console.log(await response.json());
+          await fetch("https://capsule-wardrobe.onrender.com/api/bag", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(this.bag),
+          });
         } else {
           this.isModalVisible = true;
         }

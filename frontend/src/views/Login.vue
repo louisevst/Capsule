@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col lg:flex-row">
-    <section class="relative bg-black lg:w-1/2">
+    <section class="relative bg-black lg:w-1/2 lg:max-h-screen">
       <img
       src=https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938789/Images/arun-sharma-gGbyz5fX03c-unsplash_xsu9fr.jpg
       alt="A woman sitting on a couch." class="opacity-80 w-full h-full

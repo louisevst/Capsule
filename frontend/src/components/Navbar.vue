@@ -472,7 +472,7 @@ export default defineComponent({
           // Perform any additional cleanup or redirection if needed
           this.$cookies.remove("token");
           this.$cookies.remove("id");
-          console.log("Logged out successfully");
+
           window.location.href = "/login";
         } else {
           // Logout failed

@@ -32,7 +32,6 @@ export default defineComponent({
   },
   watch: {
     loading(newVal) {
-      console.log("loading:" + newVal, this.fetchSuccessful);
       if (!newVal && this.fetchSuccessful) {
         this.playAnimationOnce();
       }
@@ -48,7 +47,7 @@ export default defineComponent({
   methods: {
     initializeAnimation() {
       const animationContainer = document.getElementById(this.animationId);
-      console.log(animationContainer);
+
       if (!animationContainer) return;
 
       try {
@@ -59,7 +58,6 @@ export default defineComponent({
           autoplay: false,
           animationData: animation,
         });
-        console.log(this.animationInstance);
       } catch (error) {
         console.error("Error initializing animation:", error);
       }

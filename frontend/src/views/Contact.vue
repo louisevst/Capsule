@@ -81,7 +81,7 @@
             bgColor="bg-notWhite"
             invertIcon="invert"
             type="submit"
-            :onClick="handleClick"
+            :onClick="handleSubmit"
           />
         </div>
       </form>
@@ -107,36 +107,21 @@ export default defineComponent({
     };
   },
   methods: {
-    handleClick() {
-      console.log(
-        JSON.stringify({
-          email: this.email,
-          name: this.name,
-          subject: this.subject,
-          message: this.message,
-        })
-      );
-    },
     async handleSubmit(event: Event) {
       event.preventDefault();
       try {
-        const response = await fetch(
-          "https://capsule-wardrobe.onrender.com/api/message",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: this.email,
-              name: this.name,
-              subject: this.subject,
-              message: this.message,
-            }),
-          }
-        );
-        const data = await response.json();
-        console.log(data);
+        await fetch("https://capsule-wardrobe.onrender.com/api/message", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: this.email,
+            name: this.name,
+            subject: this.subject,
+            message: this.message,
+          }),
+        });
       } catch (error: unknown) {
         console.log(error);
         notify(

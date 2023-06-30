@@ -108,7 +108,7 @@ export default defineComponent({
       const capitalizedWords = words.map((word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
       });
-      console.log(capitalizedWords.join("-"));
+
       return capitalizedWords.join("-");
     },
   },
@@ -123,9 +123,6 @@ export default defineComponent({
     };
   },
   methods: {
-    toggleHearth() {
-      console.log("hello");
-    },
     selectColor(color: string) {
       this.selectedColor = color;
     },

@@ -24,7 +24,7 @@
       button1text="Login"
       button2text="Sign up"
     >
-      <p>To add an item to your cart please login or sign up if you're new.</p>
+      <p>To create your own profile login or sign up if you're new.</p>
     </PopUp>
 
     <Loader :is-fetching="loading" />
@@ -98,7 +98,7 @@ export default {
 
     const loading = ref(true);
     const orders = ref<IOrder[]>([]);
-    const isModalVisible = ref(false);
+    let isModalVisible = ref(false);
     const router = useRouter();
 
     const capitalizeColor = (color: string): string => {
@@ -126,15 +126,14 @@ export default {
 
     const getUserId = () => {
       const cookies = document.cookie.split("; ");
-      console.log(cookies);
+
       for (const cookie of cookies) {
         const [name, value] = cookie.split("=");
         if (name === "id") {
-          console.log(value);
           return value;
         }
       }
-      return null; // Return null if the 'id' cookie is not found
+      return (isModalVisible.value = true); // Return null if the 'id' cookie is not found
     };
 
     const userId = computed(() => {
@@ -156,7 +155,7 @@ export default {
         const data = await response.json();
         if (data.orders) {
           orders.value = data.orders.reverse();
-          console.log(orders.value);
+
           loading.value = false;
         }
       } catch (error) {

@@ -102,7 +102,6 @@ export default defineComponent({
   methods: {
     async deleteProduct(productId: string) {
       try {
-        console.log(this.wishlist);
         const id = this.wishlist._id;
         const response = await fetch(
           `https://capsule-wardrobe.onrender.com/api/wishlist/${id}/${productId}  `,

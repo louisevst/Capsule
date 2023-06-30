@@ -206,7 +206,6 @@ export default defineComponent({
       }
       // Update the bag in the backend
       try {
-        console.log(this.bagId);
         const response = await fetch(
           `https://capsule-wardrobe.onrender.com/api/bag/${this.bagId}/variants/${productId}  `,
           {
@@ -262,7 +261,6 @@ export default defineComponent({
       try {
         const productVariantIds = Object.values(this.bag);
         for (const productVariantId of productVariantIds) {
-          console.log(productVariantId);
           const detailsResponse = await fetch(
             `https://capsule-wardrobe.onrender.com:8000/api/details/id/${productVariantId}`,
             {
@@ -301,7 +299,7 @@ export default defineComponent({
           quantity: bagProduct.quantity,
         }));
 
-        const response = await fetch(
+        await fetch(
           `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
           {
             method: "PUT",
@@ -311,11 +309,6 @@ export default defineComponent({
             body: JSON.stringify(bagPayload),
           }
         );
-
-        if (response.ok) {
-        } else {
-          console.error("Failed to update bag:", response.statusText);
-        }
       } catch (error) {
         console.error("Error updating bag:", error);
       }

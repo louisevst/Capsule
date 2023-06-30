@@ -163,7 +163,7 @@ export default defineComponent({
         }
       );
       const productVariants = await detailsResponse.json();
-      console.log(productVariants);
+
       const matchingProductVariant = productVariants.find(
         (variant: ProductDetails) => {
           return (
@@ -175,7 +175,6 @@ export default defineComponent({
       );
 
       if (matchingProductVariant) {
-        console.log("Matching product variant ID:", matchingProductVariant._id);
         this.addToCart(matchingProductVariant._id);
       } else {
         console.log("No matching product variant found");
@@ -198,8 +197,6 @@ export default defineComponent({
 
         if (!bagResponse.ok) {
           if (bagResponse.status === 404) {
-            console.log("Bag not found. Creating a new bag...");
-
             // Create a new bag
             const createBagResponse = await fetch(
               "https://capsule-wardrobe.onrender.com/api/bag",
@@ -245,8 +242,6 @@ export default defineComponent({
             if (addToCartResponse.ok) {
               this.isAdding = false;
               this.success = true;
-              console.log("Item added to the cart successfully");
-              console.log(await addToCartResponse.json());
             } else {
               console.error(
                 "Failed to add item to the cart:",
@@ -283,8 +278,6 @@ export default defineComponent({
         if (addToCartResponse.ok) {
           this.isAdding = false;
           this.success = true;
-          console.log("Item added to the cart successfully");
-          console.log(await addToCartResponse.json());
         } else {
           console.error(
             "Failed to add item to the cart:",

@@ -124,15 +124,14 @@ export default defineComponent({
           );
           const data = await response.json();
           if (response.ok) {
-            console.log(data);
             if (data.length > 0) {
               // Bag exists, retrieve the bag ID
-              console.log(data._id);
+
               const wishlistID = data[0]._id;
               this.updateWishlist(wishlistID, productId);
             } else {
               // Bag doesn't exist, create a new bag
-              console.log(data);
+
               this.createWishlist();
             }
           } else {
@@ -157,7 +156,6 @@ export default defineComponent({
         );
         if (response.ok) {
           console.log("wishlist updated successfully");
-          console.log(await response.json());
         } else {
           console.log("wishlist not updated");
         }
@@ -183,7 +181,6 @@ export default defineComponent({
           }
         );
         if (response.ok) {
-          console.log("Wishlist created successfully");
           this.isHearthFilled = true;
           this.hearth = this.isHearthFilled ? this.filledHearth : hearth;
         } else {
