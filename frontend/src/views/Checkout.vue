@@ -296,7 +296,7 @@ export default defineComponent({
     async getUser() {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/auth/${this.user_id}  `,
+          `http://capsule-wardrobe.onrender.com:8000/api/auth/${this.user_id}  `,
           {
             method: "GET",
             headers: {
@@ -320,7 +320,7 @@ export default defineComponent({
     async updateUser() {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/auth/${this.user_id}  `,
+          `http://capsule-wardrobe.onrender.com:8000/api/auth/${this.user_id}  `,
           {
             method: "PUT",
             headers: {
@@ -339,7 +339,7 @@ export default defineComponent({
     async fetchBag() {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/bag/${this.user_id}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
           {
             method: "GET",
             headers: {
@@ -364,7 +364,7 @@ export default defineComponent({
           const productVariantIds = item.product_variant_id;
           for (const productVariantId of productVariantIds) {
             const detailsResponse = await fetch(
-              `http://localhost:8000/api/details/id/${productVariantId}`,
+              `http://capsule-wardrobe.onrender.com:8000/api/details/id/${productVariantId}`,
               {
                 method: "GET",
                 headers: {
@@ -375,7 +375,7 @@ export default defineComponent({
             const productDetails = await detailsResponse.json();
 
             const productResponse = await fetch(
-              `http://localhost:8000/api/product/${productDetails.product_id}`,
+              `http://capsule-wardrobe.onrender.com:8000/api/product/${productDetails.product_id}`,
               {
                 method: "GET",
                 headers: {
@@ -397,22 +397,25 @@ export default defineComponent({
     },
     async createOrder() {
       try {
-        const response = await fetch("http://localhost:8000/api/order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: this.user_id,
-            items: this.products.map((product) => ({
-              product_variant_id: product.details._id,
-              quantity: 1, // Update this as per your requirements
-              price: product.price,
-              name: product.name,
-            })),
-            email: this.user.email, // Provide the email associated with the order
-          }),
-        });
+        const response = await fetch(
+          "http://capsule-wardrobe.onrender.com:8000/api/order",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_id: this.user_id,
+              items: this.products.map((product) => ({
+                product_variant_id: product.details._id,
+                quantity: 1, // Update this as per your requirements
+                price: product.price,
+                name: product.name,
+              })),
+              email: this.user.email, // Provide the email associated with the order
+            }),
+          }
+        );
 
         if (response.ok) {
           // Order created successfully
@@ -430,12 +433,15 @@ export default defineComponent({
     },
     async emptyBag() {
       try {
-        await fetch(`http://localhost:8000/api/bag/${this.bag[0]._id}`, {
-          method: "Delete",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        await fetch(
+          `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.bag[0]._id}`,
+          {
+            method: "Delete",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
       } catch (error: unknown) {
         console.log(error);
       }

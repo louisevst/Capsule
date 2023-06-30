@@ -145,7 +145,7 @@ export default {
     const fetchOrders = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/order/${userId.value}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/order/${userId.value}`,
           {
             method: "GET",
             headers: {

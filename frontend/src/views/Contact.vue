@@ -120,18 +120,21 @@ export default defineComponent({
     async handleSubmit(event: Event) {
       event.preventDefault();
       try {
-        const response = await fetch("http://localhost:8000/api/message", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: this.email,
-            name: this.name,
-            subject: this.subject,
-            message: this.message,
-          }),
-        });
+        const response = await fetch(
+          "http://capsule-wardrobe.onrender.com:8000/api/message",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: this.email,
+              name: this.name,
+              subject: this.subject,
+              message: this.message,
+            }),
+          }
+        );
         const data = await response.json();
         console.log(data);
       } catch (error: unknown) {

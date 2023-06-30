@@ -112,18 +112,21 @@ export default defineComponent({
     async handleSubmit(event: Event) {
       event.preventDefault(); // prevent the default form submission behavior
       try {
-        const response = await fetch("http://localhost:8000/api/auth/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            first_name: this.first_name,
-            last_name: this.last_name,
-            email: this.email,
-            password: this.password,
-          }),
-        });
+        const response = await fetch(
+          "http://capsule-wardrobe.onrender.com:8000/api/auth/signup",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              first_name: this.first_name,
+              last_name: this.last_name,
+              email: this.email,
+              password: this.password,
+            }),
+          }
+        );
         const data = await response.json();
         console.log(data);
         this.$cookies.set("token", data.token);

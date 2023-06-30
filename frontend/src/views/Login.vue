@@ -94,16 +94,19 @@ export default defineComponent({
     async handleSubmit(event: Event) {
       event.preventDefault(); // prevent the default form submission behavior
       try {
-        const response = await fetch("http://localhost:8000/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-          }),
-        });
+        const response = await fetch(
+          "http://capsule-wardrobe.onrender.com:8000/api/auth/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: this.email,
+              password: this.password,
+            }),
+          }
+        );
         const data = await response.json();
         console.log(data); //here it can be {message: user already exists}
         this.$cookies.set("token", data.token);

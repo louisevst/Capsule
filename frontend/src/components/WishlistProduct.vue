@@ -154,7 +154,7 @@ export default defineComponent({
     async findProductId() {
       const id = this._id;
       const detailsResponse = await fetch(
-        `http://localhost:8000/api/details/${id}`,
+        `http://capsule-wardrobe.onrender.com:8000/api/details/${id}`,
         {
           method: "GET",
           headers: {
@@ -187,7 +187,7 @@ export default defineComponent({
         this.isAdding = true;
         // Check if the user already has a bag
         const bagResponse = await fetch(
-          `http://localhost:8000/api/bag/${this.user_id}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
           {
             method: "GET",
             headers: {
@@ -202,7 +202,7 @@ export default defineComponent({
 
             // Create a new bag
             const createBagResponse = await fetch(
-              "http://localhost:8000/api/bag",
+              "http://capsule-wardrobe.onrender.com:8000/api/bag",
               {
                 method: "POST",
                 headers: {
@@ -232,7 +232,7 @@ export default defineComponent({
             };
 
             const addToCartResponse = await fetch(
-              `http://localhost:8000/api/bag/${bagId}`,
+              `http://capsule-wardrobe.onrender.com:8000/api/bag/${bagId}`,
               {
                 method: "PUT",
                 headers: {
@@ -270,7 +270,7 @@ export default defineComponent({
         };
 
         const addToCartResponse = await fetch(
-          `http://localhost:8000/api/bag/${bagId}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/bag/${bagId}`,
           {
             method: "PUT",
             headers: {

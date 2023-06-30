@@ -457,12 +457,15 @@ export default defineComponent({
     },
     async logout() {
       try {
-        const response = await fetch("http://localhost:8000/api/auth/logout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          "http://capsule-wardrobe.onrender.com:8000/api/auth/logout",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.ok) {
           // Logout successful

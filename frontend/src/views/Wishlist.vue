@@ -105,7 +105,7 @@ export default defineComponent({
         console.log(this.wishlist);
         const id = this.wishlist._id;
         const response = await fetch(
-          `http://localhost:8000/api/wishlist/${id}/${productId}  `,
+          `http://capsule-wardrobe.onrender.com:8000/api/wishlist/${id}/${productId}  `,
           {
             method: "Delete",
             headers: {
@@ -144,7 +144,7 @@ export default defineComponent({
     async fetchWishlist() {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/wishlist/${this.user_id}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/wishlist/${this.user_id}`,
           {
             method: "GET",
             headers: {
@@ -180,7 +180,7 @@ export default defineComponent({
           const productVariantIds = item._id;
 
           const detailsResponse = await fetch(
-            `http://localhost:8000/api/details/${productVariantIds}`,
+            `http://capsule-wardrobe.onrender.com:8000/api/details/${productVariantIds}`,
             {
               method: "GET",
               headers: {
@@ -226,7 +226,7 @@ export default defineComponent({
     async updateWishlist(id: string, product: string) {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/wishlist/${id}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/wishlist/${id}`,
           {
             method: "PUT",
             headers: {

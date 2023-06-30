@@ -321,7 +321,7 @@ export default defineComponent({
     async fetchProductDetails(productId: string | string[]) {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/product/${productId}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/product/${productId}`,
           {
             method: "GET",
             headers: {
@@ -336,7 +336,7 @@ export default defineComponent({
       }
       try {
         const response = await fetch(
-          `http://localhost:8000/api/details/${productId}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/details/${productId}`,
           {
             method: "GET",
             headers: {
@@ -431,7 +431,7 @@ export default defineComponent({
       try {
         if (this.bagExists()) {
           const response = await fetch(
-            `http://localhost:8000/api/bag/${this.bag.user_id}`,
+            `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.bag.user_id}`,
             {
               method: "GET",
               headers: {
@@ -449,7 +449,7 @@ export default defineComponent({
             console.log(data[0]._id);
             const bagId = data[0]._id;
             const updateResponse = await fetch(
-              `http://localhost:8000/api/bag/${bagId}`,
+              `http://capsule-wardrobe.onrender.com:8000/api/bag/${bagId}`,
               {
                 method: "PUT",
                 headers: {
@@ -476,13 +476,16 @@ export default defineComponent({
         if (this.$cookies.get("id")) {
           this.bag.user_id = this.$cookies.get("id");
 
-          const response = await fetch("http://localhost:8000/api/bag", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(this.bag),
-          });
+          const response = await fetch(
+            "http://capsule-wardrobe.onrender.com:8000/api/bag",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(this.bag),
+            }
+          );
           console.log(await response.json());
         } else {
           this.isModalVisible = true;

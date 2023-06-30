@@ -114,7 +114,7 @@ export default defineComponent({
           }
 
           const response = await fetch(
-            `http://localhost:8000/api/wishlist/${this.user_id}`,
+            `http://capsule-wardrobe.onrender.com:8000/api/wishlist/${this.user_id}`,
             {
               method: "GET",
               headers: {
@@ -146,7 +146,7 @@ export default defineComponent({
     async updateWishlist(id: string, product: string) {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/wishlist/${id}`,
+          `http://capsule-wardrobe.onrender.com:8000/api/wishlist/${id}`,
           {
             method: "PUT",
             headers: {
@@ -169,16 +169,19 @@ export default defineComponent({
     },
     async createWishlist() {
       try {
-        const response = await fetch("http://localhost:8000/api/wishlist", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: this.user_id,
-            product_id: this.productId,
-          }),
-        });
+        const response = await fetch(
+          "http://capsule-wardrobe.onrender.com:8000/api/wishlist",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_id: this.user_id,
+              product_id: this.productId,
+            }),
+          }
+        );
         if (response.ok) {
           console.log("Wishlist created successfully");
           this.isHearthFilled = true;
