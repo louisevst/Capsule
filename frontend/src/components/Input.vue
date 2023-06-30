@@ -3,6 +3,7 @@
     <label
       :for="name"
       class="block font-semibold lg:font-light lg:text-bodyh"
+      :class="addClass"
       >{{ label }}</label
     >
     <input
@@ -22,6 +23,10 @@
 <script lang="ts">
 export default {
   props: {
+    addClass: {
+      type: String,
+      required: false,
+    },
     label: {
       type: String,
       required: true,

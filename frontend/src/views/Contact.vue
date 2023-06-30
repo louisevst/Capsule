@@ -31,6 +31,7 @@
           type="email"
           @input="(event: Event) => { email = (event.target as HTMLInputElement).value }"
           placeholder="Type your email here."
+          :addClass="'font-semibold lg:font-light'"
           required
         />
         <Input
@@ -39,6 +40,7 @@
           type="name"
           @input="(event: Event) => { name = (event.target as HTMLInputElement).value }"
           placeholder="Type your name here."
+          :addClass="'font-semibold lg:font-light'"
           required
         />
         <div class="w-full">
@@ -52,7 +54,7 @@
             class="block py-2.5 px-0 w-full text-sm text-notBlack bg-transparent border-0 border-b border-notBlack appearance-none focus:outline-none focus:ring-0 focus:border-terracota peer"
             v-model="subject"
           >
-            <option selected>Select a subject here</option>
+            <option :selected="true" disabled>Select a subject here</option>
             <option value="order">Order</option>
             <option value="request">Request</option>
             <option value="claim">Claim</option>
