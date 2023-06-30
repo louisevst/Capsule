@@ -81,7 +81,7 @@ export default defineComponent({
     async getUser() {
       try {
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/auth/${this.user_id}  `,
+          `https://capsule-wardrobe.onrender.com/api/auth/${this.user_id}  `,
           {
             method: "GET",
             headers: {
@@ -111,7 +111,7 @@ export default defineComponent({
       try {
         this.user.password = this.newPassword;
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/auth/${this.user_id}`,
+          `https://capsule-wardrobe.onrender.com/api/auth/${this.user_id}`,
           {
             method: "PUT",
             headers: {

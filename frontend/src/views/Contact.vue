@@ -121,7 +121,7 @@ export default defineComponent({
       event.preventDefault();
       try {
         const response = await fetch(
-          "https://capsule-wardrobe.onrender.com:8000/api/message",
+          "https://capsule-wardrobe.onrender.com/api/message",
           {
             method: "POST",
             headers: {

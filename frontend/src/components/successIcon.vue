@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import lottie, { AnimationItem } from "../../node_modules/lottie-web";
+import lottie, { AnimationItem } from "lottie-web";
 import animation from "../assets/ok.json";
 import loadingIcon from "../components/loadingIcon.vue";
 

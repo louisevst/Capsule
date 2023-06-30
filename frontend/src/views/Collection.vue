@@ -237,7 +237,7 @@ export default defineComponent({
           return;
         }
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/wishlist/${this.user_id}`,
+          `https://capsule-wardrobe.onrender.com/api/wishlist/${this.user_id}`,
           {
             method: "GET",
             headers: {
@@ -256,7 +256,7 @@ export default defineComponent({
     async fetchCategoryProducts() {
       try {
         const response = await fetch(
-          "https://capsule-wardrobe.onrender.com:8000/api/product"
+          "https://capsule-wardrobe.onrender.com/api/product"
         );
         const data = await response.json();
 

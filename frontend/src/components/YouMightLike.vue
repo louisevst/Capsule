@@ -136,7 +136,7 @@ export default {
     async fetchFeaturedProducts() {
       try {
         const response = await fetch(
-          "https://capsule-wardrobe.onrender.com:8000/api/product"
+          "https://capsule-wardrobe.onrender.com/api/product"
         );
         const data = await response.json();
         this.products = data.products.splice(0, 13);

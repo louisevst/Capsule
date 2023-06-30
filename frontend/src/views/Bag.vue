@@ -208,7 +208,7 @@ export default defineComponent({
       try {
         console.log(this.bagId);
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.bagId}/variants/${productId}  `,
+          `https://capsule-wardrobe.onrender.com/api/bag/${this.bagId}/variants/${productId}  `,
           {
             method: "Delete",
             headers: {

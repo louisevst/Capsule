@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import lottie from "../../node_modules/lottie-web";
+import lottie from "lottie-web";
 import animation from "../assets/order-success.json";
 import CTA from "./CTA.vue";
 import { useRouter } from "vue-router";

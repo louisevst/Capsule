@@ -296,7 +296,7 @@ export default defineComponent({
     async getUser() {
       try {
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/auth/${this.user_id}  `,
+          `https://capsule-wardrobe.onrender.com/api/auth/${this.user_id}  `,
           {
             method: "GET",
             headers: {
@@ -320,7 +320,7 @@ export default defineComponent({
     async updateUser() {
       try {
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/auth/${this.user_id}  `,
+          `https://capsule-wardrobe.onrender.com/api/auth/${this.user_id}  `,
           {
             method: "PUT",
             headers: {
@@ -339,7 +339,7 @@ export default defineComponent({
     async fetchBag() {
       try {
         const response = await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
+          `https://capsule-wardrobe.onrender.com/api/bag/${this.user_id}`,
           {
             method: "GET",
             headers: {
@@ -364,7 +364,7 @@ export default defineComponent({
           const productVariantIds = item.product_variant_id;
           for (const productVariantId of productVariantIds) {
             const detailsResponse = await fetch(
-              `https://capsule-wardrobe.onrender.com:8000/api/details/id/${productVariantId}`,
+              `https://capsule-wardrobe.onrender.com/api/details/id/${productVariantId}`,
               {
                 method: "GET",
                 headers: {
@@ -375,7 +375,7 @@ export default defineComponent({
             const productDetails = await detailsResponse.json();
 
             const productResponse = await fetch(
-              `https://capsule-wardrobe.onrender.com:8000/api/product/${productDetails.product_id}`,
+              `https://capsule-wardrobe.onrender.com/api/product/${productDetails.product_id}`,
               {
                 method: "GET",
                 headers: {
@@ -398,7 +398,7 @@ export default defineComponent({
     async createOrder() {
       try {
         const response = await fetch(
-          "https://capsule-wardrobe.onrender.com:8000/api/order",
+          "https://capsule-wardrobe.onrender.com/api/order",
           {
             method: "POST",
             headers: {
@@ -434,7 +434,7 @@ export default defineComponent({
     async emptyBag() {
       try {
         await fetch(
-          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.bag[0]._id}`,
+          `https://capsule-wardrobe.onrender.com/api/bag/${this.bag[0]._id}`,
           {
             method: "Delete",
             headers: {
