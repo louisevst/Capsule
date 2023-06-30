@@ -224,11 +224,12 @@ export default defineComponent({
     },
 
     isProductLiked(productId: string): boolean {
-      if (this.wishlist !== null) {
+      if (!this.wishlist || !productId) {
+        return false;
+      } else
         return this.wishlist.product_id.some(
           (product) => product._id === productId
         );
-      } else return false;
     },
 
     async fetchWishlist() {
