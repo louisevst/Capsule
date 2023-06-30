@@ -375,6 +375,9 @@ export default defineComponent({
 
     async fetchWishlist() {
       try {
+        if (this.user_id === "") {
+          return;
+        }
         const response = await fetch(
           `https://capsule-wardrobe.onrender.com/api/wishlist/${this.user_id}`,
           {
