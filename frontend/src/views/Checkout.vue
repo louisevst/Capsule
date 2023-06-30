@@ -319,7 +319,7 @@ export default defineComponent({
     },
     async updateUser() {
       try {
-        const response = await fetch(
+        await fetch(
           `https://capsule-wardrobe.onrender.com/api/auth/${this.user_id}  `,
           {
             method: "PUT",
@@ -330,8 +330,6 @@ export default defineComponent({
             body: JSON.stringify(this.user),
           }
         );
-        const data = await response.json();
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -359,7 +357,6 @@ export default defineComponent({
     },
     async fetchBagItems() {
       try {
-        console.log(this.bag);
         for (const item of this.bag) {
           const productVariantIds = item.product_variant_id;
           for (const productVariantId of productVariantIds) {
@@ -389,7 +386,7 @@ export default defineComponent({
             this.products.push(product);
           }
         }
-        console.log(this.products);
+
         this.loading = false;
       } catch (error) {
         console.log(error);
@@ -419,10 +416,9 @@ export default defineComponent({
 
         if (response.ok) {
           // Order created successfully
-          const order = await response.json();
+
           this.emptyBag();
           this.success = true;
-          console.log(order);
         } else {
           // Handle the error case
           console.error("Failed to create order:", response.statusText);

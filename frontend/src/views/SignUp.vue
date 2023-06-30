@@ -1,8 +1,6 @@
 <template>
   <div class="flex flex-col lg:flex-row">
-    <section
-      class="relative bg-black lg:w-1/2 lg:max-h-screen after:overflow-hidden"
-    >
+    <section class="relative bg-black lg:w-1/2">
       <img
       src=https://res.cloudinary.com/da3ulvbxj/image/upload/v1682938790/Images/pexels-cottonbro-studio-5119214_am3me2.jpg
       alt="A woman with bold eye makeup" class="opacity-80 w-full h-full
@@ -78,7 +76,7 @@
             bgColor="bg-notWhite"
             invertIcon="invert"
             type="submit"
-            :onClick="handleClick"
+            :onClick="handleSubmit"
           />
         </div>
       </form>
@@ -106,9 +104,6 @@ export default defineComponent({
     };
   },
   methods: {
-    handleClick() {
-      console.log(this.first_name);
-    },
     async handleSubmit(event: Event) {
       event.preventDefault(); // prevent the default form submission behavior
       try {
@@ -128,7 +123,7 @@ export default defineComponent({
           }
         );
         const data = await response.json();
-        console.log(data);
+
         this.$cookies.set("token", data.token);
         this.$cookies.set("id", data.user._id);
       } catch (error) {
