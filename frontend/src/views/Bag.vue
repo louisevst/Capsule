@@ -228,8 +228,7 @@ export default defineComponent({
       if (this.user_id === "") {
         this.isModalVisible = true;
       } else {
-        await this.fetchBag();
-        this.fetchBagItems();
+        this.fetchBag();
       }
     },
     async fetchBag() {
@@ -244,13 +243,12 @@ export default defineComponent({
           }
         );
         const data = await response.json();
-
-        if (data && Array.isArray(data)) {
+        if (data === undefined || data === null) {
+          this.isEmpty = true;
+        } else {
           this.bag = data[0].product_variant_id;
           this.bagId = data[0]._id;
-          this.isEmpty = this.bag.length === 0;
-        } else {
-          this.isEmpty = true;
+          this.fetchBagItems();
         }
       } catch (error) {
         console.log(error);
