@@ -95,7 +95,7 @@ export default defineComponent({
       event.preventDefault(); // prevent the default form submission behavior
       try {
         const response = await fetch(
-          "http://capsule-wardrobe.onrender.com:8000/api/auth/login",
+          "https://capsule-wardrobe.onrender.com:8000/api/auth/login",
           {
             method: "POST",
             headers: {

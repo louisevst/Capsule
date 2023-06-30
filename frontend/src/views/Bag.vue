@@ -208,7 +208,7 @@ export default defineComponent({
       try {
         console.log(this.bagId);
         const response = await fetch(
-          `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.bagId}/variants/${productId}  `,
+          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.bagId}/variants/${productId}  `,
           {
             method: "Delete",
             headers: {
@@ -236,7 +236,7 @@ export default defineComponent({
     async fetchBag() {
       try {
         const response = await fetch(
-          `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
+          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
           {
             method: "GET",
             headers: {
@@ -264,7 +264,7 @@ export default defineComponent({
         for (const productVariantId of productVariantIds) {
           console.log(productVariantId);
           const detailsResponse = await fetch(
-            `http://capsule-wardrobe.onrender.com:8000/api/details/id/${productVariantId}`,
+            `https://capsule-wardrobe.onrender.com:8000/api/details/id/${productVariantId}`,
             {
               method: "GET",
               headers: {
@@ -275,7 +275,7 @@ export default defineComponent({
           const productDetails = await detailsResponse.json();
 
           const productResponse = await fetch(
-            `http://capsule-wardrobe.onrender.com:8000/api/product/${productDetails.product_id}`,
+            `https://capsule-wardrobe.onrender.com:8000/api/product/${productDetails.product_id}`,
             {
               method: "GET",
               headers: {
@@ -302,7 +302,7 @@ export default defineComponent({
         }));
 
         const response = await fetch(
-          `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
+          `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.user_id}`,
           {
             method: "PUT",
             headers: {

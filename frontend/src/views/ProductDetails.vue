@@ -321,7 +321,7 @@ export default defineComponent({
     async fetchProductDetails(productId: string | string[]) {
       try {
         const response = await fetch(
-          `http://capsule-wardrobe.onrender.com:8000/api/product/${productId}`,
+          `https://capsule-wardrobe.onrender.com:8000/api/product/${productId}`,
           {
             method: "GET",
             headers: {
@@ -336,7 +336,7 @@ export default defineComponent({
       }
       try {
         const response = await fetch(
-          `http://capsule-wardrobe.onrender.com:8000/api/details/${productId}`,
+          `https://capsule-wardrobe.onrender.com:8000/api/details/${productId}`,
           {
             method: "GET",
             headers: {
@@ -431,7 +431,7 @@ export default defineComponent({
       try {
         if (this.bagExists()) {
           const response = await fetch(
-            `http://capsule-wardrobe.onrender.com:8000/api/bag/${this.bag.user_id}`,
+            `https://capsule-wardrobe.onrender.com:8000/api/bag/${this.bag.user_id}`,
             {
               method: "GET",
               headers: {
@@ -449,7 +449,7 @@ export default defineComponent({
             console.log(data[0]._id);
             const bagId = data[0]._id;
             const updateResponse = await fetch(
-              `http://capsule-wardrobe.onrender.com:8000/api/bag/${bagId}`,
+              `https://capsule-wardrobe.onrender.com:8000/api/bag/${bagId}`,
               {
                 method: "PUT",
                 headers: {
@@ -477,7 +477,7 @@ export default defineComponent({
           this.bag.user_id = this.$cookies.get("id");
 
           const response = await fetch(
-            "http://capsule-wardrobe.onrender.com:8000/api/bag",
+            "https://capsule-wardrobe.onrender.com:8000/api/bag",
             {
               method: "POST",
               headers: {

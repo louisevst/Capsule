@@ -458,7 +458,7 @@ export default defineComponent({
     async logout() {
       try {
         const response = await fetch(
-          "http://capsule-wardrobe.onrender.com:8000/api/auth/logout",
+          "https://capsule-wardrobe.onrender.com:8000/api/auth/logout",
           {
             method: "POST",
             headers: {

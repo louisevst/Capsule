@@ -114,7 +114,7 @@ export default defineComponent({
           }
 
           const response = await fetch(
-            `http://capsule-wardrobe.onrender.com:8000/api/wishlist/${this.user_id}`,
+            `https://capsule-wardrobe.onrender.com:8000/api/wishlist/${this.user_id}`,
             {
               method: "GET",
               headers: {
@@ -146,7 +146,7 @@ export default defineComponent({
     async updateWishlist(id: string, product: string) {
       try {
         const response = await fetch(
-          `http://capsule-wardrobe.onrender.com:8000/api/wishlist/${id}`,
+          `https://capsule-wardrobe.onrender.com:8000/api/wishlist/${id}`,
           {
             method: "PUT",
             headers: {
@@ -170,7 +170,7 @@ export default defineComponent({
     async createWishlist() {
       try {
         const response = await fetch(
-          "http://capsule-wardrobe.onrender.com:8000/api/wishlist",
+          "https://capsule-wardrobe.onrender.com:8000/api/wishlist",
           {
             method: "POST",
             headers: {
