@@ -12,7 +12,7 @@
       </h1>
     </section>
     <section
-      class="lg:w-1/2 lg:h-screen lg:flex lg:justify-center lg:flex-col px-4 lg:pt-10 xl:pt-4 lg:px-10"
+      class="lg:w-1/2 lg:flex lg:justify-center lg:flex-col px-4 lg:pt-10 xl:pt-4 lg:px-10"
     >
       <h1
         class="hidden xl:block font-title lg:text-xlheadline leading-none lg:pt-24"

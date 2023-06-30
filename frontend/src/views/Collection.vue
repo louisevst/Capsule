@@ -224,7 +224,7 @@ export default defineComponent({
     },
 
     isProductLiked(productId: string): boolean {
-      if (this.user_id !== "") {
+      if (this.wishlist !== null) {
         return this.wishlist.product_id.some(
           (product) => product._id === productId
         );
@@ -246,12 +246,12 @@ export default defineComponent({
           }
         );
         const data = await response.json();
-        if (response.ok) {
+        if (data !== null) {
           this.wishlist = data[0];
-        } else {
-          console.error("Failed to check wishlist:", response.statusText);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     },
     async fetchCategoryProducts() {
       try {
