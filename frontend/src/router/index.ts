@@ -14,7 +14,7 @@ import Category from "../views/Category.vue";
 import NotFound from "../components/404.vue";
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory("/Capsule/"),
   routes: [
     {
       path: "/",
