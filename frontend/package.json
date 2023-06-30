@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "pages": "gh-pages -d dist"
   },
+  "homepage": "https://louisevst.github.io/Capsule/frontend",
   "dependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "lottie-web": "^5.12.0",
